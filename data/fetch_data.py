@@ -7,7 +7,7 @@ import math
 # 1. Lấy danh sách địa điểm
 # ==============================
 
-place = "District 2, Ho Chi Minh City, Vietnam"
+place = "District 1, Ho Chi Minh City, Vietnam"
 
 tags = {
     "amenity": [
@@ -16,8 +16,33 @@ tags = {
         "charging_station",
         "school",
         "university",
-        "college"
+        "college",
+        "hospital",
+        "mall",
+        "cinema",
+        "restaurant"
+    ],
+    "shop": [
+        "supermarket",
+        "convenience",
+        "department_store",
+        "clothes",
+        "electronics",
+        "mobile_phone",
+    ],
+    "tourism": [
+        "hotel"
+    ],
+    "highway": [
+        "bus_stop"
+    ],
+    "building": [
+        "apartments",
+    ],
+    "leisure": [
+        "park"
     ]
+
 }
 
 print("Downloading locations...")
@@ -41,25 +66,15 @@ gdf["id"] = range(1, len(gdf) + 1)
 
 data = gdf[["id", "name", "amenity", "lat", "lon"]]
 
-<<<<<<< Updated upstream
-data.to_csv("data.csv", index=False)
-
-=======
 
 data.to_csv("data.csv", index=False)
 
 
->>>>>>> Stashed changes
 print("Saved to data.csv")
 
 # ==============================
 # 3. In ra màn hình
 # ==============================
 
-<<<<<<< Updated upstream
-for _, row in data.iterrows():
-    print(f"{row['id']}. {row['name']} | {row['amenity']} | lat={row['lat']:.6f}, lon={row['lon']:.6f}")
-=======
 #for _, row in data.iterrows():
     #print(f"{row['id']}. {row['name']} | {row['amenity']} | lat={row['lat']:.6f}, lon={row['lon']:.6f}")
->>>>>>> Stashed changes
