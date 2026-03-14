@@ -5,7 +5,7 @@ idna==3.11
 networkx==3.6.1
 numpy==2.4.3
 osmnx==2.1.0
-packaging==26.0
+packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1769093650/work
 pandas==3.0.1
 pyogrio==0.12.1
 pyproj==3.7.2
