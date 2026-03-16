@@ -18,7 +18,7 @@ print("Total locations:", len(gdf))
 # 2. Lấy road network
 # ==============================
 
-place = "District 1, Ho Chi Minh City, Vietnam"
+place = "Ho Chi Minh City, Vietnam"
 
 print("\nDownloading road network...")
 
