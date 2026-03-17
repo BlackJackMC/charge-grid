@@ -58,8 +58,8 @@ gdf["name"] = gdf["name"].fillna("Unknown")
 gdf["lat"] = gdf.geometry.centroid.y
 gdf["lon"] = gdf.geometry.centroid.x
 
-# lấy khoảng 50 location
-# gdf = gdf.head(50)
+# lấy khoảng 100 location
+gdf = gdf.head(300)
 
 # đánh số node
 gdf["id"] = range(1, len(gdf) + 1)
@@ -71,6 +71,8 @@ data.to_csv("data.csv", index=False)
 
 
 print("Saved to data.csv")
+
+
 
 # ==============================
 # 3. In ra màn hình
