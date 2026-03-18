@@ -4,7 +4,7 @@ import networkx as nx
 import math
 
 # ==============================
-# 1. Lấy danh sách địa điểm
+# 1. Take data from OSM
 # ==============================
 
 place = "District 1, Ho Chi Minh City, Vietnam"
@@ -18,26 +18,14 @@ tags = {
         "university",
         "college",
         "hospital",
-        "mall",
-        "cinema",
-        "restaurant"
+        "mall"
     ],
     "shop": [
         "supermarket",
-        "convenience",
-        "department_store",
-        "clothes",
-        "electronics",
-        "mobile_phone",
-    ],
-    "tourism": [
-        "hotel"
+        "convenience"
     ],
     "highway": [
         "bus_stop"
-    ],
-    "building": [
-        "apartments",
     ],
     "leisure": [
         "park"
@@ -58,24 +46,24 @@ gdf["name"] = gdf["name"].fillna("Unknown")
 gdf["lat"] = gdf.geometry.centroid.y
 gdf["lon"] = gdf.geometry.centroid.x
 
-# lấy khoảng 100 location
-gdf = gdf.head(300)
+#About 50 location
+#gdf = gdf.head(100)
 
-# đánh số node
+# Numberable data
 gdf["id"] = range(1, len(gdf) + 1)
 
 data = gdf[["id", "name", "amenity", "lat", "lon"]]
 
 
-data.to_csv("data.csv", index=False)
+data.to_csv("data_q1.csv", index=False)
 
 
-print("Saved to data.csv")
+print("Saved to data_q1.csv")
 
 
 
 # ==============================
-# 3. In ra màn hình
+# 2. Print to console
 # ==============================
 
 #for _, row in data.iterrows():

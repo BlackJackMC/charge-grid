@@ -9,7 +9,7 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data.csv")
+gdf = pd.read_csv("data_q1.csv")
 
 # ==============================
 # 2. Load graph
@@ -59,75 +59,80 @@ gdf_proj["road_node"] = ox.distance.nearest_nodes(
 # ==============================
 print("\nCalculating shortest paths (optimized)...")
 
-edges_list = []
 
 # danh sách road nodes
 road_nodes = gdf_proj["road_node"].tolist()
 ids = gdf_proj["id"].tolist() # Giả sử file CSV của bạn có cột 'id'
 
-for i in range(len(road_nodes)):
+N = len(gdf)
+
+L = [[0]*N for _ in range(N)]
+
+for i in range(N):
     source = road_nodes[i]
 
-    # chạy Dijkstra 1 lần từ source
+    # chạy Dijkstra 1 lần
     lengths = nx.single_source_dijkstra_path_length(
         G,
         source,
         weight="length"
     )
 
-    for j in range(i + 1, len(road_nodes)):
-        target = road_nodes[j]
+    for j in range(N):
+        if i == j:
+            L[i][j] = 0
+        else:
+            target = road_nodes[j]
 
-        if target in lengths:
-            dist = lengths[target]
-            if dist == 0: 
-                dist = math.sqrt((gdf_proj.geometry.x[i] - gdf_proj.geometry.x[j])**2 +
-                            (gdf_proj.geometry.y[i] - gdf_proj.geometry.y[j])**2)
-            edges_list.append((
-                ids[i],
-                ids[j],
-                round(dist, 4)
-            ))
+            if target in lengths:
+                dist = lengths[target]
+
+                # fallback nếu dist = 0
+                if dist == 0:
+                    dist = math.sqrt(
+                        (gdf_proj.geometry.x[i] - gdf_proj.geometry.x[j])**2 +
+                        (gdf_proj.geometry.y[i] - gdf_proj.geometry.y[j])**2
+                    )
+
+                L[i][j] = round(dist, 4)
+            
 
 # ==============================
 # 8. EXPORT CSV RIÊNG
 # ==============================
-print("\nExporting CSVs...")
+# print("\nExporting CSVs...")
 
-# nodes mapped
-nodes_out = gdf.copy()
-nodes_out["road_node"] = gdf_proj["road_node"]
-nodes_out.to_csv("mapped_nodes.csv", index=False)
+# # nodes mapped
+# nodes_out = gdf.copy()
+# nodes_out["road_node"] = gdf_proj["road_node"]
+# nodes_out.to_csv("mapped_nodes.csv", index=False)
 
-# edges
-edges_df = pd.DataFrame(edges_list, columns=["u", "v", "distance"])
-edges_df.to_csv("edges.csv", index=False)
+# # edges
+# edges_df = pd.DataFrame(edges_list, columns=["u", "v", "distance"])
+# edges_df.to_csv("edges.csv", index=False)
 
-print("CSV exported!")
+# print("CSV exported!")
 
 # ==============================
 # 9. Tạo input.txt
 # ==============================
-D = len(gdf)
-Y = len(edges_list)
-
-S = 50
-T = 24
 
 C = 1000
 B = 10
 P = 5
 
 # demand 1 giá trị / node 
-W = [random.randint(5, 30) for _ in range(D)]
+W = [random.randint(5, 30) for _ in range(N)]
+R = [round(random.uniform(100.0, 500.0), 2) for _ in range(N)]
 
-with open("input.txt", "w") as f:
-    f.write(f"{D} {Y} {S} {T}\n")
-    f.write(f"{C} {B} {P}\n")
+with open("input_q1.txt", "w") as f:
+    f.write(f"{N} {B} {C} {P}\n")
 
-    for u, v, d in edges_list:
-        f.write(f"{u} {v} {d}\n")
+    # ma trận khoảng cách
+    for i in range(N):
+        f.write(" ".join(map(str, L[i])) + "\n")
 
+    f.write(" ".join(map(str, R)) + "\n")
     f.write(" ".join(map(str, W)))
 
 print("Done!")

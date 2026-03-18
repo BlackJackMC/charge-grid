@@ -1,301 +1,101 @@
 id,name,amenity,lat,lon
 1,Khách sạn Sofitel,,10.784146,106.7022474
-2,Nhà Hàng Au Tresor,restaurant,10.772698,106.7048299
-3,Trạm Xăng Dầu Số 9,fuel,10.7706834,106.6893379
-4,Cửa Hàng Xăng Dầu Comeco,fuel,10.7905722,106.6942144
-5,Unknown,fuel,10.7753118,106.7048514
-6,Cửa Hàng Xăng Dầu Satra,fuel,10.7689585,106.6966613
-7,Khách Sạn Tân Hải Long 3,,10.7719103,106.703742
-8,Unknown,cinema,10.780808,106.6984465
-9,Unknown,parking,10.7812499,106.6983279
-10,Nhà Hàng Riverside Saigon,restaurant,10.7728736,106.7062835
-11,Nhà Hàng Hai Lúa Sài Gòn,restaurant,10.7807008,106.7067111
-12,Khách Sạn Riverside Saigon,,10.7738686,106.7063202
-13,Khách Sạn Moonlight,,10.7804454,106.7075254
-14,Nhà Hàng Wrap&Roll,restaurant,10.7732882,106.7040253
-15,Khách Sạn 64,,10.7673604,106.6937183
-16,Khách Sạn Sao Nam,,10.7687973,106.6942749
-17,Khách Sạn Hà Vy,,10.7665393,106.6912556
-18,Khách Sạn Cô Lợi,,10.7620278,106.6929627
-19,Khách Sạn Dragon Palace,,10.7689864,106.6941859
-20,Khách Sạn Liên Hà,,10.7679206,106.6948493
-21,Khách Sạn Rạng Đông,,10.7725398,106.6912687
-22,Nhà Hàng Crazy Buffalo,restaurant,10.767375,106.6941425
-23,Nhà Hàng Pizza Fixme,restaurant,10.7680337,106.6938158
-24,Nhà Hàng Đồ Ăn Việt Nam Aroma,restaurant,10.7684684,106.6938884
-25,Bánh Canh Hoàng Ty,restaurant,10.7917311,106.6915979
-26,Trường Đại Học Ngân Hàng,college,10.7704853,106.7047872
-27,Khách Sạn Mifuki Boutique,,10.7718577,106.6951014
-28,Khách Sạn Saigon Sports 3,,10.7685951,106.694409
-29,Thuan Thien Hotel,,10.7717128,106.6956525
-30,Nhà Hàng Vietnamese Kitchen,restaurant,10.7666137,106.6922676
-31,Nhà Hàng Jaspas,restaurant,10.778168,106.7037041
-32,Unknown,parking,10.7734144,106.6937048
-33,Unknown,parking,10.7814261,106.6969159
-34,Unknown,parking,10.7810892,106.6965647
-35,Unknown,parking,10.7754919,106.6984902
-36,Nhà Hàng Ấn Độ Curry Rice,restaurant,10.7762829,106.7042247
-37,Nhà Hàng Halal Sai Gon,restaurant,10.7760297,106.7047293
-38,Nhà Hàng Cung Đình Rex,restaurant,10.7754972,106.7007063
-39,Unknown,parking,10.7761981,106.6977285
-40,FamilyMart,,10.7692304,106.7001682
-41,Nhà Hàng Tiệc Cưới 108 Nguyễn Du,restaurant,10.7754764,106.6956779
-42,Nhà Hàng Alibaba,restaurant,10.7743953,106.7040996
-43,Unknown,,10.7737618,106.704673
-44,Khách Sạn Saigon Mini 5,,10.7665297,106.6918613
-45,Cửa Hàng Xôi Chè Bùi Thị Xuân,restaurant,10.7675882,106.6863944
-46,Circle K,,10.7709168,106.6894985
-47,Shop&Go!,,10.7718769,106.6904496
-48,Unknown,parking,10.7760071,106.702098
-49,Circle K,,10.7796921,106.7007494
-50,Nhà Hàng Bornga,restaurant,10.7788067,106.7020073
-51,Unknown,parking,10.7771916,106.6962032
-52,Unknown,parking,10.7720545,106.697625
-53,Quán Phở 2000,restaurant,10.7718157,106.697747
-54,Nhà Hàng Lion Beer,restaurant,10.776619,106.7039069
-55,Nhà Hàng Ngon,restaurant,10.7773464,106.6996325
-56,Nhà Hàng Rơm BBQ,restaurant,10.7736789,106.6992615
-57,Phở 24,restaurant,10.7718553,106.6975823
-58,Khách Sạn Metropole,,10.7740734,106.7055809
-59,Nhà Hàng Nướng Barbecue Garden,restaurant,10.7748184,106.6992492
-60,Grand Hotel,,10.773628,106.705911
-61,Phở Bắc Hải,restaurant,10.7838752,106.6992161
-62,Cửa Hàng Thời Trang M&B,,10.7838908,106.6988927
-63,Nhà Hàng Pháp Hoa,restaurant,10.767809,106.688677
-64,Unknown,parking,10.7871712,106.7046796
-65,Unknown,parking,10.7870396,106.7044597
-66,Bún Bò Huế Gia Hội,restaurant,10.78415,106.6975046
-67,Nhà Hàng Hồ Tây,restaurant,10.784324,106.697355
-68,Khách Sạn Hoàng Hải Long,,10.7715128,106.6942511
-69,Nhà Hàng Hoằng Long,restaurant,10.7768249,106.703813
-70,Khách Sạn Đại Huy Hoàng,,10.7672409,106.6909759
-71,Nhà Hàng Neighborhood Meal,restaurant,10.7805082,106.7057315
-72,5KU Station,restaurant,10.7794464,106.7042294
-73,Shop&Go!,,10.7674953,106.7002265
-74,Nhà Hàng El Gaucho,restaurant,10.7780321,106.7036328
-75,Nhà Hàng Nhật Annz,restaurant,10.7781923,106.7039909
-76,Nhà Hàng Beirut,restaurant,10.7780733,106.7039174
-77,Cửa Hàng Pizza 4P's,restaurant,10.7818475,106.705108
-78,Siêu Thị Online Annam Gourmet,,10.7767779,106.7050958
-79,Nhà Hàng Blanchy Street,restaurant,10.7780081,106.7038501
-80,Nhà Hàng Hoa Túc,restaurant,10.7783472,106.7038891
-81,Nhà Hàng Le Bouchon De Saïgon,restaurant,10.7803707,106.7035032
-82,Rạp Phim Cầu Bông,cinema,10.7919991,106.695281
-83,Rạp Phim Văn Hoa,cinema,10.7924486,106.6938597
-84,Khách Sạn Grand Silverland,,10.7736782,106.6970086
-85,Khách Sạn Hà My,,10.7738995,106.6969013
-86,Khách Sạn A&EM,,10.7740997,106.6969013
-87,Khách Sạn Kelly,,10.7741841,106.6970301
-88,Khách Sạn King,,10.7799281,106.7039394
-89,Nhà Hàng Ciao Bella,restaurant,10.7762605,106.7049669
-90,Khách Sạn Northern,,10.7774795,106.7051917
-91,Khách Sạn White Lotus,,10.7776953,106.7055012
-92,Khách Sạn Aquari,,10.7773747,106.705354
-93,Nhà Hàng Zanzbar,restaurant,10.7759751,106.7046722
-94,Nhà Hàng Skewers,restaurant,10.7790115,106.7047525
-95,Khách Sạn New Star,,10.7788392,106.7048113
-96,Khách Sạn Royal Lotus,,10.7789255,106.7041427
-97,Khách Sạn Hoa Sen,,10.7775096,106.7057021
-98,Khách Sạn Ngọc Minh,,10.7771111,106.7054161
-99,Khách Sạn King Star,,10.7780677,106.7041264
-100,Khách Sạn Cherry,,10.7790247,106.7050932
-101,Nhà Hàng Som Tum Thai,restaurant,10.7792532,106.7038786
-102,Khách Sạn May,,10.7778185,106.7007546
-103,Nhà Hàng Namo,restaurant,10.777874,106.7037686
-104,Nhà Hàng Le Bourgeois,restaurant,10.7768577,106.7024065
-105,Khách Sạn Sun Flower,,10.7790752,106.7046764
-106,Khách Sạn Medal,,10.7791543,106.7049719
-107,Khách Sạn Silverland Jolie,,10.7774137,106.7058193
-108,Khách Sạn Oscar,,10.7747783,106.7033841
-109,Cửa Hàng Thời Trang Huy Hoàng,,10.7750496,106.7006785
-110,Khách Sạn Hoàng Gia,,10.7719734,106.6929079
-111,Lẩu Dê Kỳ Đồng,restaurant,10.7917958,106.6972343
-112,Khách Sạn Little Saigon Boutique,,10.7746121,106.7002663
-113,Nhà Hàng Lemongrass,restaurant,10.7754055,106.7033338
-114,Ốc Tý,restaurant,10.7868712,106.7071606
-115,Nhà Hàng Pháp Hidden,restaurant,10.7674081,106.6930818
-116,Khách Sạn Saigon River,,10.7753807,106.7047107
-117,Khách Sạn Elegant,,10.7697367,106.6882034
-118,Nhà Hàng Bon,restaurant,10.768989,106.699256
-119,Nhà Hàng Dragon Steak,restaurant,10.773364,106.702516
-120,Cửa hàng Điện Quang,,10.7707887,106.7003918
-121,Khách Sạn Asian Ruby,,10.771704,106.695552
-122,Columbia Asia Saigon,hospital,10.7795758,106.6965213
-123,Khách Sạn Roseland Point,,10.771829,106.703755
-124,Circle K,,10.77194,106.703707
-125,Khách Sạn Âu Lạc,,10.772093,106.7036766
-126,Circle K,,10.7744175,106.6966499
-127,Citimart,,10.784261,106.69973
-128,Cửa Hàng Thời Trang Maison,,10.774866,106.700601
-129,Tâm Silk,,10.774759,106.700928
-130,Unknown,restaurant,10.784545,106.699468
-131,Nhà Hàng Soya Pudding,restaurant,10.767854,106.686372
-132,Nhà Hàng Goldfish,restaurant,10.7746812,106.7042541
-133,Cửa Hàng Thời Trang Tuti Bella,,10.7745159,106.7040687
-134,Cửa Hàng Thời Trang Uniqlo,,10.7739546,106.7051387
-135,Bảo tàng Tôn Đức Thắng,,10.7776675,106.7070246
-136,Công viên Lê Văn Tám,,10.7869042,106.6941735
-137,Đinh Tiên Hoàng,,10.789511,106.6967242
-138,Bến Bạch Đằng,,10.7733704,106.7063876
-139,Đại học Khoa học Tự nhiên,,10.7622515,106.6830377
-140,Chợ Nancy,,10.757051,106.68587
-141,Chợ Thái Bình,,10.7669423,106.6875927
-142,Đền Trần Hưng Đạo,,10.7912747,106.6952364
-143,Công viên Lê Văn Tám,,10.7888286,106.6927829
-144,Nguyễn Thị Nghĩa,,10.7699494,106.6934155
-145,Chợ Bến Thành,,10.7726204,106.6992917
-146,Mầm non Hoa Lư,,10.7851929,106.7087129
-147,Nguyễn Hữu Cảnh,,10.7835232,106.7073585
-148,Unknown,,10.7856443,106.7085874
-149,Nhà hát Thành phố,,10.7780395,106.7035068
-150,Bệnh viện Nhi đồng 2,,10.7798555,106.701527
-151,Calmette,,10.7678522,106.6992533
-152,Nhà thờ Tân Định,,10.7892203,106.6903304
-153,Chợ Đakao,,10.7924976,106.6948579
-154,Lý Tự Trọng,,10.777076,106.699669
-155,Lê Duẩn,,10.7782907,106.6983598
-156,Nguyễn Thị Minh Khai,,10.7798086,106.6967169
-157,Chùa Ông,,10.7740107,106.6997984
-158,Cầu Ông Lãnh,,10.7667542,106.6960483
-159,Cầu Ông Lãnh,,10.7662479,106.6965412
-160,Trường Bùi Thị Xuân,,10.7693473,106.6879224
-161,Nguyễn Văn Thủ,,10.7912552,106.7005492
-162,Trạm Xe Bus Hoàng Sa,,10.7923606,106.7033984
-163,Trạm Xe Bus Cầu Calmette,,10.7651414,106.6998546
-164,Trạm Xe Bus Cầu Calmette,,10.76511,106.7000531
-165,Hồ Hảo Hớn,,10.7599322,106.6946981
-166,Trường Tiểu học Chương Dương,,10.7582536,106.6915957
-167,Cầu Nguyễn Văn Cừ,,10.7541194,106.6872369
-168,Tan Hoang Long Hotel,,10.774799,106.7041338
-169,Unknown,restaurant,10.7895287,106.703993
-170,Thế Giới Di Động,,10.7921447,106.6918399
-171,Quán Ăn DimSum,restaurant,10.7896434,106.7041204
-172,Cửa Hàng Thời Trang X70,,10.7856289,106.6949057
-173,Phở Hùng,restaurant,10.7857396,106.6949916
-174,Cơm Tấm Cali,restaurant,10.7882189,106.6916737
-175,Nhà Hàng Món Huế,restaurant,10.7890805,106.6905927
-176,Cửa Hàng Tiện Lợi Shop&Go!,,10.7896718,106.6935132
-177,Nhà Hàng Portofino,restaurant,10.776223,106.7048961
-178,Nhà Hàng Xu,restaurant,10.7769624,106.7044959
-179,Nhà Hàng El Gaucho,restaurant,10.7777314,106.7045057
-180,Phở 24,restaurant,10.7745474,106.7046273
-181,Khách Sạn PP BackPackers,,10.7673302,106.6908055
-182,Circle K,,10.7769943,106.7047402
-183,Nhà Hàng Golden Elephant,restaurant,10.7769534,106.704788
-184,Khách Sạn Sunny,,10.792368,106.6882328
-185,Khách Sạn Yellow House Saigon,,10.7648733,106.6955744
-186,Circle K,,10.7694431,106.7000459
-187,Khách Sạn Aston,,10.7672561,106.6938225
-188,Cửa Hàng Nón Sơn,,10.7903234,106.6972863
-189,Đại học Khoa học Xã hội Nhân văn,,10.7857614,106.7025976
-190,Trạm Xe Bus Đại Học Khoa Học Xã Hội Nhân Văn,,10.7857132,106.7024048
-191,Tôn Thất Tùng,,10.768731,106.6903772
-192,Công trường Mê Linh,,10.776917,106.7058354
-193,Công trường Mê Linh,,10.7760722,106.7056997
-194,Nhà Hàng StormP Saigon,restaurant,10.7776676,106.7044489
-195,Khách Sạn An An,,10.7677791,106.6945052
-196,Khách Sạn Saigon Sports,,10.7678134,106.6945911
-197,Khách Sạn Yến Trang 2,,10.7682818,106.6939965
-198,Khách Sạn Hạnh Phúc,,10.7678727,106.694807
-199,Nhà Hàng Ẩm Thực Việt Nam,restaurant,10.766989,106.693433
-200,Khách Sạn Beautiful,,10.7681899,106.6940516
-201,Khách Sạn Kiên,,10.7681,106.694112
-202,Nhà Hàng Pundjab,restaurant,10.7680371,106.6941696
-203,Khách Sạn Cam,,10.7683559,106.6939604
-204,Khách Sạn Lan Anh,,10.7681847,106.6937352
-205,Bánh Xèo 46A,restaurant,10.7896047,106.6912995
-206,MIT rooftop bistro,restaurant,10.7736594,106.7054779
-207,Nhà Hàng Pháp La Fourchette,restaurant,10.7738554,106.7056571
-208,Nhà Hàng Temple Club,restaurant,10.7732582,106.7017621
-209,Nhà Hàn 3T Quán Nướng,restaurant,10.7732808,106.7017957
-210,Nhà Hàng Hương Lài,restaurant,10.77734,106.700248
-211,Khách Sạn EdenStar Sài Gòn,,10.7718739,106.6900291
-212,Nhà Hàng Vỹ Dạ,restaurant,10.7749047,106.6980099
-213,Trường Trung học cơ sở Văn Lang,school,10.7929112,106.6878489
-214,Quán Chả Giò Cua Biển 94,restaurant,10.7903516,106.6976096
-215,Bún Nước Chị Ba,restaurant,10.7611535,106.6927466
-216,Nhà Hàng The Organic,restaurant,10.7916099,106.693465
-217,Unknown,restaurant,10.7906521,106.6983394
-218,Nhà Hàng Basilico,restaurant,10.7814055,106.7011626
-219,Khách Sạn N Dung,,10.7687425,106.6940811
-220,Khách Sạn Long,,10.766669,106.6896699
-221,Circle K,,10.7706331,106.6878337
-222,FamilyMart,,10.7671517,106.6907412
-223,Circle K,,10.7668186,106.6910328
-224,Khách Sạn Khói,,10.7667992,106.6896673
-225,Khách Sạn The Reverie SaiGon,,10.7738731,106.704865
-226,Nhà Hàng Thanh Thìn,restaurant,10.7676305,106.7000487
-227,Nhà Hàng Chay Hương Sen,restaurant,10.7691582,106.6912982
-228,Ministop,,10.7674283,106.6848633
-229,Siêu Thị C&C,,10.7666709,106.6877461
-230,Nhà Hàng D'Green Salad Food Drink,restaurant,10.769733,106.693061
-231,Nhà Hàng Chabad Vietnam,restaurant,10.7892923,106.7014657
-232,Street Food Market,,10.7736896,106.6975615
-233,Khách Sạn GK Central,,10.7744943,106.6975843
-234,Khách Sạn The Town House 50,,10.7717535,106.6897307
-235,Pizza Hut,restaurant,10.7669066,106.6941815
-236,Khách Sạn Cap Town,,10.772061,106.6952015
-237,Pizza Hut,restaurant,10.7807736,106.6982429
-238,Pizza Hut,restaurant,10.7641929,106.6824701
-239,FamilyMart,,10.7862265,106.7013849
-240,Nhà Hàng Saigon Green House,restaurant,10.7724714,106.6958298
-241,Khách Sạn Eden Garden 2,,10.7682418,106.6945397
-242,FamilyMart,,10.7678389,106.6937195
-243,Nhà Hàng Asian Kitchen,restaurant,10.7683337,106.6940202
-244,Nhà Hàng Sando's,restaurant,10.7681633,106.6944511
-245,Nhà Hàng Saigon Garden,restaurant,10.7755232,106.702529
-246,Nhà Hàng Lamenda,restaurant,10.7740352,106.6970177
-247,Suite Backpackers Inn,,10.7676399,106.6943165
-248,Nhà Hàng Propaganda Saigon Bistro,restaurant,10.778708,106.6980884
-249,Khách Sạn Cinnamon,,10.7715127,106.6923183
-250,Shop&Go!,,10.7791798,106.7002789
-251,FamilyMart,,10.7736195,106.6969272
-252,Khách Sạn Hong Kong Kaiteki,,10.7678485,106.6947713
-253,Nhà Hàng Hummus And Grill Lebanese,restaurant,10.7684387,106.6942563
-254,Nhà Hàng Cycloresto,restaurant,10.7721513,106.6936449
-255,Viện Di Động,,10.7922932,106.6936363
-256,Quán Cơm Đo Đo,restaurant,10.7698049,106.6867841
-257,Khách Sạn Ava 2,,10.7647192,106.6950915
-258,Khách Sạn Sunrise Central,,10.7737761,106.6969229
-259,Nhà Hàng The Lunch Lady,restaurant,10.7915811,106.7042222
-260,Khách Sạn Hương Sen,,10.7751112,106.7044078
-261,Zara,,10.7776448,106.702377
-262,Nhà Hàng The Elbow Room,restaurant,10.771263,106.7024191
-263,Khách Sạn Compass Park View,,10.7723839,106.6929389
-264,Nhà Hàng L'usine,restaurant,10.7731015,106.6994604
-265,Nhà Hàng My Bahn Mi,restaurant,10.7794971,106.7005803
-266,Loving Hut,restaurant,10.7894669,106.6953972
-267,Chả Cá Lã Vọng,restaurant,10.773666,106.7025664
-268,득 브엉호텔,,10.765762,106.69095
-269,Cửa Hàng Thời Trang Gingko,,10.7683516,106.693626
-270,Cửa Hàng Thời Trang Mayhem Saigon,,10.7816612,106.7054831
-271,Khách Sạn Lê Duy,,10.770762,106.6936694
-272,Khách Sạn Cát Huy,,10.766569,106.690292
-273,Unknown,,10.767851,106.69439
-274,Bệnh Viện Mắt Sài Gòn,hospital,10.7713711,106.6909391
-275,Nhà Hàng Cà Phê Hồ Chí Minh,restaurant,10.7696927,106.6977556
-276,Nhà Hàng - Cafe Bookworm's,restaurant,10.7663169,106.6913488
-277,Khách Sạn 68,,10.7679462,106.6950983
-278,Khách Sạn Saga,,10.7770203,106.7046434
-279,Khách Sạn Quy Thanh,,10.7724577,106.694196
-280,Khách Sạn The Spring,,10.778942,106.7030687
-281,Khách Sạn Yến,,10.7682867,106.6941009
-282,Nhà Hàng Zìn Ký,restaurant,10.7692725,106.6904171
-283,Khách Sạn Blue River 2,,10.7664022,106.6996139
-284,Nhà Khách Thanh,,10.767335,106.69325
-285,Nhà Hàng Chay Phi Nhung,restaurant,10.7927744,106.6881528
-286,Khách Sạn Hoàng Liên,,10.7721656,106.6907311
-287,Cơm Gà Tam Kỳ Hồng Nga,restaurant,10.7685706,106.6871539
-288,Quán Ăn Dim Sum House,restaurant,10.7688832,106.6907172
-289,Unknown,restaurant,10.7820109,106.7051946
-290,Taj Mahal,restaurant,10.7680805,106.6925388
-291,Nhà Hàng Ý Mumtaz,restaurant,10.7659975,106.6909905
-292,Unknown,,10.773718,106.6968244
-293,Unknown,restaurant,10.7656371,106.6899653
-294,Viet Village,restaurant,10.7886408,106.6992852
-295,Bãi Đậu Xe Nguyễn Văn Chiêm,parking,10.7817942,106.6988031
-296,Unknown,restaurant,10.773464,106.703829
-297,rạp chiếu phim CGV,cinema,10.7781862,106.7017849
-298,Nhà Hàng Soul Burger,restaurant,10.7724373,106.6988409
-299,Chay Việt An,restaurant,10.7927434,106.6897471
-300,Khách Sạn Viễn Đông,,10.76806,106.69372
+2,Trạm Xăng Dầu Số 9,fuel,10.7706834,106.6893379
+3,Cửa Hàng Xăng Dầu Comeco,fuel,10.7905722,106.6942144
+4,Unknown,fuel,10.7753118,106.7048514
+5,Cửa Hàng Xăng Dầu Satra,fuel,10.7689585,106.6966613
+6,Unknown,parking,10.7812499,106.6983279
+7,Trường Đại Học Ngân Hàng,college,10.7704853,106.7047872
+8,Unknown,parking,10.7734144,106.6937048
+9,Unknown,parking,10.7814261,106.6969159
+10,Unknown,parking,10.7810892,106.6965647
+11,Unknown,parking,10.7754919,106.6984902
+12,Unknown,parking,10.7761981,106.6977285
+13,FamilyMart,,10.7692304,106.7001682
+14,Unknown,,10.7737618,106.704673
+15,Circle K,,10.7709168,106.6894985
+16,Shop&Go!,,10.7718769,106.6904496
+17,Unknown,parking,10.7760071,106.702098
+18,Circle K,,10.7796921,106.7007494
+19,Unknown,parking,10.7771916,106.6962032
+20,Unknown,parking,10.7720545,106.697625
+21,Unknown,parking,10.7871712,106.7046796
+22,Unknown,parking,10.7870396,106.7044597
+23,Shop&Go!,,10.7674953,106.7002265
+24,Siêu Thị Online Annam Gourmet,,10.7767779,106.7050958
+25,Columbia Asia Saigon,hospital,10.7795758,106.6965213
+26,Circle K,,10.77194,106.703707
+27,Circle K,,10.7744175,106.6966499
+28,Citimart,,10.784261,106.69973
+29,Bảo tàng Tôn Đức Thắng,,10.7776675,106.7070246
+30,Công viên Lê Văn Tám,,10.7869042,106.6941735
+31,Đinh Tiên Hoàng,,10.789511,106.6967242
+32,Bến Bạch Đằng,,10.7733704,106.7063876
+33,Đại học Khoa học Tự nhiên,,10.7622515,106.6830377
+34,Chợ Nancy,,10.757051,106.68587
+35,Chợ Thái Bình,,10.7669423,106.6875927
+36,Đền Trần Hưng Đạo,,10.7912747,106.6952364
+37,Công viên Lê Văn Tám,,10.7888286,106.6927829
+38,Nguyễn Thị Nghĩa,,10.7699494,106.6934155
+39,Chợ Bến Thành,,10.7726204,106.6992917
+40,Mầm non Hoa Lư,,10.7851929,106.7087129
+41,Nguyễn Hữu Cảnh,,10.7835232,106.7073585
+42,Unknown,,10.7856443,106.7085874
+43,Nhà hát Thành phố,,10.7780395,106.7035068
+44,Bệnh viện Nhi đồng 2,,10.7798555,106.701527
+45,Calmette,,10.7678522,106.6992533
+46,Nhà thờ Tân Định,,10.7892203,106.6903304
+47,Chợ Đakao,,10.7924976,106.6948579
+48,Lý Tự Trọng,,10.777076,106.699669
+49,Lê Duẩn,,10.7782907,106.6983598
+50,Nguyễn Thị Minh Khai,,10.7798086,106.6967169
+51,Chùa Ông,,10.7740107,106.6997984
+52,Cầu Ông Lãnh,,10.7667542,106.6960483
+53,Cầu Ông Lãnh,,10.7662479,106.6965412
+54,Trường Bùi Thị Xuân,,10.7693473,106.6879224
+55,Nguyễn Văn Thủ,,10.7912552,106.7005492
+56,Trạm Xe Bus Hoàng Sa,,10.7923606,106.7033984
+57,Trạm Xe Bus Cầu Calmette,,10.7651414,106.6998546
+58,Trạm Xe Bus Cầu Calmette,,10.76511,106.7000531
+59,Hồ Hảo Hớn,,10.7599322,106.6946981
+60,Trường Tiểu học Chương Dương,,10.7582536,106.6915957
+61,Cầu Nguyễn Văn Cừ,,10.7541194,106.6872369
+62,Cửa Hàng Tiện Lợi Shop&Go!,,10.7896718,106.6935132
+63,Circle K,,10.7769943,106.7047402
+64,Circle K,,10.7694431,106.7000459
+65,Đại học Khoa học Xã hội Nhân văn,,10.7857614,106.7025976
+66,Trạm Xe Bus Đại Học Khoa Học Xã Hội Nhân Văn,,10.7857132,106.7024048
+67,Tôn Thất Tùng,,10.768731,106.6903772
+68,Công trường Mê Linh,,10.776917,106.7058354
+69,Công trường Mê Linh,,10.7760722,106.7056997
+70,Trường Trung học cơ sở Văn Lang,school,10.7929112,106.6878489
+71,Circle K,,10.7706331,106.6878337
+72,FamilyMart,,10.7671517,106.6907412
+73,Circle K,,10.7668186,106.6910328
+74,Ministop,,10.7674283,106.6848633
+75,Siêu Thị C&C,,10.7666709,106.6877461
+76,Street Food Market,,10.7736896,106.6975615
+77,FamilyMart,,10.7862265,106.7013849
+78,FamilyMart,,10.7678389,106.6937195
+79,Shop&Go!,,10.7791798,106.7002789
+80,FamilyMart,,10.7736195,106.6969272
+81,Bệnh Viện Mắt Sài Gòn,hospital,10.7713711,106.6909391
+82,Bãi Đậu Xe Nguyễn Văn Chiêm,parking,10.7817942,106.6988031
+83,FamilyMart,,10.768461,106.68707
+84,Circle K,,10.7725534,106.6991115
+85,Circle K,,10.7668906,106.6929873
+86,Unknown,,10.7699236,106.6925181
+87,Cửa Hàng Tiện Lợi B's Mart,,10.7668069,106.6962928
+88,Tôn Thất Tùng,,10.7676758,106.6908667
+89,Circle K,,10.7697839,106.6924932
+90,Trung Tâm Thương Mại Sense Market,,10.7692667,106.6933366
+91,Trạm Xe Bus Cityview Shuttle,,10.7744984,106.7047024
+92,Thi's Market,,10.7717991,106.7041195
+93,Siêu Thị Tiện Lợi US,,10.7618357,106.6901287
+94,Tổng Công ty Samco,,10.7596994,106.6881941
+95,Trung Tâm Nhật Ngữ Yaruki,school,10.7881755,106.7026429
+96,Circle K,,10.771409,106.6970223
+97,FamilyMart,,10.7894045,106.702524
+98,FamilyMart,,10.7890379,106.7002426
+99,Circle K,,10.7732317,106.7033243
+100,FamilyMart,,10.7635833,106.693177
