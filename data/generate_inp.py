@@ -9,12 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_q1.csv")
+gdf = pd.read_csv("data_hcm.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
-place = "District 1, Ho Chi Minh City, Vietnam"
+
+place = "Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -117,18 +118,43 @@ for i in range(N):
 # 9. Tạo input.txt
 # ==============================
 
-C = 1000
-B = 10
-P = 5
+C = 210000
+B = 12
+P = 9
 
-# demand 1 giá trị / node 
+# Demand W
 W = [random.randint(5, 30) for _ in range(N)]
-R = [round(random.uniform(100.0, 500.0), 2) for _ in range(N)]
 
-with open("input_q1.txt", "w") as f:
+# Chi phi thue R
+#R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
+districts = gdf_proj["district"].tolist()
+district_R_range = {
+    "District 1": (7000, 20000),
+    "District 3": (6000, 15000),
+    "District 5": (5000, 12000),
+    "District 6": (2000, 8000),
+    "District 7": (3500, 10000),
+    "District 8": (5000, 12000),
+    "District 10": (9000, 13000),
+    "District 12": (5000, 7000),
+    "Binh Thanh District": (4000, 11000),
+    "Phu Nhuan District": (5000, 12000),
+    "Tan Binh District": (3000, 9000),
+    "Go Vap District": (2500, 7000),
+    "Binh Tan District": (2500, 7000),
+    "Tan Phu District": (8000, 14000)
+}
+
+def gen_R(district):
+    low, high = district_R_range.get(district, (100.0, 300.0))  # default
+    return round(random.uniform(low, high), 2)
+
+R = [gen_R(d) for d in districts]
+
+
+with open("input_hcm.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
-    # ma trận khoảng cách
     for i in range(N):
         f.write(" ".join(map(str, L[i])) + "\n")
 

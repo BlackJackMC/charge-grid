@@ -7,7 +7,23 @@ import math
 # 1. Take data from OSM
 # ==============================
 
-place = "District 1, Ho Chi Minh City, Vietnam"
+districts = [
+    "District 1, Ho Chi Minh City, Vietnam",
+    "District 3, Ho Chi Minh City, Vietnam",
+    "District 4, Ho Chi Minh City, Vietnam",
+    "District 5, Ho Chi Minh City, Vietnam",
+    "District 6, Ho Chi Minh City, Vietnam",
+    "District 7, Ho Chi Minh City, Vietnam",
+    "District 8, Ho Chi Minh City, Vietnam",
+    "District 10, Ho Chi Minh City, Vietnam",
+    "District 12, Ho Chi Minh City, Vietnam",
+    "Binh Thanh District, Ho Chi Minh City, Vietnam",
+    "Phu Nhuan District, Ho Chi Minh City, Vietnam",
+    "Tan Binh District, Ho Chi Minh City, Vietnam",
+    "Go Vap District, Ho Chi Minh City, Vietnam",
+    "Tan Phu District, Ho Chi Minh City, Vietnam",
+    "Binh Tan District, Ho Chi Minh City, Vietnam"
+]
 
 tags = {
     "amenity": [
@@ -24,47 +40,39 @@ tags = {
         "supermarket",
         "convenience"
     ],
-    "highway": [
-        "bus_stop"
-    ],
     "leisure": [
         "park"
     ]
-
 }
 
 print("Downloading locations...")
 
-gdf = ox.features_from_place(place, tags)
-gdf = gdf.reset_index()
+gdfs = []
 
-gdf = gdf[["name", "amenity", "geometry"]]
+for place in districts:
+    print(f"Fetching {place}...")
+    gdf_temp = ox.features_from_place(place, tags)
+    gdf_temp["district"] = place.split(",")[0]
+    gdfs.append(gdf_temp)
+
+# Merge all GeoDataFrames into one
+gdf = pd.concat(gdfs, ignore_index=True)
+gdf = gdf.reset_index(drop=True)
+
+gdf = gdf[["name", "amenity", "geometry", "district"]]
 
 gdf["name"] = gdf["name"].fillna("Unknown")
-
 
 gdf["lat"] = gdf.geometry.centroid.y
 gdf["lon"] = gdf.geometry.centroid.x
 
-#About 50 location
-#gdf = gdf.head(100)
+# Remove duplicate 
+gdf = gdf.drop_duplicates(subset=["lat", "lon"])
 
-# Numberable data
+# Numbering data
 gdf["id"] = range(1, len(gdf) + 1)
 
-data = gdf[["id", "name", "amenity", "lat", "lon"]]
+data = gdf[["id", "name", "amenity", "lat", "lon", "district"]]
 
-
-data.to_csv("data_q1.csv", index=False)
-
-
-print("Saved to data_q1.csv")
-
-
-
-# ==============================
-# 2. Print to console
-# ==============================
-
-#for _, row in data.iterrows():
-    #print(f"{row['id']}. {row['name']} | {row['amenity']} | lat={row['lat']:.6f}, lon={row['lon']:.6f}")
+data.to_csv("data_hcm.csv", index=False)
+print("Saved to data_hcm.csv")
