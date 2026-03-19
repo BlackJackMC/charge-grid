@@ -16,7 +16,7 @@ gdf = pd.read_csv("data_q1.csv")
 # ==============================
 place = "District 1, Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
-G = ox.graph_from_place(place, network_type="drive")
+G = ox.graph_from_place(place, network_type="walk")
 
 # ==============================
 # 3. Project CRS (QUAN TRỌNG)
