@@ -1,173 +1,164 @@
 import osmnx as ox
-import pandas as pd
 import networkx as nx
+import pandas as pd
 import math
+import geopandas as gpd # IMPORTANT: Added GeoPandas for spatial operations
 import random
 
 # ==============================
-# 1. Đọc danh sách location
+# 1. Đọc CSV
 # ==============================
-
-print("Loading locations from data.csv...")
-
-gdf = pd.read_csv("data.csv")
-
-print("Total locations:", len(gdf))
+print("Loading locations...")
+gdf = pd.read_csv("data_hcm.csv")
 
 # ==============================
-# 2. Lấy road network
+# 2. Load graph
 # ==============================
 
 place = "Ho Chi Minh City, Vietnam"
-
-print("\nDownloading road network...")
-
-G = ox.graph_from_place(place, network_type="drive")
+print("Downloading graph...")
+G = ox.graph_from_place(place, network_type="walk")
 
 # ==============================
-# 3. Lấy road nodes
+# 3. Project CRS (QUAN TRỌNG)
 # ==============================
-
-nodes = list(G.nodes(data=True))
-
-# ==============================
-# 4. Hàm tìm node gần nhất
-# ==============================
-
-def nearest_node(lat, lon):
-
-    best_node = None
-    best_dist = float("inf")
-
-    for node_id, data in nodes:
-
-        node_lat = data["y"]
-        node_lon = data["x"]
-
-        dist = math.sqrt(
-            (lat - node_lat) ** 2 +
-            (lon - node_lon) ** 2
-        )
-
-        if dist < best_dist:
-            best_dist = dist
-            best_node = node_id
-
-    return best_node
+G = ox.project_graph(G)
 
 # ==============================
-# 5. Map location → road node
+# 4. Lấy nodes GeoDataFrame
 # ==============================
-
-print("\nMapping locations to road nodes...")
-
-road_nodes = []
-
-for _, row in gdf.iterrows():
-
-    rn = nearest_node(row["lat"], row["lon"])
-    road_nodes.append(rn)
-
-gdf["road_node"] = road_nodes
+nodes, edges = ox.graph_to_gdfs(G)
 
 # ==============================
-# 6. Tính shortest path
+# 5. Map lat/lon → CRS của graph (CORRECTED)
 # ==============================
+print("Projecting CSV coordinates to Graph CRS...")
 
-print("\nCalculating shortest paths...")
+# Bước A: Chuyển Pandas DataFrame thành GeoDataFrame (chuẩn GPS EPSG:4326)
+gdf_geo = gpd.GeoDataFrame(
+    gdf, 
+    geometry=gpd.points_from_xy(gdf['lon'], gdf['lat']),
+    crs="EPSG:4326"
+)
 
-edges = []
-
-for i in range(len(gdf)):
-    for j in range(i + 1, len(gdf)):
-
-        u = gdf.iloc[i]["road_node"]
-        v = gdf.iloc[j]["road_node"]
-
-        try:
-
-            dist = nx.shortest_path_length(
-                G,
-                u,
-                v,
-                weight="length"
-            )
-
-            edges.append(
-                (
-                    gdf.iloc[i]["id"],
-                    gdf.iloc[j]["id"],
-                    round(dist, 2)
-                )
-            )
-
-        except:
-            continue
+# Bước B: Project sang CRS của graph
+gdf_proj = gdf_geo.to_crs(nodes.crs)
 
 # ==============================
-# 7. Tạo tham số bài toán
+# 6. Dùng ox.nearest_nodes (NHANH + CHUẨN)
 # ==============================
+print("Mapping to nearest nodes...")
 
-D = len(gdf)
-Y = len(edges)
-
-S = 50   # dung lượng pin
-T = 24   # số time step
-
-C = 1000  # cost xây trạm
-B = 10    # số pin sạc mỗi bước
-P = 5     # profit mỗi pin
-
-# tạo demand Wi ngẫu nhiên
-
-W = []
-
-for _, row in gdf.iterrows():
-
-    a = row["amenity"]
-
-    if a == "university":
-        demand = random.randint(15, 30)
-
-    elif a == "school":
-        demand = random.randint(12, 25)
-
-    elif a == "college":
-        demand = random.randint(10, 22)
-
-    elif a == "parking":
-        demand = random.randint(8, 18)
-
-    elif a == "fuel":
-        demand = random.randint(5, 12)
-
-    elif a == "charging_station":
-        demand = random.randint(3, 10)
-
-    else:
-        demand = random.randint(5, 15)
-
-    W.append(demand)
+gdf_proj["road_node"] = ox.distance.nearest_nodes(
+    G,
+    X=gdf_proj.geometry.x,
+    Y=gdf_proj.geometry.y
+)
 
 # ==============================
-# 8. Ghi file input.txt
+# 7. Tính shortest path (distance chuẩn)
+# ==============================
+print("\nCalculating shortest paths (optimized)...")
+
+
+# danh sách road nodes
+road_nodes = gdf_proj["road_node"].tolist()
+ids = gdf_proj["id"].tolist() # Giả sử file CSV của bạn có cột 'id'
+
+N = len(gdf)
+
+L = [[0]*N for _ in range(N)]
+
+for i in range(N):
+    source = road_nodes[i]
+
+    # chạy Dijkstra 1 lần
+    lengths = nx.single_source_dijkstra_path_length(
+        G,
+        source,
+        weight="length"
+    )
+
+    for j in range(N):
+        if i == j:
+            L[i][j] = 0
+        else:
+            target = road_nodes[j]
+
+            if target in lengths:
+                dist = lengths[target]
+
+                # fallback nếu dist = 0
+                if dist == 0:
+                    dist = math.sqrt(
+                        (gdf_proj.geometry.x[i] - gdf_proj.geometry.x[j])**2 +
+                        (gdf_proj.geometry.y[i] - gdf_proj.geometry.y[j])**2
+                    )
+
+                L[i][j] = round(dist, 4)
+            
+
+# ==============================
+# 8. EXPORT CSV RIÊNG
+# ==============================
+# print("\nExporting CSVs...")
+
+# # nodes mapped
+# nodes_out = gdf.copy()
+# nodes_out["road_node"] = gdf_proj["road_node"]
+# nodes_out.to_csv("mapped_nodes.csv", index=False)
+
+# # edges
+# edges_df = pd.DataFrame(edges_list, columns=["u", "v", "distance"])
+# edges_df.to_csv("edges.csv", index=False)
+
+# print("CSV exported!")
+
+# ==============================
+# 9. Tạo input.txt
 # ==============================
 
-print("\nWriting input.txt...")
+C = 210000
+B = 12
+P = 9
 
-with open("input.txt", "w") as f:
+# Demand W
+W = [random.randint(5, 30) for _ in range(N)]
 
-    # dòng 1
-    f.write(f"{D} {Y} {S} {T}\n")
+# Chi phi thue R
+#R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
+districts = gdf_proj["district"].tolist()
+district_R_range = {
+    "District 1": (7000, 20000),
+    "District 3": (6000, 15000),
+    "District 5": (5000, 12000),
+    "District 6": (2000, 8000),
+    "District 7": (3500, 10000),
+    "District 8": (5000, 12000),
+    "District 10": (9000, 13000),
+    "District 12": (5000, 7000),
+    "Binh Thanh District": (4000, 11000),
+    "Phu Nhuan District": (5000, 12000),
+    "Tan Binh District": (3000, 9000),
+    "Go Vap District": (2500, 7000),
+    "Binh Tan District": (2500, 7000),
+    "Tan Phu District": (8000, 14000)
+}
 
-    # dòng 2
-    f.write(f"{C} {B} {P}\n")
+def gen_R(district):
+    low, high = district_R_range.get(district, (100.0, 300.0))  # default
+    return round(random.uniform(low, high), 2)
 
-    # edges
-    for u, v, d in edges:
-        f.write(f"{u} {v} {d}\n")
+R = [gen_R(d) for d in districts]
 
-    # demand
+
+with open("input_hcm.txt", "w") as f:
+    f.write(f"{N} {B} {C} {P}\n")
+
+    for i in range(N):
+        f.write(" ".join(map(str, L[i])) + "\n")
+
+    f.write(" ".join(map(str, R)) + "\n")
     f.write(" ".join(map(str, W)))
 
-print("Done! File input.txt created.")
+print("Done!")
