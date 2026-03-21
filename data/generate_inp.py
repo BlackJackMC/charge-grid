@@ -126,7 +126,7 @@ P = 9
 D = [random.randint(5, 30) for _ in range(N)]
 
 # Rental cost R
-R = [random.choice([900, 1200]) for _ in range(N)]
+R = [random.choice([1.25, 1.70]) for _ in range(N)]
 
 # R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
 # districts = gdf_proj["district"].tolist()
