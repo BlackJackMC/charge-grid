@@ -51,20 +51,16 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
     print(f"Detailed results successfully saved to: {output_path}")
 
 ###################
+
 #### Core Logic
 
 def route(x, demand_order=None) -> list[list[int]]:
     station_battery = {i: B for i in range(N) if x[i] == 1}
 
+    # Much faster: simply filter the pre-sorted list based on active stations
     nearest_stations = {
-        i: [
-            j
-            for j in filter(
-                lambda k: k[1] <= Z[i] and x[k[0]] == 1,
-                sorted(enumerate(l), key=lambda k: k[1])
-            )
-        ]
-        for i, l in enumerate(L)
+        i: [j for j in precomputed_nearest[i] if x[j] == 1]
+        for i in range(N)
     }
 
     F = [[0 for _ in range(N)] for _ in range(N)]
@@ -76,7 +72,7 @@ def route(x, demand_order=None) -> list[list[int]]:
     local_D = list(D)
 
     for i in demand_order:
-        for j, dist in nearest_stations[i]:
+        for j in nearest_stations[i]:
             if station_battery[j] > 0:
                 F[i][j] = min(local_D[i], station_battery[j])
                 local_D[i] -= F[i][j]
@@ -109,12 +105,13 @@ def fitness(x):
     
     for order in evaluation_orders:
         F = config['behavior_model'](x, demand_order=order)
-        fit = config['lambda'] * E(x, F) - config['mu'] * O(F, config['alpha'], config['beta'])
+        fit = config['lambda'] * E(x, F) - O(F, config['alpha'], config['beta'])
         fitness_vals.append(fit)
         
     return sum(fitness_vals) / config['num_shuffles']
 
 ###################
+
 #### GA callback & execution functions
 
 def fitness_handler(ga_instance, solution, solution_idx):
@@ -125,13 +122,26 @@ def log_handler(ga_instance):
     best_sol, best_fit, _ = ga_instance.best_solution()
     current_x = [int(val) for val in best_sol]
     
+    e_vals = []
+    o_vals = []
+    
+    for order in evaluation_orders:
+        F = config['behavior_model'](current_x, demand_order=order)
+        e_vals.append(E(current_x, F))
+        o_vals.append(O(F, config['alpha'], config['beta']))
+        
+    avg_E = sum(e_vals) / config['num_shuffles']
+    avg_O = sum(o_vals) / config['num_shuffles']
+    
     generation_history.append({
         "generation": ga_instance.generations_completed,
         "best_average_fitness": best_fit,
+        "avg_E_profit": avg_E,
+        "avg_O_loss": avg_O,
         "x": current_x
     })
     
-    print(f"Generation {ga_instance.generations_completed:02d} | Fitness: {best_fit:,.2f}")
+    print(f"Generation {ga_instance.generations_completed:02d} | Fitness: {best_fit:,.2f} | Profit (E): {avg_E:,.2f} | Dissatisfaction (O): {avg_O:,.2f}")
 
 def run_optimization(ga_instance, model_name):
     print(f"--- Starting Optimization ({model_name}) ---")
@@ -151,19 +161,27 @@ def run_optimization(ga_instance, model_name):
 if __name__ == "__main__": 
     problem_data = read_input()
     N, B, C, P, L, R, Z, D = problem_data
+
+
+    precomputed_nearest = []
+    for i in range(N):
+        sorted_indices = sorted(range(N), key=lambda j: L[i][j])
+        valid_indices = [j for j in sorted_indices if L[i][j] <= Z[i]]
+        precomputed_nearest.append(valid_indices)
     
     config = {
         'alpha': 10.0,
-        'beta': 1.0,
+        'beta': 0.0005,
         'lambda': 1.0,
-        'mu': 1.0,
         'behavior_model': route,
         'num_generations': 50,
         'sol_per_pop': 20,
         'num_parents_mating': 10,
         'mutation_percent_genes': 10,
         'num_shuffles': 5,
-        'random_seed': 42
+        # 'random_seed': int(datetime.now().timestamp()),
+        'random_seed': 42,
+        'stop_criteria': ['saturate_10'],
     }
     
     rng = random.Random(config['random_seed'])
@@ -182,7 +200,9 @@ if __name__ == "__main__":
         fitness_func=fitness_handler,
         sol_per_pop=config['sol_per_pop'],
         num_genes=N,
+        gene_type=int,
         gene_space=[0, 1],
+        stop_criteria=config['stop_criteria'],
         mutation_percent_genes=config['mutation_percent_genes'],
         on_generation=log_handler,
         random_seed=config['random_seed']
