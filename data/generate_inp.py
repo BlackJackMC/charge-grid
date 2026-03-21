@@ -9,13 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_q1.csv")
+gdf = pd.read_csv("data_hcm.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
 
-place = "District 1, Ho Chi Minh City, Vietnam"
+place = "Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -176,7 +176,7 @@ for i in range(N):
 # ==============================
 # 10. EXPORT INPUT.TXT
 # ==============================
-with open("input_q1.txt", "w") as f:
+with open("input_hcm.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):
