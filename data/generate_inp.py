@@ -118,7 +118,7 @@ for i in range(N):
 # 9. Tạo input.txt
 # ==============================
 
-C = 210000
+C = 10000
 B = 12
 P = 9
 
@@ -126,9 +126,9 @@ P = 9
 D = [random.randint(5, 30) for _ in range(N)]
 
 # Rental cost R
-R = [random.randint(7000, 20000) for _ in range(N)]
+R = [random.choice([900, 1200]) for _ in range(N)]
 
-#R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
+# R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
 # districts = gdf_proj["district"].tolist()
 # district_R_range = {
 #     "District 1": (7000, 20000),
@@ -153,7 +153,7 @@ R = [random.randint(7000, 20000) for _ in range(N)]
 
 # R = [gen_R(d) for d in districts]
 
-# Max distance Z
+# Max travel distance Z
 Z = []
 
 for i in range(N):
@@ -174,7 +174,7 @@ for i in range(N):
     Z.append(round(min_dist * factor, 2))
 
 # ==============================
-# 9. EXPORT INPUT.TXT
+# 10. EXPORT INPUT.TXT
 # ==============================
 with open("input_q1.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
