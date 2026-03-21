@@ -9,13 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_hcm.csv")
+gdf = pd.read_csv("data_q1.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
 
-place = "Ho Chi Minh City, Vietnam"
+place = "District 1, Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -123,10 +123,10 @@ B = 12
 P = 9
 
 # Demand D
-D = [random.randint(5, 30) for _ in range(N)]
+D = [random.randint(1000, 2200) for _ in range(N)]
 
 # Rental cost R
-R = [random.choice([1.25, 1.70]) for _ in range(N)]
+R = [random.choice([900, 1200]) for _ in range(N)]
 
 # R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
 # districts = gdf_proj["district"].tolist()
@@ -176,7 +176,7 @@ for i in range(N):
 # ==============================
 # 10. EXPORT INPUT.TXT
 # ==============================
-with open("input_hcm.txt", "w") as f:
+with open("input_q1.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):
