@@ -30,14 +30,11 @@ tags = {
         "parking",
         "fuel",
         "charging_station",
-        "school",
         "university",
         "college",
-        "hospital",
         "mall"
     ],
     "shop": [
-        "supermarket",
         "convenience"
     ],
     "leisure": [

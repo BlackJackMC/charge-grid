@@ -9,13 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_hcm.csv")
+gdf = pd.read_csv("data_q1.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
 
-place = "Ho Chi Minh City, Vietnam"
+place = "District 1, Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -122,43 +122,68 @@ C = 210000
 B = 12
 P = 9
 
-# Demand W
-W = [random.randint(5, 30) for _ in range(N)]
+# Demand D
+D = [random.randint(5, 30) for _ in range(N)]
 
-# Chi phi thue R
+# Rental cost R
+R = [random.randint(7000, 20000) for _ in range(N)]
+
 #R = [round(random.uniform(10000.0, 500.0), 2) for _ in range(N)]
-districts = gdf_proj["district"].tolist()
-district_R_range = {
-    "District 1": (7000, 20000),
-    "District 3": (6000, 15000),
-    "District 5": (5000, 12000),
-    "District 6": (2000, 8000),
-    "District 7": (3500, 10000),
-    "District 8": (5000, 12000),
-    "District 10": (9000, 13000),
-    "District 12": (5000, 7000),
-    "Binh Thanh District": (4000, 11000),
-    "Phu Nhuan District": (5000, 12000),
-    "Tan Binh District": (3000, 9000),
-    "Go Vap District": (2500, 7000),
-    "Binh Tan District": (2500, 7000),
-    "Tan Phu District": (8000, 14000)
-}
+# districts = gdf_proj["district"].tolist()
+# district_R_range = {
+#     "District 1": (7000, 20000),
+#     "District 3": (6000, 15000),
+#     "District 5": (5000, 12000),
+#     "District 6": (2000, 8000),
+#     "District 7": (3500, 10000),
+#     "District 8": (5000, 12000),
+#     "District 10": (9000, 13000),
+#     "District 12": (5000, 7000),
+#     "Binh Thanh District": (4000, 11000),
+#     "Phu Nhuan District": (5000, 12000),
+#     "Tan Binh District": (3000, 9000),
+#     "Go Vap District": (2500, 7000),
+#     "Binh Tan District": (2500, 7000),
+#     "Tan Phu District": (8000, 14000)
+# }
 
-def gen_R(district):
-    low, high = district_R_range.get(district, (100.0, 300.0))  # default
-    return round(random.uniform(low, high), 2)
+# def gen_R(district):
+#     low, high = district_R_range.get(district, (100.0, 300.0))  # default
+#     return round(random.uniform(low, high), 2)
 
-R = [gen_R(d) for d in districts]
+# R = [gen_R(d) for d in districts]
 
+# Max distance Z
+Z = []
 
-with open("input_hcm.txt", "w") as f:
+for i in range(N):
+    valid_dist = [L[i][j] for j in range(N) if j != i and L[i][j] < 1e8]
+
+    if valid_dist:
+        min_dist = min(valid_dist)
+
+        if min_dist < 100:
+            factor = random.uniform(5.0, 10.0)
+        elif min_dist < 500:
+            factor = random.uniform(2.0, 4.0)
+        elif min_dist < 1000:
+            factor = random.uniform(1.8, 2.5)
+        else:
+            factor = random.uniform(1.2, 1.5)
+
+    Z.append(round(min_dist * factor, 2))
+
+# ==============================
+# 9. EXPORT INPUT.TXT
+# ==============================
+with open("input_q1.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):
         f.write(" ".join(map(str, L[i])) + "\n")
 
     f.write(" ".join(map(str, R)) + "\n")
-    f.write(" ".join(map(str, W)))
+    f.write(" ".join(map(str, Z)) + "\n")
+    f.write(" ".join(map(str, D)))
 
 print("Done!")
