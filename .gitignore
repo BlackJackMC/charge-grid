@@ -7,6 +7,7 @@ __pycache__/
 
 dist/
 build/
+cache/
 data/cache/
 data/logs
 *.egg-info/

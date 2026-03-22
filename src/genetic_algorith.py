@@ -215,7 +215,7 @@ if __name__ == "__main__":
         'num_generations': 50,
         'sol_per_pop': 30,
         'num_parents_mating': 10,
-        'mutation_percent_genes': 10,
+        'mutation_percent_genes': 20,
         'num_shuffles': 5,
         # 'random_seed': int(datetime.now().timestamp()),
         'random_seed': 42,
