@@ -8,8 +8,6 @@ input_folder = Path('..')
 output_folder = Path('./output')
 input_path = input_folder / 'input_q1.txt'
 
-#### I/O functions
-
 def read_input():
     if input_path.exists():
         with open(input_path, 'r', encoding='utf-8') as f:
@@ -50,13 +48,8 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
         
     print(f"Detailed results successfully saved to: {output_path}")
 
-###################
-
-#### Core Logic
-
 def route(x, station_order=None) -> list[list[int]]:
     station_battery = {j: B for j in range(N) if x[j] == 1}
-
     F = [[0 for _ in range(N)] for _ in range(N)]
 
     if station_order is None:
@@ -79,38 +72,42 @@ def route(x, station_order=None) -> list[list[int]]:
     return F
 
 def E(x, F):
-    profit_val = 0
+    revenue = 0
+    cost = 0
+
     for i in range(N):
         for j in range(N):
-            profit_val += x[j] * F[i][j] * P
+            revenue += x[j] * F[i][j] * P
 
     for j in range(N):
-        profit_val -= x[j] * (C + R[j])
+        cost += x[j] * (C + R[j])
 
-    return profit_val
+    total_profit = revenue - cost
+    return total_profit, revenue, cost
 
 def O(F, alpha: float = 1, beta: float = 1):
-    dissatisfaction = 0
-    for i in range(N):
-        dissatisfaction += alpha * (D[i] - sum(F[i]))
-        for j in range(N):
-            dissatisfaction += beta * F[i][j] * L[i][j]
+    unmet_penalty = 0
+    distance_penalty = 0
 
-    return dissatisfaction
+    for i in range(N):
+        unmet_penalty += alpha * (D[i] - sum(F[i]))
+        for j in range(N):
+            distance_penalty += beta * F[i][j] * L[i][j]
+
+    total_dissatisfaction = unmet_penalty + distance_penalty
+    return total_dissatisfaction, unmet_penalty, distance_penalty
 
 def fitness(x):
     fitness_vals = []
     
     for order in evaluation_orders:
         F = config['behavior_model'](x, station_order=order)
-        fit = config['lambda'] * E(x, F) - O(F, config['alpha'], config['beta'])
+        total_E, _, _ = E(x, F)
+        total_O, _, _ = O(F, config['alpha'], config['beta'])
+        fit = config['lambda'] * total_E - total_O
         fitness_vals.append(fit)
         
     return sum(fitness_vals) / config['num_shuffles']
-
-###################
-
-#### GA callback & execution functions
 
 def fitness_handler(ga_instance, solution, solution_idx):
     x = [int(val) for val in solution]
@@ -120,26 +117,45 @@ def log_handler(ga_instance):
     best_sol, best_fit, _ = ga_instance.best_solution()
     current_x = [int(val) for val in best_sol]
     
-    e_vals = []
-    o_vals = []
+    e_vals, rev_vals, cost_vals = [], [], []
+    o_vals, unmet_vals, dist_vals = [], [], []
     
     for order in evaluation_orders:
-        F = config['behavior_model'](current_x, station_order=order) # FIXED: pass station_order instead of demand_order
-        e_vals.append(E(current_x, F))
-        o_vals.append(O(F, config['alpha'], config['beta']))
+        F = config['behavior_model'](current_x, station_order=order)
+        total_E, rev, cost = E(current_x, F)
+        total_O, unmet, dist = O(F, config['alpha'], config['beta'])
+        
+        e_vals.append(total_E)
+        rev_vals.append(rev)
+        cost_vals.append(cost)
+        
+        o_vals.append(total_O)
+        unmet_vals.append(unmet)
+        dist_vals.append(dist)
         
     avg_E = sum(e_vals) / config['num_shuffles']
+    avg_rev = sum(rev_vals) / config['num_shuffles']
+    avg_cost = sum(cost_vals) / config['num_shuffles']
+    
     avg_O = sum(o_vals) / config['num_shuffles']
+    avg_unmet = sum(unmet_vals) / config['num_shuffles']
+    avg_dist = sum(dist_vals) / config['num_shuffles']
     
     generation_history.append({
         "generation": ga_instance.generations_completed,
         "best_average_fitness": best_fit,
         "avg_E_profit": avg_E,
+        "avg_E_revenue": avg_rev,
+        "avg_E_cost": avg_cost,
         "avg_O_loss": avg_O,
+        "avg_O_unmet_penalty": avg_unmet,
+        "avg_O_distance_penalty": avg_dist,
         "x": current_x
     })
     
-    print(f"Generation {ga_instance.generations_completed:02d} | Fitness: {best_fit:,.2f} | Profit (E): {avg_E:,.2f} | Dissatisfaction (O): {avg_O:,.2f}")
+    print(f"Gen {ga_instance.generations_completed:02d} | Fit: {best_fit:,.2f} | "
+          f"E: {avg_E:,.2f} (Rev: {avg_rev:,.2f}, Cost: {avg_cost:,.2f}) | "
+          f"O: {avg_O:,.2f} (Unmet: {avg_unmet:,.2f}, Dist: {avg_dist:,.2f})")
 
 def run_optimization(ga_instance, model_name):
     print(f"--- Starting Optimization ({model_name}) ---")
@@ -153,8 +169,6 @@ def run_optimization(ga_instance, model_name):
     print(f"Optimal Fitness Found: {best_fitness:,.2f}")
     
     return best_x, best_fitness
-
-###################
 
 if __name__ == "__main__": 
     problem_data = read_input()
@@ -176,9 +190,8 @@ if __name__ == "__main__":
         'num_parents_mating': 10,
         'mutation_percent_genes': 10,
         'num_shuffles': 5,
-        # 'random_seed': int(datetime.now().timestamp()),
         'random_seed': 42,
-        'stop_criteria': ['saturate_10'],
+        'stop_criteria': ['saturate_20'],
     }
     
     rng = random.Random(config['random_seed'])
