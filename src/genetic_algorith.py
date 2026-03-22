@@ -8,6 +8,8 @@ input_folder = Path('..')
 output_folder = Path('./output')
 input_path = input_folder / 'input_q1.txt'
 
+#### I/O functions
+
 def read_input():
     if input_path.exists():
         with open(input_path, 'r', encoding='utf-8') as f:
@@ -47,6 +49,10 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
         json.dump(output_data, f, indent=4)
         
     print(f"Detailed results successfully saved to: {output_path}")
+
+###################
+
+#### Core Logic
 
 def route(x, station_order=None) -> list[list[int]]:
     station_battery = {j: B for j in range(N) if x[j] == 1}
@@ -109,6 +115,10 @@ def fitness(x):
         
     return sum(fitness_vals) / config['num_shuffles']
 
+###################
+
+#### GA callback & execution functions
+
 def fitness_handler(ga_instance, solution, solution_idx):
     x = [int(val) for val in solution]
     return fitness(x)
@@ -121,7 +131,7 @@ def log_handler(ga_instance):
     o_vals, unmet_vals, dist_vals = [], [], []
     
     for order in evaluation_orders:
-        F = config['behavior_model'](current_x, station_order=order)
+        F = config['behavior_model'](current_x, station_order=order) # FIXED: pass station_order instead of demand_order
         total_E, rev, cost = E(current_x, F)
         total_O, unmet, dist = O(F, config['alpha'], config['beta'])
         
@@ -170,6 +180,8 @@ def run_optimization(ga_instance, model_name):
     
     return best_x, best_fitness
 
+###################
+
 if __name__ == "__main__": 
     problem_data = read_input()
     N, B, C, P, L, R, Z, D = problem_data
@@ -186,10 +198,11 @@ if __name__ == "__main__":
         'lambda': 1.0,
         'behavior_model': route,
         'num_generations': 50,
-        'sol_per_pop': 20,
+        'sol_per_pop': 30,
         'num_parents_mating': 10,
-        'mutation_percent_genes': 10,
+        'mutation_percent_genes': 15,
         'num_shuffles': 5,
+        # 'random_seed': int(datetime.now().timestamp()),
         'random_seed': 42,
         'stop_criteria': ['saturate_20'],
     }
