@@ -102,7 +102,7 @@ def fitness(x):
     fitness_vals = []
     
     for order in evaluation_orders:
-        F = config['behavior_model'](x, station_order=order) # FIXED: pass station_order instead of demand_order
+        F = config['behavior_model'](x, station_order=order)
         fit = config['lambda'] * E(x, F) - O(F, config['alpha'], config['beta'])
         fitness_vals.append(fit)
         
