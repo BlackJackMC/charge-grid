@@ -11,4 +11,3 @@ data/cache/
 data/logs
 *.egg-info/
 
-src/output/

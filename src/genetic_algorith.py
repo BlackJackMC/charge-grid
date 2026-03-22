@@ -220,55 +220,34 @@ if __name__ == "__main__":
         config, 
         input_path.name
     )
-print("\n--- Bắt đầu trích xuất Metadata và Vẽ 5 Bản đồ (Yêu cầu của bạn bạn) ---")
 
-    # 1. Đọc metadata từ file CSV, chỉ lấy 540 dòng đầu (ngoại trừ header)
 csv_metadata_path = input_folder / 'data_hcm.csv'
 try:
-    # Sử dụng nrows=540 để chỉ lấy đúng 540 dòng đầu tiên
     df_meta = pd.read_csv(csv_metadata_path, nrows=540)
-    print(f"Đã đọc thành công {len(df_meta)} dòng metadata từ data_hcm.csv")
 except Exception as e:
-    print(f"Lỗi khi đọc file CSV: {e}")
     df_meta = None
 
 if df_meta is not None:
-    # Tạo thư mục chứa 5 map HTML
     map_folder = output_folder / 'html_maps'
     map_folder.mkdir(parents=True, exist_ok=True)
-
-    # 2. Khởi tạo lại random với seed 42 để đảm bảo ra đúng 5 order 
     map_rng = random.Random(42)
-    
-    # 3. Tạo 5 demand_order ngẫu nhiên
     five_orders = []
     for _ in range(5):
         order = list(range(N))
         map_rng.shuffle(order)
         five_orders.append(order)
-
-    # 4. Tính toán lại F và vẽ 5 bản đồ
     for idx, current_order in enumerate(five_orders):
         print(f"Đang xử lý Bản đồ {idx + 1}/5...")
-        
-        # Tính lại F với cấu trúc route cũ
         F_matrix = config['behavior_model'](best_x, demand_order=current_order)
-        
-        # Tạo bản đồ trung tâm
         center_lat = df_meta['lat'].mean()
         center_lon = df_meta['lon'].mean()
         m = folium.Map(location=[center_lat, center_lon], zoom_start=13, tiles='CartoDB positron')
-
-        # --- VẼ ĐƯỜNG ĐI (POLYLINE) TRƯỚC ---
         for i in range(N):
             for j in range(N):
                 if F_matrix[i][j] > 0:
-                    # Đảm bảo index không vượt quá 540 dòng của CSV
                     if i < len(df_meta) and j < len(df_meta):
                         loc_i = [df_meta.iloc[i]['lat'], df_meta.iloc[i]['lon']]
                         loc_j = [df_meta.iloc[j]['lat'], df_meta.iloc[j]['lon']]
-                        
-                        # Khách hàng i đi đến Trạm j
                         line_weight = max(1.0, F_matrix[i][j] * 0.2)
                         folium.PolyLine(
                             locations=[loc_i, loc_j],
@@ -278,8 +257,6 @@ if df_meta is not None:
                             dash_array='5, 5',
                             tooltip=f"Khách {df_meta.iloc[i]['name']} -> Trạm {df_meta.iloc[j]['name']}: {F_matrix[i][j]} pin"
                         ).add_to(m)
-
-        # --- VẼ TRẠM SẠC VÀ KHÁCH HÀNG LÊN MAP ---
         for i in range(N):
             if i < len(df_meta):
                 loc = [df_meta.iloc[i]['lat'], df_meta.iloc[i]['lon']]
@@ -290,7 +267,6 @@ if df_meta is not None:
                     district = "N/A"
                 
                 if best_x[i] == 1:
-                    # Điểm này được mở làm Trạm sạc (Vẽ Marker To)
                     pin_ban_duoc = sum(F_matrix[k][i] for k in range(N))
                     folium.Marker(
                         location=loc,
@@ -299,7 +275,6 @@ if df_meta is not None:
                         icon=folium.Icon(color='green', icon='bolt', prefix='fa')
                     ).add_to(m)
                 else:
-                    # Điểm này là Khách hàng (Vẽ Circle nhỏ cho mượt trình duyệt)
                     nhu_cau_duoc_dap_ung = sum(F_matrix[i][k] for k in range(N))
                     if nhu_cau_duoc_dap_ung > 0:
                         folium.CircleMarker(
@@ -313,9 +288,6 @@ if df_meta is not None:
                             popup=f"<b>Khách hàng:</b> {name}<br><b>Quận:</b> {district}<br><b>Đã đổi:</b> {nhu_cau_duoc_dap_ung} pin"
                         ).add_to(m)
 
-        # Lưu bản đồ ra file HTML
         map_filename = map_folder / f"Map_Result_Seed42_Shuffle_{idx + 1}.html"
         m.save(str(map_filename))
     
-    print(f"\n[Hoàn thành] Đã lưu 5 file HTML bản đồ tại: {map_folder}")
-    print("Bạn có thể mở các file HTML này bằng trình duyệt web và push thẳng folder này lên GitHub!")
