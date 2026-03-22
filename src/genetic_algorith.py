@@ -26,7 +26,7 @@ def read_input():
 
         return N, B, C, P, L, R, Z, D
 
-def save_optimization_results(best_x, best_fitness, generation_history, config, input_filename):
+def save_optimization_results(best_x, best_fitness, generation_history, config, input_filename, start_time, end_time, run_time):
     clean_config = {k: (v.__name__ if callable(v) else v) for k, v in config.items()}
 
     output_data = {
@@ -34,9 +34,14 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
             "input_file": input_filename,
             "configuration": clean_config
         },
+        "timing": {
+            "start_time": start_time,
+            "end_time": end_time,
+            "run_time_seconds": run_time
+        },
         "best_solution": {
+            "fitness_score": best_fitness,
             "x": best_x,
-            "fitness_score": best_fitness
         },
         "generation_history": generation_history
     }
@@ -169,16 +174,26 @@ def log_handler(ga_instance):
 
 def run_optimization(ga_instance, model_name):
     print(f"--- Starting Optimization ({model_name}) ---")
+    
+    start_time = datetime.now()
     ga_instance.run()
+    end_time = datetime.now()
+    
+    run_time = (end_time - start_time).total_seconds()
+    start_time_str = start_time.strftime("%Y-%m-%d %H:%M:%S")
+    end_time_str = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
     best_x, best_fitness, _ = ga_instance.best_solution()
     best_x = [int(val) for val in best_x]
 
     print("\n--- Optimization Complete ---")
+    print(f"Start Time: {start_time_str}")
+    print(f"End Time: {end_time_str}")
+    print(f"Run Time: {run_time:.2f} seconds")
     print(f"Optimal Station Locations (x): {best_x}")
     print(f"Optimal Fitness Found: {best_fitness:,.2f}")
     
-    return best_x, best_fitness
+    return best_x, best_fitness, start_time_str, end_time_str, run_time
 
 ###################
 
@@ -200,10 +215,10 @@ if __name__ == "__main__":
         'num_generations': 50,
         'sol_per_pop': 30,
         'num_parents_mating': 10,
-        'mutation_percent_genes': 15,
+        'mutation_percent_genes': 10,
         'num_shuffles': 5,
-        'random_seed': int(datetime.now().timestamp()),
-        # 'random_seed': 42,
+        # 'random_seed': int(datetime.now().timestamp()),
+        'random_seed': 42,
         'stop_criteria': ['saturate_20'],
     }
     
@@ -231,12 +246,15 @@ if __name__ == "__main__":
         random_seed=config['random_seed']
     )
 
-    best_x, best_fitness = run_optimization(ga_instance, config['behavior_model'].__name__)
+    best_x, best_fitness, start_time, end_time, run_time = run_optimization(ga_instance, config['behavior_model'].__name__)
 
     save_optimization_results(
         best_x, 
         best_fitness, 
         generation_history, 
         config, 
-        input_path.name
+        input_path.name,
+        start_time,
+        end_time,
+        run_time
     )
