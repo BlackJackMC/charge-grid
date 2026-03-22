@@ -163,7 +163,7 @@ def log_handler(ga_instance):
         "x": current_x
     })
     
-    print(f"Gen {ga_instance.generations_completed:02d} | Fit: {best_fit:,.2f} | "
+    print(f"Gen {ga_instance.generations_completed:02d} | Stations: {sum(current_x):03d} | Fit: {best_fit:,.2f} | "
           f"E: {avg_E:,.2f} (Rev: {avg_rev:,.2f}, Cost: {avg_cost:,.2f}) | "
           f"O: {avg_O:,.2f} (Unmet: {avg_unmet:,.2f}, Dist: {avg_dist:,.2f})")
 
@@ -202,8 +202,8 @@ if __name__ == "__main__":
         'num_parents_mating': 10,
         'mutation_percent_genes': 15,
         'num_shuffles': 5,
-        # 'random_seed': int(datetime.now().timestamp()),
-        'random_seed': 42,
+        'random_seed': int(datetime.now().timestamp()),
+        # 'random_seed': 42,
         'stop_criteria': ['saturate_20'],
     }
     
