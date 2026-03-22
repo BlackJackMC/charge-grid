@@ -9,13 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_hcm.csv")
+gdf = pd.read_csv("data_q1.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
 
-place = "Ho Chi Minh City, Vietnam"
+place = "District 1, Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -123,32 +123,39 @@ B = 55
 P = 9
 
 # Demand D
+D = []
+
+for _ in range(N):
+    if random.random() < 0.6:   # 60% có nhu cầu
+        D.append(random.randint(20, 80))
+    else:
+        D.append(0)
 # D = [random.randint(50, 100) for _ in range(N)]
 
-districts = gdf_proj["district"].tolist()
-district_D_range = {
-    "District 1": (80, 100),
-    "District 3": (75, 95),
-    "District 5": (70, 90),
-    "District 10": (70, 90),
+# districts = gdf_proj["district"].tolist()
+# district_D_range = {
+#     "District 1": (80, 100),
+#     "District 3": (75, 95),
+#     "District 5": (70, 90),
+#     "District 10": (70, 90),
 
-    "Binh Thanh District": (60, 85),
-    "Phu Nhuan District": (50, 70),
-    "Tan Binh District": (55, 65),
-    "Go Vap District": (45, 70),
-    "Tan Phu District": (45, 70),
-    "Binh Tan District": (40, 65),
+#     "Binh Thanh District": (60, 85),
+#     "Phu Nhuan District": (50, 70),
+#     "Tan Binh District": (55, 65),
+#     "Go Vap District": (45, 70),
+#     "Tan Phu District": (45, 70),
+#     "Binh Tan District": (40, 65),
 
-    "District 6": (40, 70),
-    "District 8": (35, 65),
-    "District 12": (30, 50),
-}
+#     "District 6": (40, 70),
+#     "District 8": (35, 65),
+#     "District 12": (30, 50),
+# }
 
-def gen_D(district):
-    low, high = district_D_range.get(district, (20, 60))  # default
-    return random.randint(low, high)
+# def gen_D(district):
+#     low, high = district_D_range.get(district, (20, 60))  # default
+#     return random.randint(low, high)
 
-D = [gen_D(d) for d in districts]
+# D = [gen_D(d) for d in districts]
 
 # Rental cost R
 R = [random.choice([30, 40]) for _ in range(N)]
@@ -176,7 +183,7 @@ for i in range(N):
 # ==============================
 # 10. EXPORT INPUT.TXT
 # ==============================
-with open("input_hcm.txt", "w") as f:
+with open("input_q1.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):
