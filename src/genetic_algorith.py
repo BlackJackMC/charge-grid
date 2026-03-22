@@ -57,29 +57,27 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
 
 #### Core Logic
 
-def route(x, demand_order=None) -> list[list[int]]:
-    station_battery = {i: B for i in range(N) if x[i] == 1}
-
-    # Much faster: simply filter the pre-sorted list based on active stations
-    nearest_stations = {
-        i: [j for j in precomputed_nearest[i] if x[j] == 1]
-        for i in range(N)
-    }
+def route(x, station_order=None) -> list[list[int]]:
+    station_battery = {j: B for j in range(N) if x[j] == 1}
 
     F = [[0 for _ in range(N)] for _ in range(N)]
 
-    if demand_order is None:
-        demand_order = list(range(len(D)))
-        random.shuffle(demand_order)
+    if station_order is None:
+        station_order = list(range(N))
+        random.shuffle(station_order)
 
     local_D = list(D)
 
-    for i in demand_order:
-        for j in nearest_stations[i]:
-            if station_battery[j] > 0:
-                F[i][j] = min(local_D[i], station_battery[j])
-                local_D[i] -= F[i][j]
-                station_battery[j] -= F[i][j]
+    for j in station_order:
+        if x[j] == 1:
+            for i in precomputed_nearest[j]:
+                if local_D[i] > 0 and station_battery[j] > 0:
+                    served = min(local_D[i], station_battery[j])
+                    F[i][j] = served
+                    local_D[i] -= served
+                    station_battery[j] -= served
+                if station_battery[j] == 0:
+                    break
 
     return F
 
@@ -107,7 +105,7 @@ def fitness(x):
     fitness_vals = []
     
     for order in evaluation_orders:
-        F = config['behavior_model'](x, demand_order=order)
+        F = config['behavior_model'](x, station_order=order)
         fit = config['lambda'] * E(x, F) - O(F, config['alpha'], config['beta'])
         fitness_vals.append(fit)
         
@@ -129,7 +127,7 @@ def log_handler(ga_instance):
     o_vals = []
     
     for order in evaluation_orders:
-        F = config['behavior_model'](current_x, demand_order=order)
+        F = config['behavior_model'](current_x, station_order=order) # FIXED: pass station_order instead of demand_order
         e_vals.append(E(current_x, F))
         o_vals.append(O(F, config['alpha'], config['beta']))
         
@@ -165,12 +163,11 @@ if __name__ == "__main__":
     problem_data = read_input()
     N, B, C, P, L, R, Z, D = problem_data
 
-
     precomputed_nearest = []
-    for i in range(N):
-        sorted_indices = sorted(range(N), key=lambda j: L[i][j])
-        valid_indices = [j for j in sorted_indices if L[i][j] <= Z[i]]
-        precomputed_nearest.append(valid_indices)
+    for j in range(N):
+        sorted_demands = sorted(range(N), key=lambda i: L[i][j])
+        valid_demands = [i for i in sorted_demands if L[i][j] <= Z[i]]
+        precomputed_nearest.append(valid_demands)
     
     config = {
         'alpha': 10.0,
