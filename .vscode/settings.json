@@ -1,6 +1,0 @@
-{
-    "python-envs.workspaceSearchPaths": [
-        "./env"
-    ],
-    "python-envs.defaultEnvManager": "ms-python.python:system",
-}
