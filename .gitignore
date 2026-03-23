@@ -13,4 +13,5 @@ data/logs
 *.egg-info/
 .vscode
 
-output/
+src/output/*
+!src/output/.gitkeep
