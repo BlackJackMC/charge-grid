@@ -3,10 +3,8 @@ import random
 import json
 import folium
 import pandas as pd
-import os
 import requests
 import numpy as np
-import math
 from pathlib import Path
 from datetime import datetime
 
@@ -14,35 +12,43 @@ input_folder = Path('..')
 output_folder = Path('./output')
 input_path = input_folder / 'input_q1.txt'
 
-#### I/O functions
+###################
+#### I/O Functions
 
 def read_input():
     if input_path.exists():
         with open(input_path, 'r', encoding='utf-8') as f:
             N, B, C, P = f.readline().strip().split()
-            N = int(N)
-            B = int(B)
-            C = float(C)
-            P = float(P)
+            N, B = int(N), int(B)
+            C, P = float(C), float(P)
 
-            L = [[float(x) for x in f.readline().strip().split()] for _ in range(N)]
-            R = [float(x) for x in f.readline().strip().split()]
-            Z = [float(x) for x in f.readline().strip().split()]
-            D = [int(x) for x in f.readline().strip().split()]
+            L = np.array([[float(x) for x in f.readline().strip().split()] for _ in range(N)])
+            R = np.array([float(x) for x in f.readline().strip().split()])
+            Z = np.array([float(x) for x in f.readline().strip().split()])
+            
+            # Note: Cast D to int specifically for the behavioral model's chunking logic
+            D = np.array([int(x) for x in f.readline().strip().split()])
 
         return N, B, C, P, L, R, Z, D
+    raise FileNotFoundError(f"Input file not found at {input_path}")
 
-def save_optimization_results(best_x, best_fitness, generation_history, config, input_filename):
+def save_optimization_results(best_x, best_fitness, generation_history, config, input_filename, start_time, end_time, run_time, model_name):
     clean_config = {k: (v.__name__ if callable(v) else v) for k, v in config.items()}
 
     output_data = {
         "metadata": {
             "input_file": input_filename,
+            "model_used": model_name,
             "configuration": clean_config
         },
+        "timing": {
+            "start_time": start_time,
+            "end_time": end_time,
+            "run_time_seconds": run_time
+        },
         "best_solution": {
+            "fitness_score": float(best_fitness),
             "x": best_x,
-            "fitness_score": best_fitness
         },
         "generation_history": generation_history
     }
@@ -57,251 +63,291 @@ def save_optimization_results(best_x, best_fitness, generation_history, config, 
     print(f"Detailed results successfully saved to: {output_path}")
 
 ###################
+#### Helper Functions
 
-#### Core Logic
+def E(x, F, C, P, R):
+    revenue = np.sum(F) * P
+    cost = np.sum(np.array(x) * (C + R))
+    return revenue - cost, revenue, cost
 
-def route(x, station_order=None) -> list[list[int]]:
-    """
-    Iterative routing logic allocating batteries in chunks K, 
-    evaluating distance, station congestion, and battery depletion.
-    """
-    K = config['K']
-    w1 = config['w1']
-    w2 = config['w2']
-    gamma = config['gamma']
-    epsilon = config['epsilon']
-    F = [[0 for _ in range(N)] for _ in range(N)]
-    station_battery = {j: B for j in range(N) if x[j] == 1}
-    local_D = list(D)
-    
-    if sum(local_D) == 0 or not station_battery:
-        return F
-
-    V = {j: 0 for j in station_battery}
-    for j in station_battery:
-        for k in range(N):
-            if L[k][j] <= Z[k]:
-                V[j] += D[k]
-
-    while True: # Thay vòng lặp for bằng vòng lặp while vô tận
-        if sum(local_D) == 0:
-            break            
-        requested_amount = {j: 0 for j in station_battery}
-        target_facility = {i: -1 for i in range(N)}
-        delta_req = {i: 0 for i in range(N)}
-        
-        for i in range(N):
-            if local_D[i] > 0:
-                min_loss = float('inf')
-                best_j = -1
-                for j in station_battery:
-                    if station_battery[j] > 0 and L[i][j] <= Z[i]:
-                        norm_dist = L[i][j] / Z[i] if Z[i] > 0 else 0
-                        congestion = V[j] / B if B > 0 else 0
-                        depletion = B / (station_battery[j] + epsilon)
-                        R_ij = norm_dist * congestion * depletion
-                        current_loss = w1 * norm_dist + w2 * math.log(1 + R_ij)                
-                        if current_loss < min_loss:
-                            min_loss = current_loss
-                            best_j = j
-                
-                if best_j!= -1:
-                    target_facility[i] = best_j
-                    # SỬA LẠI CÁCH TÍNH CHUNK BẰNG MATH.CEIL:
-                    chunk = max(1, math.ceil(D[i] / K)) 
-                    delta_req[i] = min(local_D[i], chunk)
-                    requested_amount[best_j] += delta_req[i]
-        if sum(requested_amount.values()) == 0:
-            break
-            
-        for j in station_battery:
-            if requested_amount[j] == 0:
-                continue    
-            targeting_customers = [i for i in range(N) if target_facility[i] == j]
-            
-            if requested_amount[j] <= station_battery[j]:
-                for i in targeting_customers:
-                    F[i][j] += delta_req[i]
-                    local_D[i] -= delta_req[i]
-                    station_battery[j] -= delta_req[i]
-            else:
-                ratio = station_battery[j] / requested_amount[j]
-                leftover_batteries = station_battery[j]
-                for i in targeting_customers:
-                    allocated = int(delta_req[i] * ratio) 
-                    F[i][j] += allocated
-                    local_D[i] -= allocated
-                    leftover_batteries -= allocated
-                    
-                if leftover_batteries > 0:
-                    targeting_customers.sort(key=lambda c: L[c][j])
-                    for i in targeting_customers:
-                        if leftover_batteries == 0:
-                            break
-                        allocated_so_far = int(delta_req[i] * ratio)
-                        if delta_req[i] > allocated_so_far and local_D[i] > 0:
-                            F[i][j] += 1
-                            local_D[i] -= 1
-                            leftover_batteries -= 1
-                            
-                station_battery[j] = 0
-
-    return F
-
-def E(x, F):
-    revenue = 0
-    cost = 0
-
-    for i in range(N):
-        for j in range(N):
-            revenue += x[j] * F[i][j] * P
-
-    for j in range(N):
-        cost += x[j] * (C + R[j])
-
-    total_profit = revenue - cost
-    return total_profit, revenue, cost
-
-def O(F, alpha: float = 1, beta: float = 1):
-    unmet_penalty = 0
-    distance_penalty = 0
-
-    for i in range(N):
-        unmet_penalty += alpha * (D[i] - sum(F[i]))
-        for j in range(N):
-            distance_penalty += beta * F[i][j] * L[i][j]
-
-    total_dissatisfaction = unmet_penalty + distance_penalty
-    return total_dissatisfaction, unmet_penalty, distance_penalty
-
-def fitness(x):
-    fitness_vals = []
-    
-    for order in evaluation_orders:
-        F = config['behavior_model'](x, station_order=order)
-        total_E, _, _ = E(x, F)
-        total_O, _, _ = O(F, config['alpha'], config['beta'])
-        # Updated to include mu penalty scaling
-        fit = config['lambda'] * total_E - config['mu'] * total_O
-        fitness_vals.append(fit)
-        
-    return sum(fitness_vals) / config['num_shuffles']
+def O(F, D, L, alpha, beta):
+    unmet = np.sum(D - np.sum(F, axis=1))
+    dist = np.sum(F * L)
+    unmet_penalty = alpha * unmet
+    distance_penalty = beta * dist
+    return unmet_penalty + distance_penalty, unmet_penalty, distance_penalty
 
 ###################
+#### Models
 
+class BaseModel:
+    def __init__(self, N, B, C, P, R, L, Z, D, config):
+        self.name = 'Base_Model'
+        self.N = N
+        self.B = B
+        self.C = C
+        self.P = P
+        self.R = R
+        self.L = L
+        self.Z = Z
+        self.D = D
+        self.config = config
+
+    def route(self, x, eval_order=None):
+        raise NotImplementedError
+
+    def fitness(self, x):
+        raise NotImplementedError
+
+    def get_details(self, x):
+        raise NotImplementedError
+
+class behavioral_routing(BaseModel):
+    def __init__(self, N, B, C, P, R, L, Z, D, config):
+        super().__init__(N, B, C, P, R, L, Z, D, config)
+        self.name = 'Behavioral_Routing_Model'
+
+        rng = random.Random(self.config['random_seed'])
+        self.evaluation_orders = []
+        for _ in range(self.config['num_shuffles']):
+            order = list(range(self.N))
+            rng.shuffle(order)
+            self.evaluation_orders.append(order)
+
+    def route(self, x, eval_order=None):
+        """
+        Your complex vectorized routing logic using NumPy with Precomputation and Mechanism 4.
+        """
+        K = self.config['K']
+        w1 = self.config['w1']
+        w2 = self.config['w2']
+        epsilon = self.config['epsilon']
+        
+        x_arr = np.array(x)
+        open_j = np.nonzero(x_arr)[0]
+        M = len(open_j)
+        
+        F = np.zeros((self.N, self.N), dtype=int)
+        
+        if M == 0 or np.sum(self.D) == 0:
+            return F
+            
+        batt = np.full(M, float(self.B))
+        local_D = np.array(self.D, dtype=int)
+        chunk_size = np.maximum(1, local_D // K)
+        
+        L_sub = self.L[:, open_j]
+        Z_col = self.Z[:, None]
+        
+        valid_mask = L_sub <= Z_col
+        V = np.sum(local_D[:, None] * valid_mask, axis=0)
+        
+        norm_dist_all = np.divide(L_sub, Z_col, out=np.zeros_like(L_sub), where=Z_col!=0)
+        congestion_all = V / self.B if self.B > 0 else np.zeros(M)
+        
+        base_term1 = w1 * norm_dist_all
+        base_coeff = norm_dist_all * congestion_all
+
+        for step in range(K + 1):
+            active_i = np.nonzero(local_D > 0)[0]
+            if len(active_i) == 0:
+                break
+                
+            delta_req_active = np.minimum(local_D[active_i], chunk_size[active_i])
+            depletion = self.B / (batt + epsilon)
+            
+            Loss = base_term1[active_i, :] + w2 * np.log1p(base_coeff[active_i, :] * depletion)
+            
+            L_active = L_sub[active_i, :]
+            Z_active = Z_col[active_i, :]
+            invalid_mask = (L_active > Z_active) | (batt == 0)
+            Loss[invalid_mask] = np.inf
+            
+            min_loss = np.min(Loss, axis=1)
+            best_rel_j = np.argmin(Loss, axis=1)
+            
+            valid_assignments = min_loss != np.inf
+            if not np.any(valid_assignments):
+                break
+                
+            assigned_i = active_i[valid_assignments]
+            assigned_rel_j = best_rel_j[valid_assignments]
+            reqs = delta_req_active[valid_assignments]
+            
+            requested_amount = np.zeros(M, dtype=int)
+            np.add.at(requested_amount, assigned_rel_j, reqs)
+            
+            stations_with_reqs = np.nonzero(requested_amount > 0)[0]
+            
+            for rel_j in stations_with_reqs:
+                abs_j = open_j[rel_j]
+                req_j = requested_amount[rel_j]
+                avail_batt = batt[rel_j]
+                
+                mask_j = (assigned_rel_j == rel_j)
+                cust_i_for_j = assigned_i[mask_j]
+                req_for_j = reqs[mask_j]
+                
+                if req_j <= avail_batt:
+                    F[cust_i_for_j, abs_j] += req_for_j
+                    local_D[cust_i_for_j] -= req_for_j
+                    batt[rel_j] -= req_j
+                else:
+                    ratio = avail_batt / req_j
+                    allocated = (req_for_j * ratio).astype(int)
+                    
+                    F[cust_i_for_j, abs_j] += allocated
+                    local_D[cust_i_for_j] -= allocated
+                    
+                    leftover = int(avail_batt - np.sum(allocated))
+                    batt[rel_j] = 0
+                    
+                    if leftover > 0:
+                        dist_to_j = self.L[cust_i_for_j, abs_j]
+                        sort_idx = np.argsort(dist_to_j)
+                        
+                        sorted_cust_i = cust_i_for_j[sort_idx]
+                        sorted_req = req_for_j[sort_idx]
+                        sorted_alloc = allocated[sort_idx]
+                        
+                        for idx_c in range(len(sorted_cust_i)):
+                            if leftover == 0:
+                                break
+                            c_id = sorted_cust_i[idx_c]
+                            if sorted_req[idx_c] > sorted_alloc[idx_c] and local_D[c_id] > 0:
+                                F[c_id, abs_j] += 1
+                                local_D[c_id] -= 1
+                                leftover -= 1
+                                
+        return F
+
+    def fitness(self, x):
+        fitness_vals = np.zeros(len(self.evaluation_orders))
+        for idx, order in enumerate(self.evaluation_orders):
+            F = self.route(x, order)
+            total_E, _, _ = E(x, F, self.C, self.P, self.R)
+            total_O, _, _ = O(F, self.D, self.L, self.config['alpha'], self.config['beta'])
+            
+            # Incorporating your specific mu parameter logic
+            fitness_vals[idx] = self.config['lambda'] * total_E - self.config['mu'] * total_O
+            
+        return np.mean(fitness_vals)
+
+    def get_details(self, x):
+        e_vals, rev_vals, cost_vals, o_vals, unmet_vals, dist_vals = [], [], [], [], [], []
+        for order in self.evaluation_orders:
+            F = self.route(x, order)
+            total_E, rev, cost = E(x, F, self.C, self.P, self.R)
+            total_O, unmet, dist = O(F, self.D, self.L, self.config['alpha'], self.config['beta'])
+            
+            e_vals.append(total_E); rev_vals.append(rev); cost_vals.append(cost)
+            o_vals.append(total_O); unmet_vals.append(unmet); dist_vals.append(dist)
+            
+        return {
+            'avg_E': np.mean(e_vals), 'avg_rev': np.mean(rev_vals), 'avg_cost': np.mean(cost_vals),
+            'avg_O': np.mean(o_vals), 'avg_unmet': np.mean(unmet_vals), 'avg_dist': np.mean(dist_vals)
+        }
+
+
+###################
 #### GA callback & execution functions
 
+fitness_cache = {}
+
 def fitness_handler(ga_instance, solution, solution_idx):
-    x = [int(val) for val in solution]
-    return fitness(x)
+    # Added your caching back in for performance
+    sol_tuple = tuple(int(val) for val in solution)
+    if sol_tuple in fitness_cache:
+        return fitness_cache[sol_tuple]
+        
+    fit = model.fitness(solution)
+    fitness_cache[sol_tuple] = fit
+    return fit
 
 def custom_intersection_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0
     while len(offspring) < offspring_size[0]:
-        parent1 = parents[idx % parents.shape[0], :].copy()
-        parent2 = parents[(idx + 1) % parents.shape[0], :].copy()
+        parent1 = parents[idx % parents.shape[0], :]
+        parent2 = parents[(idx + 1) % parents.shape[0], :]
 
         agree_mask = (parent1 == parent2)
-        random_genes = np.random.randint(0, 2, size=parent1.shape)
-        child = np.where(agree_mask, parent1, random_genes)
-
+        take_from_p1 = np.random.rand(*parent1.shape) < 0.5
+        
+        child = np.where(agree_mask, parent1, np.where(take_from_p1, parent1, parent2))
         offspring.append(child)
         idx += 1
         
     return np.array(offspring)
 
-def custom_smart_mutation(offspring, ga_instance):
-    for chromosome_idx in range(offspring.shape[0]):
-        num_mutations = max(1, int((ga_instance.mutation_percent_genes / 100) * offspring.shape[1]))
-
-        for _ in range(num_mutations):
-            if np.random.rand() < 0.80: 
-                ones_indices = np.where(offspring[chromosome_idx] == 1)[0]
-                zeros_indices = np.where(offspring[chromosome_idx] == 0)[0]
-                
-                if len(ones_indices) > 0 and len(zeros_indices) > 0:
-                    idx1 = np.random.choice(ones_indices)
-                    idx2 = np.random.choice(zeros_indices)
-                    offspring[chromosome_idx][idx1] = 0
-                    offspring[chromosome_idx][idx2] = 1
-            else:
-                random_idx = np.random.randint(0, offspring.shape[1])
-                offspring[chromosome_idx][random_idx] = 1 - offspring[chromosome_idx][random_idx]
-
-    return offspring
-
 def log_handler(ga_instance):
     best_sol, best_fit, _ = ga_instance.best_solution()
-    current_x = [int(val) for val in best_sol]
     
-    e_vals, rev_vals, cost_vals = [], [], []
-    o_vals, unmet_vals, dist_vals = [], [], []
-    
-    for order in evaluation_orders:
-        F = config['behavior_model'](current_x, station_order=order)
-        total_E, rev, cost = E(current_x, F)
-        total_O, unmet, dist = O(F, config['alpha'], config['beta'])
-        
-        e_vals.append(total_E)
-        rev_vals.append(rev)
-        cost_vals.append(cost)
-        
-        o_vals.append(total_O)
-        unmet_vals.append(unmet)
-        dist_vals.append(dist)
-        
-    avg_E = sum(e_vals) / config['num_shuffles']
-    avg_rev = sum(rev_vals) / config['num_shuffles']
-    avg_cost = sum(cost_vals) / config['num_shuffles']
-    
-    avg_O = sum(o_vals) / config['num_shuffles']
-    avg_unmet = sum(unmet_vals) / config['num_shuffles']
-    avg_dist = sum(dist_vals) / config['num_shuffles']
+    metrics = model.get_details(best_sol)
     
     generation_history.append({
         "generation": ga_instance.generations_completed,
-        "best_average_fitness": best_fit,
-        "avg_E_profit": avg_E,
-        "avg_E_revenue": avg_rev,
-        "avg_E_cost": avg_cost,
-        "avg_O_loss": avg_O,
-        "avg_O_unmet_penalty": avg_unmet,
-        "avg_O_distance_penalty": avg_dist,
-        "x": current_x
+        "best_average_fitness": float(best_fit),
+        "avg_E_profit": float(metrics['avg_E']),
+        "avg_E_revenue": float(metrics['avg_rev']),
+        "avg_E_cost": float(metrics['avg_cost']),
+        "avg_O_loss": float(metrics['avg_O']),
+        "avg_O_unmet_penalty": float(metrics['avg_unmet']),
+        "avg_O_distance_penalty": float(metrics['avg_dist']),
+        "x": best_sol.tolist()
     })
     
-    print(f"Gen {ga_instance.generations_completed:02d} | Stations: {sum(current_x):03d} | Fit: {best_fit:,.2f} | "
-          f"E: {avg_E:,.2f} (Rev: {avg_rev:,.2f}, Cost: {avg_cost:,.2f}) | "
-          f"O: {avg_O:,.2f} (Unmet: {avg_unmet:,.2f}, Dist: {avg_dist:,.2f})")
+    print(f"Gen {ga_instance.generations_completed:02d} | Stations: {int(np.sum(best_sol)):03d} | Fit: {best_fit:,.2f} | "
+          f"E: {metrics['avg_E']:,.2f} (Rev: {metrics['avg_rev']:,.2f}, Cost: {metrics['avg_cost']:,.2f}) | "
+          f"O: {metrics['avg_O']:,.2f} (Unmet: {metrics['avg_unmet']:,.2f}, Dist: {metrics['avg_dist']:,.2f})")
 
 def run_optimization(ga_instance, model_name):
     print(f"--- Starting Optimization ({model_name}) ---")
+    
+    start_time = datetime.now()
     ga_instance.run()
+    end_time = datetime.now()
+    
+    run_time = (end_time - start_time).total_seconds()
+    start_time_str = start_time.strftime("%Y-%m-%d %H:%M:%S")
+    end_time_str = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
     best_x, best_fitness, _ = ga_instance.best_solution()
     best_x = [int(val) for val in best_x]
 
     print("\n--- Optimization Complete ---")
+    print(f"Start Time: {start_time_str}")
+    print(f"End Time: {end_time_str}")
+    print(f"Run Time: {run_time:.2f} seconds")
     print(f"Optimal Station Locations (x): {best_x}")
     print(f"Optimal Fitness Found: {best_fitness:,.2f}")
     
-    return best_x, best_fitness
+    return best_x, best_fitness, start_time_str, end_time_str, run_time
 
+###################
+#### Map Functions
 
-###############
-# Build map 
 def build_map_data(best_x, F_matrix, df_meta, N, D, L, config):
     map_data = {'stations': {}, 'customers': {}, 'routes': []}
     
     for i in range(N):
         if D[i] > 0 and i < len(df_meta):
             demand_met = sum(F_matrix[i])
+            visited_stations = []
+            for j in range(N):
+                if F_matrix[i][j] > 0 and j < len(df_meta):
+                    visited_stations.append({
+                        'id': j,
+                        'name': df_meta.iloc[j]['name'],
+                        'batt': int(F_matrix[i][j])
+                    })
+
             map_data['customers'][i] = {
                 'id': i, 'name': df_meta.iloc[i]['name'],
                 'lat': df_meta.iloc[i]['lat'], 'lon': df_meta.iloc[i]['lon'],
                 'total_demand': int(D[i]), 'demand_met': int(demand_met),
-                'unmet_demand': int(D[i] - demand_met)
+                'unmet_demand': int(D[i] - demand_met),
+                'visited_stations': visited_stations 
             }
 
     for j in range(N):
@@ -326,7 +372,7 @@ def build_map_data(best_x, F_matrix, df_meta, N, D, L, config):
     return map_data
 
 def append_osrm_routes(map_data, F_matrix, df_meta, N, session):
-    print("  > Lấy đường đi giao thông thực tế từ OSRM...")
+    print("  > Fetching OSRM routes...")
     for i in range(N):
         for j in range(N):
             if F_matrix[i][j] > 0 and i < len(df_meta) and j < len(df_meta):
@@ -348,26 +394,25 @@ def append_osrm_routes(map_data, F_matrix, df_meta, N, session):
                 })
     return map_data
 
-def generate_interactive_maps(best_x, df_meta, N, D, L, config):
+def generate_interactive_maps(best_x, df_meta, N, B, C, P, R, D, L, config, model):
     map_folder = output_folder / 'html_maps'
     map_folder.mkdir(parents=True, exist_ok=True)
     
     map_rng = random.Random(42)
     session = requests.Session()
-    
-    # Tính số trạm đã đặt
     num_stations = sum(best_x)
     
     for idx in range(5):
-        print(f"\n--- Đang xử lý Bản đồ {idx + 1}/5 ---")
+        print(f"\n--- Processing Map {idx + 1}/5 ---")
         
         current_order = list(range(N))
         map_rng.shuffle(current_order)
-        F_matrix = config['behavior_model'](best_x, station_order=current_order)
         
-        # Lấy Profit (E) và Dissatisfaction (O)
-        total_profit_val, _, _ = E(best_x, F_matrix)
-        total_dissat_val, _, _ = O(F_matrix, config['alpha'], config['beta'])
+        # Pull route generation via the model
+        F_matrix = model.route(best_x, eval_order=current_order)
+        
+        total_profit_val, _, _ = E(best_x, F_matrix, C, P, R)
+        total_dissat_val, _, _ = O(F_matrix, D, L, config['alpha'], config['beta'])
         
         map_data = build_map_data(best_x, F_matrix, df_meta, N, D, L, config)
         map_data = append_osrm_routes(map_data, F_matrix, df_meta, N, session)
@@ -380,11 +425,10 @@ def generate_interactive_maps(best_x, df_meta, N, D, L, config):
         <link rel="stylesheet" href="assets/map_style.css"/>
         
         <div class="main-stats-box">
-            <div class="text-profit"><i class="fas fa-chart-line"></i> Lợi nhuận (E): {total_profit_val:,.2f}</div>
+            <div class="text-profit"><i class="fas fa-chart-line"></i> Total Profit (E): {total_profit_val:,.2f}</div>
             <div class="text-dissat"><i class="fas fa-frown"></i> Dissatisfaction (O): {total_dissat_val:,.2f}</div>
-            <div class="text-station"><i class="fas fa-charging-station"></i> Trạm đã đặt: {num_stations} / {N} node</div>
+            <div class="text-station"><i class="fas fa-charging-station"></i> Stations Placed: {num_stations} / {N} node</div>
         </div>
-        
         <div id="info-panel"></div>
 
         <script>
@@ -394,72 +438,93 @@ def generate_interactive_maps(best_x, df_meta, N, D, L, config):
         """
         
         m.get_root().html.add_child(folium.Element(custom_html))
-
         map_filename = map_folder / f"Map_Result_Seed42_Shuffle_{idx + 1}.html"
         m.save(str(map_filename))
-        print(f"  > Đã lưu map thành công: {map_filename}")
+        print(f"  > Map successfully saved: {map_filename}")
+
 ###################
 
 if __name__ == "__main__": 
-    problem_data = read_input()
-    N, B, C, P, L, R, Z, D = problem_data
+    N, B, C, P, L, R, Z, D = read_input()
     
+    # Combined Configuration Dict
     config = {
+        # Model Parameters (from your original code)
         'alpha': 10.0,
         'beta': 0.0005,
         'lambda': 1.0,
-        'mu': 1.0,           # Added from second script
-        'K': 10,             # Added from second script
-        'w1': 0.4,           # Added from second script
-        'w2': 0.6,           # Added from second script
-        'gamma': 1.0,        # Added from second script
-        'epsilon': 1.0,      # Added from second script
-        'behavior_model': route,
-        'num_generations': 20,
-        'sol_per_pop': 30,
+        'mu': 1.0,           
+        'K': 10,             
+        'w1': 0.95,           
+        'w2': 0.05,           
+        'gamma': 1.0,        
+        'epsilon': 1.0,      
+        
+        # Select the specific model you want to run here
+        'model_builder': behavioral_routing, 
+        
+        # GA Hyperparameters (from the teammate's clean setup)
+        'num_generations': 200,
+        'sol_per_pop': 100,  
         'num_parents_mating': 10,
-        'mutation_percent_genes': 2, 
-        'num_shuffles': 5,
-        'random_seed': int(datetime.now().timestamp()),
-        'stop_criteria': ['saturate_20'],
+        'num_shuffles': 3,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_50'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        
+        # Preserving your custom crossover while mapping it to the teammate's config format
+        'crossover_type': custom_intersection_crossover, 
+        
+        # Built-in adaptive mutation as discussed
+        'mutation_type': 'adaptive',
+        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
     }
-    
-    rng = random.Random(config['random_seed'])
 
-    evaluation_orders = []
-    for _ in range(config['num_shuffles']):
-        order = list(range(N))
-        rng.shuffle(order)
-        evaluation_orders.append(order)
+    # Initialize your specific model object
+    model = config['model_builder'](N, B, C, P, R, L, Z, D, config)
 
     generation_history = []
+    
+    # Force the GA to start with only ~5% of stations open
+    initial_pop = np.random.choice([0, 1], size=(config['sol_per_pop'], N), p=[0.95, 0.05])
 
+    # Note: Removed sol_per_pop, num_genes, gene_type, and gene_space because 
+    # initial_population dictates them automatically and they conflict if both are passed.
     ga_instance = pygad.GA(
+        initial_population=initial_pop,
         num_generations=config['num_generations'],
         num_parents_mating=config['num_parents_mating'],
         fitness_func=fitness_handler,
-        sol_per_pop=config['sol_per_pop'],
-        num_genes=N,
+        stop_criteria=config['stop_criteria'],
+        on_generation=log_handler,
+        random_seed=config['random_seed'],
         gene_type=int,
         gene_space=[0, 1],
-        stop_criteria=config['stop_criteria'],
-        mutation_percent_genes=config['mutation_percent_genes'],
-        crossover_type=custom_intersection_crossover,
-        mutation_type=custom_smart_mutation,
-        on_generation=log_handler,
-        random_seed=config['random_seed']
+        parent_selection_type=config['parent_selection_type'],
+        K_tournament=config['K_tournament'],
+        crossover_type=config['crossover_type'],
+        mutation_type=config['mutation_type'],
+        mutation_probability=config['mutation_probability'],
+        keep_elitism=config['keep_elitism']
     )
 
-    best_x, best_fitness = run_optimization(ga_instance, config['behavior_model'].__name__)
+    best_x, best_fitness, start_time, end_time, run_time = run_optimization(ga_instance, model.name)
 
     save_optimization_results(
         best_x, 
         best_fitness, 
         generation_history, 
         config, 
-        input_path.name
+        input_path.name,
+        start_time,
+        end_time,
+        run_time,
+        model.name
     )
     
+    # Execute Map Building Logic
     csv_metadata_path = input_folder / 'data_hcm.csv'
     try:
         df_meta = pd.read_csv(csv_metadata_path, nrows=540)
@@ -467,4 +532,4 @@ if __name__ == "__main__":
         df_meta = None
         
     if df_meta is not None:
-        generate_interactive_maps(best_x, df_meta, N, D, L, config)
+        generate_interactive_maps(best_x, df_meta, N, B, C, P, R, D, L, config, model)

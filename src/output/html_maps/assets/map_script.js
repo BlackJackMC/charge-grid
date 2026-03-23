@@ -85,10 +85,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
             function showCustomerInfo(c) {
                 var panel = document.getElementById('info-panel');
-                // Cập nhật màu badge và icon sang màu cam cho đồng bộ
                 var statusBadge = c.unmet_demand > 0 ? `<span style="background:#ff8c00;color:white;padding:3px 8px;border-radius:4px;font-size:12px;margin-left:10px;">Còn thiếu pin</span>` : `<span style="background:#007bff;color:white;padding:3px 8px;border-radius:4px;font-size:12px;margin-left:10px;">Đủ pin</span>`;
                 var titleColor = c.unmet_demand > 0 ? '#ff8c00' : '#007bff';
                 var bgWarning = c.unmet_demand > 0 ? '#fff3cd' : '#f8f9fa';
+
+                // TẠO DANH SÁCH CÁC TRẠM ĐÃ GHÉ
+                var visitedHtml = "";
+                if (c.visited_stations && c.visited_stations.length > 0) {
+                    visitedHtml = `<h4 style="margin: 15px 0 10px 0;"><i class="fas fa-charging-station"></i> Các trạm đã đổi pin:</h4>
+                                   <ul class="customer-list">`;
+                    c.visited_stations.forEach(st => {
+                        visitedHtml += `<li><b>${st.name}</b> <span style="color:#28a745; font-weight:bold;">${st.batt} pin</span></li>`;
+                    });
+                    visitedHtml += `</ul>`;
+                } else {
+                    visitedHtml = `<div style="margin-top:15px; font-style:italic; color:#888;"><i class="fas fa-sad-tear"></i> Khách hàng chưa đổi được pin ở trạm nào.</div>`;
+                }
 
                 var html = `
                     <div class="panel-header">
@@ -103,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <div class="stat-row" style="background-color: ${bgWarning};">
                         <b><i class="fas fa-exclamation-triangle" style="color:#ff8c00;"></i> Unmet Demand (Thiếu):</b> <span style="color:#ff8c00; font-weight:bold;">${c.unmet_demand}</span>
                     </div>
+                    ${visitedHtml}
                 `;
                 panel.innerHTML = html;
                 panel.style.display = 'block';
