@@ -25,8 +25,6 @@ def read_input():
             L = np.array([[float(x) for x in f.readline().strip().split()] for _ in range(N)])
             R = np.array([float(x) for x in f.readline().strip().split()])
             Z = np.array([float(x) for x in f.readline().strip().split()])
-            
-            # Note: Cast D to int specifically for the behavioral model's chunking logic
             D = np.array([int(x) for x in f.readline().strip().split()])
 
         return N, B, C, P, L, R, Z, D
@@ -115,9 +113,6 @@ class behavioral_routing(BaseModel):
             self.evaluation_orders.append(order)
 
     def route(self, x, eval_order=None):
-        """
-        Your complex vectorized routing logic using NumPy with Precomputation and Mechanism 4.
-        """
         K = self.config['K']
         w1 = self.config['w1']
         w2 = self.config['w2']
@@ -228,7 +223,6 @@ class behavioral_routing(BaseModel):
             total_E, _, _ = E(x, F, self.C, self.P, self.R)
             total_O, _, _ = O(F, self.D, self.L, self.config['alpha'], self.config['beta'])
             
-            # Incorporating your specific mu parameter logic
             fitness_vals[idx] = self.config['lambda'] * total_E - self.config['mu'] * total_O
             
         return np.mean(fitness_vals)
@@ -255,7 +249,6 @@ class behavioral_routing(BaseModel):
 fitness_cache = {}
 
 def fitness_handler(ga_instance, solution, solution_idx):
-    # Added your caching back in for performance
     sol_tuple = tuple(int(val) for val in solution)
     if sol_tuple in fitness_cache:
         return fitness_cache[sol_tuple]
@@ -447,9 +440,7 @@ def generate_interactive_maps(best_x, df_meta, N, B, C, P, R, D, L, config, mode
 if __name__ == "__main__": 
     N, B, C, P, L, R, Z, D = read_input()
     
-    # Combined Configuration Dict
     config = {
-        # Model Parameters (from your original code)
         'alpha': 10.0,
         'beta': 0.0005,
         'lambda': 1.0,
@@ -459,11 +450,7 @@ if __name__ == "__main__":
         'w2': 0.05,           
         'gamma': 1.0,        
         'epsilon': 1.0,      
-        
-        # Select the specific model you want to run here
         'model_builder': behavioral_routing, 
-        
-        # GA Hyperparameters (from the teammate's clean setup)
         'num_generations': 200,
         'sol_per_pop': 100,  
         'num_parents_mating': 10,
@@ -472,26 +459,18 @@ if __name__ == "__main__":
         'stop_criteria': ['saturate_50'],
         'parent_selection_type': 'tournament',
         'K_tournament': 3,
-        
-        # Preserving your custom crossover while mapping it to the teammate's config format
         'crossover_type': custom_intersection_crossover, 
-        
-        # Built-in adaptive mutation as discussed
         'mutation_type': 'adaptive',
         'mutation_probability': [0.35, 0.05],
         'keep_elitism': 5
     }
 
-    # Initialize your specific model object
     model = config['model_builder'](N, B, C, P, R, L, Z, D, config)
 
     generation_history = []
-    
-    # Force the GA to start with only ~5% of stations open
+
     initial_pop = np.random.choice([0, 1], size=(config['sol_per_pop'], N), p=[0.95, 0.05])
 
-    # Note: Removed sol_per_pop, num_genes, gene_type, and gene_space because 
-    # initial_population dictates them automatically and they conflict if both are passed.
     ga_instance = pygad.GA(
         initial_population=initial_pop,
         num_generations=config['num_generations'],
