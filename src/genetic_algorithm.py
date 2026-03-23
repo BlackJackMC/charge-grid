@@ -8,7 +8,7 @@ from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
 
-from utils import read_input, save_optimization_results
+from utils import read_input, save_optimization_results, custom_intersection_crossover
 
 input_folder = Path('..')
 output_folder = Path('./output')
@@ -118,12 +118,6 @@ if __name__ == "__main__":
         'alpha': 10.0,
         'beta': 0.0005,
         'lambda': 1.0,
-        'mu': 1.0,           
-        'K': 10,             
-        'w1': 0.95,           
-        'w2': 0.05,           
-        'gamma': 1.0,        
-        'epsilon': 1.0,      
         'model_builder': CustomerRouting, 
         'num_generations': 50,
         'sol_per_pop': 100,  
@@ -133,7 +127,7 @@ if __name__ == "__main__":
         'stop_criteria': ['saturate_50'],
         'parent_selection_type': 'tournament',
         'K_tournament': 3,
-        'crossover_type': 'uniform', 
+        'crossover_type': 'uniform',
         'mutation_type': 'adaptive',
         'mutation_probability': [0.35, 0.05],
         'keep_elitism': 5
