@@ -1,5 +1,5 @@
 import numpy as np
-import datetime
+from datetime import datetime
 import json
 
 #### I/O Functions

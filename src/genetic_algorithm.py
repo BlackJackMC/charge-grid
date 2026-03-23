@@ -57,6 +57,7 @@ class Experiment:
     def run(self):
         print(f"--- Starting Experiment ({self.experiment_name}) ---")
         
+
         ga_instance = pygad.GA(
             num_generations=self.config['num_generations'],
             num_parents_mating=self.config['num_parents_mating'],
@@ -140,8 +141,8 @@ if __name__ == "__main__":
         'lambda': 1.0,
         'mu': 1.0,           
         'K': 10,             
-        'w1': 0.8,           
-        'w2': 0.2,           
+        'w1': 0.95,           
+        'w2': 0.05,           
         'gamma': 1.0,        
         'epsilon': 1.0,      
         'model_builder': BehavioralRouting, 
@@ -155,7 +156,7 @@ if __name__ == "__main__":
         'K_tournament': 3,
         'crossover_type': custom_intersection_crossover, 
         'mutation_type': 'adaptive',
-        'mutation_probability': [0.35, 0.05],
-        'keep_elitism': 5
+        'mutation_probability': [0.3, 0.05],
+        'keep_elitism': 2
     })
     exp2.run()
