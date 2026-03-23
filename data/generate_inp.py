@@ -119,36 +119,47 @@ for i in range(N):
 # ==============================
 
 C = 325
-B = 55
+B = 220
 P = 9
 
 # Demand D
+# D = []
+
+# for _ in range(N):
+#     if random.random() < 0.6:   # 60% have demand
+#         D.append(random.randint(20, 80))
+#     else:
+        # D.append(0)
 # D = [random.randint(50, 100) for _ in range(N)]
 
 districts = gdf_proj["district"].tolist()
 district_D_range = {
-    "District 1": (80, 100),
-    "District 3": (75, 95),
-    "District 5": (70, 90),
-    "District 10": (70, 90),
+    "District 1": (60, 100),
+    "District 3": (55, 95),
+    "District 5": (50, 90),
+    "District 10": (50, 90),
 
-    "Binh Thanh District": (60, 85),
-    "Phu Nhuan District": (50, 70),
-    "Tan Binh District": (55, 65),
-    "Go Vap District": (45, 70),
-    "Tan Phu District": (45, 70),
-    "Binh Tan District": (40, 65),
+    "Binh Thanh District": (40, 80),
+    "Phu Nhuan District": (40, 80),
+    "Tan Binh District": (35, 70),
+    "Go Vap District": (30, 60),
+    "Tan Phu District": (25, 55),
+    "Binh Tan District": (25, 50),
 
-    "District 6": (40, 70),
-    "District 8": (35, 65),
-    "District 12": (30, 50),
+    "District 4": (30, 70),
+    "District 6": (25, 60),
+    "District 7": (20, 50),
+    "District 8": (20, 50),
+    "District 12": (20, 40)
 }
+D = []
 
-def gen_D(district):
-    low, high = district_D_range.get(district, (20, 60))  # default
-    return random.randint(low, high)
-
-D = [gen_D(d) for d in districts]
+for d in districts:
+    if random.random() < 0.6:  # 60% have demand
+        low, high = district_D_range.get(d, (20, 60))
+        D.append(random.randint(low, high))
+    else:
+        D.append(0)
 
 # Rental cost R
 R = [random.choice([30, 40]) for _ in range(N)]
