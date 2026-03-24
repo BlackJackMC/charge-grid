@@ -1,12 +1,13 @@
 import random
 import numpy as np
+from sklearn.cluster import KMeans
 from utils import E, O
 from .base import BaseModel
 
-class StationRouting(BaseModel):
+class ClusterRouting(BaseModel):
     def __init__(self, N, B, C, P, R, L, Z, D, config):
         super().__init__(N, B, C, P, R, L, Z, D, config)
-        self.name = 'Station_Centric_Greedy'
+        self.name = 'Cluster_Centric_Greedy'
 
         self.precomputed = []
         for j in range(self.N):
@@ -15,10 +16,29 @@ class StationRouting(BaseModel):
             self.precomputed.append(valid_demands)
 
         self.rng = random.Random(self.config['random_seed'])
+
+        num_clusters = self.config.get('num_clusters', max(1, self.N // 5))
+        num_clusters = min(num_clusters, self.N)
+
+        kmeans = KMeans(n_clusters=num_clusters, random_state=self.config['random_seed'], n_init='auto')
+        labels = kmeans.fit_predict(self.L)
+
+        self.clusters = [[] for _ in range(num_clusters)]
+        for i, label in enumerate(labels):
+            self.clusters[label].append(i)
+            
+        self.clusters = [c for c in self.clusters if c]
+
         self.evaluation_orders = []
         for _ in range(self.config['num_shuffles']):
-            order = list(range(self.N))
-            self.rng.shuffle(order)
+            shuffled_clusters = list(self.clusters)
+            self.rng.shuffle(shuffled_clusters)
+            
+            order = []
+            for c in shuffled_clusters:
+                c_copy = list(c)
+                self.rng.shuffle(c_copy)
+                order.extend(c_copy)
             self.evaluation_orders.append(order)
 
     def route(self, x, eval_order=None):

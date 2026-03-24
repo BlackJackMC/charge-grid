@@ -5,24 +5,14 @@ import random
 from branca.element import Element
 from pathlib import Path
 
+from utils import read_input
+from models.customer import CustomerRouting
+
 input_folder = Path('..')
 output_folder = Path('./output')
 cache_folder = Path('./cache')
 input_path = input_folder / 'input_q1.txt'
 metadata_path = input_folder / 'data_q1.csv'
-
-def read_input():
-    if input_path.exists():
-        with open(input_path, 'r', encoding='utf-8') as f:
-            line1 = f.readline().strip().split()
-            N, B = int(line1[0]), int(line1[1])
-            C, P = float(line1[2]), float(line1[3])
-            L = [[float(x) for x in f.readline().strip().split()] for _ in range(N)]
-            R = [float(x) for x in f.readline().strip().split()]
-            Z = [float(x) for x in f.readline().strip().split()]
-            D = [int(x) for x in f.readline().strip().split()]
-        return N, B, C, P, L, R, Z, D
-    return None
 
 def choose_solution_file():
     if not output_folder.exists(): return None
@@ -34,25 +24,6 @@ def choose_solution_file():
         choice = int(input("\nEnter the index: "))
         return json_files[choice] if 0 <= choice < len(json_files) else None
     except ValueError: return None
-
-def route(x, N, B, L, Z, D, station_order):
-    station_battery = {j: B for j in range(N) if x[j] == 1}
-    F = [[0 for _ in range(N)] for _ in range(N)]
-    precomputed_nearest = []
-    for j in range(N):
-        sorted_demands = sorted(range(N), key=lambda i: L[i][j])
-        precomputed_nearest.append([i for i in sorted_demands if L[i][j] <= Z[i]])
-    local_D = list(D)
-    for j in station_order:
-        if x[j] == 1:
-            for i in precomputed_nearest[j]:
-                if local_D[i] > 0 and station_battery[j] > 0:
-                    served = min(local_D[i], station_battery[j])
-                    F[i][j] = served
-                    local_D[i] -= served
-                    station_battery[j] -= served
-                if station_battery[j] == 0: break
-    return F
 
 def generate_flow_map(best_x, N, B, D, F_list):
     try:
@@ -68,6 +39,14 @@ def generate_flow_map(best_x, N, B, D, F_list):
     fg_selected = folium.FeatureGroup(name='Selected Stations (Green)')
     fg_unselected = folium.FeatureGroup(name='Unselected Stations (Red)')
     fg_demand = folium.FeatureGroup(name='Demand Points (Blue)')
+    fg_unique = folium.FeatureGroup(name='Unique Flows (Orange)', show=False)
+
+    flow_counts = [[0] * max_nodes for _ in range(max_nodes)]
+    for F in F_list:
+        for i in range(max_nodes):
+            for j in range(max_nodes):
+                if F[i][j] > 0:
+                    flow_counts[i][j] += 1
 
     for idx, F in enumerate(F_list):
         s_idx = idx + 1
@@ -90,7 +69,7 @@ def generate_flow_map(best_x, N, B, D, F_list):
                 if D[i] > 0:
                     met = sum(F[i][k] for k in range(max_nodes))
                     st_list = [f"S{k}({F[i][k]})" for k in range(max_nodes) if F[i][k] > 0]
-                    tt = f"Demand {i}: {row['name']}<br>Need: {D[i]}<br>Met: {met}<br>Unmet: {D[i]-met}<br>Stations: {', '.join(st_list) or 'None'}"
+                    tt = f"Demand {i}: {row['name']}<br>Need: {D[i]}<br>Met: {met}<br>Unmet: {D[i]-met}<br>Furthest distance: {Z[i]}<br>Stations: {', '.join(st_list) or 'None'}"
                     folium.CircleMarker(location=[lat, lon], radius=6, color='blue', fill=True, tooltip=tt).add_to(fg_demand)
 
             for j in range(max_nodes):
@@ -98,32 +77,42 @@ def generate_flow_map(best_x, N, B, D, F_list):
                     folium.PolyLine(
                         locations=[[df_d1.loc[j, 'lat'], df_d1.loc[j, 'lon']], [df_d1.loc[i, 'lat'], df_d1.loc[i, 'lon']]],
                         color=current_color, weight=2, opacity=0.6, 
-                        tooltip=f"Shuffle {s_idx}<br>Source: Station {j}<br>Sink: Demand {i}<br>Flow: {F[i][j]}"
+                        tooltip=f"Shuffle {s_idx}<br>Source: Station {j}<br>Sink: Demand {i}<br>Flow: {F[i][j]}<br> Distance: {L[i][j]}"
                     ).add_to(fg_flows)
+
+                    if flow_counts[i][j] == 1:
+                        folium.PolyLine(
+                            locations=[[df_d1.loc[j, 'lat'], df_d1.loc[j, 'lon']], [df_d1.loc[i, 'lat'], df_d1.loc[i, 'lon']]],
+                            color='orange', weight=4, opacity=0.9, dash_array='5, 5',
+                            tooltip=f"Unique Flow (Shuffle {s_idx})<br>Source: Station {j}<br>Sink: Demand {i}<br>Flow: {F[i][j]}<br> Distance: {L[i][j]}"
+                        ).add_to(fg_unique)
+
         fg_flows.add_to(m)
 
     fg_selected.add_to(m)
     fg_unselected.add_to(m)
     fg_demand.add_to(m)
+    fg_unique.add_to(m)
     folium.LayerControl(collapsed=False).add_to(m)
 
     cache_folder.mkdir(parents=True, exist_ok=True)
     m.save(cache_folder / 'map_output.html')
 
 if __name__ == "__main__":
-    data = read_input()
+    data = read_input(input_path)
     if data:
         N, B, C, P, L, R, Z, D = data
         file = choose_solution_file()
         if file:
             with open(file, 'r', encoding='utf-8') as f:
                 sol = json.load(f)
-            best_x = sol['best_solution']['x']
+            x = sol['best_solution']['x']
             config = sol['metadata']['configuration']
             rng = random.Random(config.get('random_seed', 42))
+            model = CustomerRouting(N, B, C, P, R, L, Z, D, config)
             F_list = []
-            for _ in range(config.get('num_shuffles', 5)):
+            for _ in range(config.get('num_shuffles', 0)):
                 order = list(range(N))
                 rng.shuffle(order)
-                F_list.append(route(best_x, N, B, L, Z, D, order))
-            generate_flow_map(best_x, N, B, D, F_list)
+                F_list.append(model.route(x, order))
+            generate_flow_map(x, N, B, D, F_list)

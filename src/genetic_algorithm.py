@@ -4,6 +4,7 @@ from pathlib import Path
 from datetime import datetime
 from functools import cache
 
+from models.cluster import ClusterRouting
 from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         'beta': 0.0005,
         'lambda': 1.0,
         'model_builder': CustomerRouting, 
-        'num_generations': 50,
+        'num_generations': 200,
         'sol_per_pop': 100,  
         'num_parents_mating': 10,
         'num_shuffles': 3,
@@ -133,7 +134,6 @@ if __name__ == "__main__":
         'mutation_probability': [0.35, 0.05],
         'keep_elitism': 5
     })
-    exp1.run()
     
     exp2 = Experiment(data=data_tuple, experiment_name="Behavioral Routing", config={
         'alpha': 10.0,
@@ -159,4 +159,83 @@ if __name__ == "__main__":
         'mutation_probability': [0.3, 0.05],
         'keep_elitism': 2
     })
-    exp2.run()
+    
+    exp3 = Experiment(data=data_tuple, experiment_name="Customer Routing", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': CustomerRouting, 
+        'num_generations': 200,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'num_shuffles': 10,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_50'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': 'adaptive',
+        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
+    })
+    
+    exp4 = Experiment(data=data_tuple, experiment_name="Station Routing", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': StationRouting, 
+        'num_generations': 200,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'num_shuffles': 10,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_50'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': 'adaptive',
+        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
+    })
+
+    exp5 = Experiment(data=data_tuple, experiment_name="Station Cluster Routing", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': ClusterRouting,
+        'num_clusters': 40,
+        'num_generations': 200,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'num_shuffles': 10,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_50'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': 'adaptive',
+        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
+    })
+
+    exp6 = Experiment(data=data_tuple, experiment_name="Station Cluster Routing", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': ClusterRouting,
+        'num_clusters': 40,
+        'num_generations': 200,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'num_shuffles': 2,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_50'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': 'adaptive',
+        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
+    })
+
+    exp6.run()
