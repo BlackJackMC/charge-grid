@@ -173,24 +173,26 @@ for i in range(N):
     if valid_dist:
         min_dist = min(valid_dist)
 
-        if min_dist < 5:
-            factor = random.uniform(800.0, 1000.0)
-        elif min_dist < 10:
+        if min_dist < 5.0:
+            factor = random.uniform(1000.0, 2000.0)
+        elif min_dist < 10.0:
             factor = random.uniform(300.0, 400.0)
         elif min_dist < 20:
             factor = random.uniform(200.0, 250.0)
-        elif min_dist < 50:
+        elif min_dist < 50.0:
             factor = random.uniform(50.0, 80.0)
-        elif min_dist < 100:
-            factor = random.uniform(15.0, 30.0)
-        elif min_dist < 500:
-            factor = random.uniform(6.0, 10.0)
-        elif min_dist < 1000:
-            factor = random.uniform(1.8, 2.5)
+        elif min_dist < 100.0:
+            factor = random.uniform(20.0, 30.0)
+        elif min_dist < 200.0:
+            factor = random.uniform(10.0, 15.0)
+        elif min_dist < 500.0:
+            factor = random.uniform(5.0, 8.0)
+        elif min_dist < 1000.0:
+            factor = random.uniform(2.0, 2.5)
         else:
-            factor = random.uniform(1.2, 1.5)
+            factor = random.uniform(100, 200)
 
-    Z.append(round(min_dist * factor, 2))
+    Z.append(round(min_dist * factor, 4))
 
 # ==============================
 # 10. EXPORT INPUT.TXT
