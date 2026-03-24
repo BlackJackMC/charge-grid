@@ -69,17 +69,46 @@ def O(F, D, L, alpha, beta):
 def custom_intersection_crossover(parents, offspring_size, ga_instance):
     offspring = []
     idx = 0
-    while len(offspring) < offspring_size[0]:
+    target_size = offspring_size if isinstance(offspring_size, tuple) else offspring_size
+    num_offspring_needed = offspring_size[0]
+    while len(offspring) < num_offspring_needed:
         parent1 = parents[idx % parents.shape[0], :]
         parent2 = parents[(idx + 1) % parents.shape[0], :]
-
         agree_mask = (parent1 == parent2)
-        take_from_p1 = np.random.rand(*parent1.shape) < 0.5
+        take_from_p1 = np.random.rand(*parent1.shape) < 0.80
         
         child = np.where(agree_mask, parent1, np.where(take_from_p1, parent1, parent2))
         offspring.append(child)
         idx += 1
         
     return np.array(offspring)
+
+
+
+
+def smart_add_drop_mutation(offspring, ga_instance):
+    D = ga_instance.D 
+    for i in range(offspring.shape[0]):
+        chromosome = offspring[i]
+        if np.random.rand() < 0.5:
+            empty_spots = np.where(chromosome == 0)[0]
+            if len(empty_spots) > 0:
+                demand_at_empty = D[empty_spots]
+                sum_demand = np.sum(demand_at_empty)
+                
+                if sum_demand > 0:
+                    probabilities = demand_at_empty / sum_demand
+                else:
+                    probabilities = np.ones(len(empty_spots)) / len(empty_spots)
+
+                chosen_spot = np.random.choice(empty_spots, p=probabilities)
+                chromosome[chosen_spot] = 1
+        else:
+            active_spots = np.where(chromosome == 1)[0]
+            if len(active_spots) > 0:
+                chosen_drop = np.random.choice(active_spots)
+                chromosome[chosen_drop] = 0
+                
+    return offspring
 
 ###################
