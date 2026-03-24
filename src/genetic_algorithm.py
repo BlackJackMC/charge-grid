@@ -9,7 +9,7 @@ from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
 
-from utils import read_input, save_optimization_results, custom_intersection_crossover
+from utils import read_input, save_optimization_results, custom_intersection_crossover, smart_add_drop_mutation
 
 input_folder = Path('..')
 output_folder = Path('./output')
@@ -74,9 +74,12 @@ class Experiment:
             K_tournament=self.config['K_tournament'],
             crossover_type=self.config['crossover_type'],
             mutation_type=self.config['mutation_type'],
-            mutation_probability=self.config['mutation_probability'],
+#            mutation_probability=self.config['mutation_probability'],
             keep_elitism=self.config['keep_elitism']
         )
+
+        ga_instance.D = np.array(self.D)
+        ga_instance.L = np.array(self.L)
 
         start_time = datetime.now()
         ga_instance.run()
@@ -136,7 +139,7 @@ if __name__ == "__main__":
     })
     
     exp2 = Experiment(data=data_tuple, experiment_name="Behavioral Routing", config={
-        'alpha': 10.0,
+        'alpha': 100.0,
         'beta': 0.0005,
         'lambda': 1.0,
         'mu': 1.0,           
@@ -155,9 +158,9 @@ if __name__ == "__main__":
         'parent_selection_type': 'tournament',
         'K_tournament': 3,
         'crossover_type': custom_intersection_crossover, 
-        'mutation_type': 'adaptive',
-        'mutation_probability': [0.3, 0.05],
-        'keep_elitism': 2
+        'mutation_type': 'random',
+#        'mutation_probability': [0.35, 0.05],
+        'keep_elitism': 5
     })
     
     exp3 = Experiment(data=data_tuple, experiment_name="Customer Routing", config= {
@@ -219,22 +222,22 @@ if __name__ == "__main__":
     })
 
     exp6 = Experiment(data=data_tuple, experiment_name="Station Cluster Routing", config= {
-        'alpha': 100.0,
+        'alpha': 10.0,
         'beta': 0.0005,
         'lambda': 1.0,
         'model_builder': ClusterRouting,
         'num_clusters': 40,
-        'num_generations': 200,
-        'sol_per_pop': 100,  
-        'num_parents_mating': 10,
-        'num_shuffles': 2,
+        'num_generations': 500,
+        'sol_per_pop': 200,  
+        'num_parents_mating': 20,
+        'num_shuffles': 1,
         'random_seed': 42,
         'stop_criteria': ['saturate_50'],
         'parent_selection_type': 'tournament',
-        'K_tournament': 3,
-        'crossover_type': 'uniform',
-        'mutation_type': 'adaptive',
-        'mutation_probability': [0.35, 0.05],
+        'K_tournament': 10,
+        'crossover_type': custom_intersection_crossover,
+        'mutation_type': smart_add_drop_mutation,
+#        'mutation_probability': [0.35, 0.05],
         'keep_elitism': 5
     })
 

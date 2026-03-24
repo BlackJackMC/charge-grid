@@ -15,7 +15,8 @@ class BehavioralRouting(BaseModel):
         epsilon = self.config['epsilon']
         
         x_arr = np.array(x)
-        open_j = np.nonzero(x_arr)[0]
+        
+        open_j = np.nonzero(x_arr)[0] 
         M = len(open_j)
         
         F = np.zeros((self.N, self.N), dtype=int)
@@ -25,22 +26,23 @@ class BehavioralRouting(BaseModel):
             
         batt = np.full(M, float(self.B))
         local_D = np.array(self.D, dtype=int)
-        chunk_size = np.maximum(1, local_D // K)
         
-        L_sub = self.L[:, open_j]
-        Z_col = self.Z[:, None]
+        chunk_size = np.maximum(1, np.ceil(local_D / K).astype(int))
+        
+        L_sub = np.array(self.L)[:, open_j]
+        Z_col = np.array(self.Z)[:, None]
         
         valid_mask = L_sub <= Z_col
         V = np.sum(local_D[:, None] * valid_mask, axis=0)
         
-        norm_dist_all = np.divide(L_sub, Z_col, out=np.zeros_like(L_sub), where=Z_col!=0)
+        norm_dist_all = np.divide(L_sub, Z_col, out=np.zeros_like(L_sub, dtype=float), where=Z_col!=0)
         congestion_all = V / self.B if self.B > 0 else np.zeros(M)
         
         base_term1 = w1 * norm_dist_all
         base_coeff = norm_dist_all * congestion_all
 
-        for step in range(K + 1):
-            active_i = np.nonzero(local_D > 0)[0]
+        while True:
+            active_i = np.nonzero(local_D > 0)[0] 
             if len(active_i) == 0:
                 break
                 
@@ -67,7 +69,6 @@ class BehavioralRouting(BaseModel):
             
             requested_amount = np.zeros(M, dtype=int)
             np.add.at(requested_amount, assigned_rel_j, reqs)
-            
             stations_with_reqs = np.nonzero(requested_amount > 0)[0]
             
             for rel_j in stations_with_reqs:
@@ -94,7 +95,7 @@ class BehavioralRouting(BaseModel):
                     batt[rel_j] = 0
                     
                     if leftover > 0:
-                        dist_to_j = self.L[cust_i_for_j, abs_j]
+                        dist_to_j = np.array(self.L)[cust_i_for_j, abs_j]
                         sort_idx = np.argsort(dist_to_j)
                         
                         sorted_cust_i = cust_i_for_j[sort_idx]
@@ -109,7 +110,6 @@ class BehavioralRouting(BaseModel):
                                 F[c_id, abs_j] += 1
                                 local_D[c_id] -= 1
                                 leftover -= 1
-                                
         return F
 
     def fitness(self, x):
