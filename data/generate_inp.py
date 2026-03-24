@@ -9,13 +9,13 @@ import random
 # 1. Đọc CSV
 # ==============================
 print("Loading locations...")
-gdf = pd.read_csv("data_hcm.csv")
+gdf = pd.read_csv("data_q1.csv")
 
 # ==============================
 # 2. Load graph
 # ==============================
 
-place = "Ho Chi Minh City, Vietnam"
+place = "District 1, Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
@@ -123,43 +123,43 @@ B = 220
 P = 9
 
 # Demand D
-# D = []
-
-# for _ in range(N):
-#     if random.random() < 0.6:   # 60% have demand
-#         D.append(random.randint(20, 80))
-#     else:
-        # D.append(0)
-# D = [random.randint(50, 100) for _ in range(N)]
-
-districts = gdf_proj["district"].tolist()
-district_D_range = {
-    "District 1": (60, 100),
-    "District 3": (55, 95),
-    "District 5": (50, 90),
-    "District 10": (50, 90),
-
-    "Binh Thanh District": (40, 80),
-    "Phu Nhuan District": (40, 80),
-    "Tan Binh District": (35, 70),
-    "Go Vap District": (30, 60),
-    "Tan Phu District": (25, 55),
-    "Binh Tan District": (25, 50),
-
-    "District 4": (30, 70),
-    "District 6": (25, 60),
-    "District 7": (20, 50),
-    "District 8": (20, 50),
-    "District 12": (20, 40)
-}
 D = []
 
-for d in districts:
-    if random.random() < 0.6:  # 60% have demand
-        low, high = district_D_range.get(d, (20, 60))
-        D.append(random.randint(low, high))
+for _ in range(N):
+    if random.random() < 0.6:   # 60% have demand
+        D.append(random.randint(20, 80))
     else:
         D.append(0)
+D = [random.randint(50, 100) for _ in range(N)]
+
+# districts = gdf_proj["district"].tolist()
+# district_D_range = {
+#     "District 1": (60, 100),
+#     "District 3": (55, 95),
+#     "District 5": (50, 90),
+#     "District 10": (50, 90),
+
+#     "Binh Thanh District": (40, 80),
+#     "Phu Nhuan District": (40, 80),
+#     "Tan Binh District": (35, 70),
+#     "Go Vap District": (30, 60),
+#     "Tan Phu District": (25, 55),
+#     "Binh Tan District": (25, 50),
+
+#     "District 4": (30, 70),
+#     "District 6": (25, 60),
+#     "District 7": (20, 50),
+#     "District 8": (20, 50),
+#     "District 12": (20, 40)
+# }
+# D = []
+
+# for d in districts:
+#     if random.random() < 0.6:  # 60% have demand
+#         low, high = district_D_range.get(d, (20, 60))
+#         D.append(random.randint(low, high))
+#     else:
+#         D.append(0)
 
 # Rental cost R
 R = [random.choice([30, 40]) for _ in range(N)]
@@ -173,10 +173,18 @@ for i in range(N):
     if valid_dist:
         min_dist = min(valid_dist)
 
-        if min_dist < 100:
-            factor = random.uniform(5.0, 10.0)
+        if min_dist < 5:
+            factor = random.uniform(800.0, 1000.0)
+        elif min_dist < 10:
+            factor = random.uniform(300.0, 400.0)
+        elif min_dist < 20:
+            factor = random.uniform(200.0, 250.0)
+        elif min_dist < 50:
+            factor = random.uniform(50.0, 80.0)
+        elif min_dist < 100:
+            factor = random.uniform(15.0, 30.0)
         elif min_dist < 500:
-            factor = random.uniform(2.0, 4.0)
+            factor = random.uniform(6.0, 10.0)
         elif min_dist < 1000:
             factor = random.uniform(1.8, 2.5)
         else:
@@ -187,7 +195,7 @@ for i in range(N):
 # ==============================
 # 10. EXPORT INPUT.TXT
 # ==============================
-with open("input_hcm.txt", "w") as f:
+with open("input_q1.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):
