@@ -8,8 +8,8 @@ from models.cluster import ClusterRouting
 from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
-
-from utils import read_input, save_optimization_results, custom_intersection_crossover, smart_add_drop_mutation
+from models.milp_routing import MILPRoutingORTools
+from utils import read_input, save_optimization_results, custom_intersection_crossover, smart_add_drop_mutation, on_generation_earthquake
 
 input_folder = Path('..')
 output_folder = Path('./output')
@@ -58,6 +58,7 @@ class Experiment:
     def run(self):
         print(f"--- Starting Experiment ({self.experiment_name}) ---")
         
+         
 
         ga_instance = pygad.GA(
             num_generations=self.config['num_generations'],
@@ -74,8 +75,8 @@ class Experiment:
             K_tournament=self.config['K_tournament'],
             crossover_type=self.config['crossover_type'],
             mutation_type=self.config['mutation_type'],
-#            mutation_probability=self.config['mutation_probability'],
-            keep_elitism=self.config['keep_elitism']
+            mutation_probability=self.config['mutation_probability'],
+            keep_elitism=self.config['keep_elitism'],
         )
 
         ga_instance.D = np.array(self.D)
@@ -139,7 +140,7 @@ if __name__ == "__main__":
     })
     
     exp2 = Experiment(data=data_tuple, experiment_name="Behavioral Routing", config={
-        'alpha': 100.0,
+        'alpha': 10.0,
         'beta': 0.0005,
         'lambda': 1.0,
         'mu': 1.0,           
@@ -149,17 +150,17 @@ if __name__ == "__main__":
         'gamma': 1.0,        
         'epsilon': 1.0,      
         'model_builder': BehavioralRouting, 
-        'num_generations': 200,
-        'sol_per_pop': 100,  
-        'num_parents_mating': 10,
-        'num_shuffles': 3,
-        'random_seed': 42,
-        'stop_criteria': ['saturate_50'],
+        'num_generations': 5000,
+        'sol_per_pop': 300,  
+        'num_parents_mating': 20,
+        'num_shuffles': 1,
+        'random_seed': 32,
+        'stop_criteria': ['saturate_1000'],
         'parent_selection_type': 'tournament',
-        'K_tournament': 3,
+        'K_tournament': 10,
         'crossover_type': custom_intersection_crossover, 
-        'mutation_type': 'random',
-#        'mutation_probability': [0.35, 0.05],
+        'mutation_type': smart_add_drop_mutation,
+        'mutation_probability': None,
         'keep_elitism': 5
     })
     
@@ -227,12 +228,12 @@ if __name__ == "__main__":
         'lambda': 1.0,
         'model_builder': ClusterRouting,
         'num_clusters': 40,
-        'num_generations': 500,
-        'sol_per_pop': 200,  
+        'num_generations': 5000,
+        'sol_per_pop': 300,  
         'num_parents_mating': 20,
         'num_shuffles': 1,
-        'random_seed': 42,
-        'stop_criteria': ['saturate_50'],
+        'random_seed': 4,
+        'stop_criteria': ['saturate_1000'],
         'parent_selection_type': 'tournament',
         'K_tournament': 10,
         'crossover_type': custom_intersection_crossover,
@@ -241,4 +242,27 @@ if __name__ == "__main__":
         'keep_elitism': 5
     })
 
-    exp6.run()
+    exp_milp = Experiment( data=data_tuple, experiment_name="MILP Only OR-Tools", config={
+        'alpha': 10.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+
+        'model_builder': MILPRoutingORTools,
+
+        # ⚠️ MUST be small (MILP is expensive)
+        'num_generations': 500,
+        'sol_per_pop': 40,
+        'num_parents_mating': 20,
+        'random_seed': 67,
+        'stop_criteria': ['saturate_200'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 4,
+        'crossover_type': 'uniform',
+        'mutation_type': smart_add_drop_mutation,
+#        'mutation_probability': [0.3, 0.05],
+        'keep_elitism': 3,
+        # ⏱️ VERY IMPORTANT
+        'milp_time_limit': 5000  # milliseconds (2 seconds)
+    }
+)
+    exp2.run()

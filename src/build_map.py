@@ -12,13 +12,14 @@ from models.cluster import ClusterRouting
 from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
-
+from models.milp_routing import MILPRoutingORTools
 # TỪ ĐIỂN MAP TÊN CLASS
 MODEL_MAP = {
     'ClusterRouting': ClusterRouting,
     'CustomerRouting': CustomerRouting,
     'StationRouting': StationRouting,
-    'BehavioralRouting': BehavioralRouting
+    'BehavioralRouting': BehavioralRouting,
+    'MILPRoutingORTools': MILPRoutingORTools,
 }
 
 input_folder = Path('..')
@@ -134,11 +135,20 @@ def generate_interactive_map(best_x, df_meta, N, B, C, P, R, Z, D, L, config, mo
     num_stations = sum(best_x)
     print(f"\n--- Đang xử lý bản đồ tương tác ---")
     
-    rng = random.Random(shuffle_seed)
-    current_order = list(range(N))
-    rng.shuffle(current_order)
+    if hasattr(model, 'solve_flow'):
+        # Dành cho MILP OR-Tools
+        F_matrix, _ = model.solve_flow(best_x)
+    else:
+        # Dành cho các thuật toán Heuristic cũ
+        rng = random.Random(shuffle_seed)
+        current_order = list(range(N))
+        rng.shuffle(current_order)
+        F_matrix = model.route(best_x, current_order)
+        
+    # ĐẢM BẢO CHỈ GIỮ LẠI DÒNG NÀY, KHÔNG GỌI LẠI model.route() NỮA
+    F_matrix = np.array(F_matrix) 
     
-    F_matrix = np.array(model.route(best_x, current_order))
+    # 2. Gọi hàm E, O
     total_profit_val, _, _ = E(best_x, F_matrix, C, P, R)
     total_dissat_val, _, _ = O(F_matrix, D, L, config['alpha'], config['beta'])
     
@@ -232,7 +242,7 @@ def generate_interactive_map(best_x, df_meta, N, B, C, P, R, Z, D, L, config, mo
                 options: { position: 'bottomright' },
                 onAdd: function (map) {
                     var div = L.DomUtil.create('div', 'glass-panel minimap-wrapper');
-                    div.innerHTML = '<div class="minimap-header"><i class="fas fa-fire text-danger"></i> Radar Nhu Cầu (Heatmap)</div><div id="minimap-div"></div>';
+                    div.innerHTML = '<div class="minimap-header"><i class="fas fa-fire text-danger"></i> Phân phối nhu cầu S</div><div id="minimap-div"></div>';
                     L.DomEvent.disableClickPropagation(div);
                     L.DomEvent.disableScrollPropagation(div);
                     return div;
@@ -299,27 +309,35 @@ def generate_interactive_map(best_x, df_meta, N, B, C, P, R, Z, D, L, config, mo
 
             // VẼ TUYẾN ĐƯỜNG (2 LỚP)
             data.routes.forEach(r => {
-                var calcWeight = Math.min(12, Math.max(3, r.batt * 0.03)); 
-                var polylineBase = L.polyline(r.coords, {
-                    color: '#3186cc', weight: calcWeight, opacity: 0.4, pane: 'routesPane'
-                }).bindTooltip(`
-                    <div class="route-tooltip">
-                        <b><i class="fas fa-arrow-right text-warning"></i> Chiều:</b> Khách hàng ➔ Trạm<br>
-                        <b><i class="fas fa-battery-half text-success"></i> Lưu lượng:</b> ${r.batt} pin<br>
-                        <b><i class="fas fa-ruler text-primary"></i> L<sub>ij</sub>:</b> ${r.distance.toFixed(2)}
-                    </div>
-                `, {sticky: true}).addTo(routeGroup);
+                var calcWeight = Math.min(8, Math.max(2, r.batt * 0.05)); 
                 
-                polylineBase.cust_id = r.cust_id; polylineBase.stat_id = r.stat_id; 
-                polylineBase.baseWeight = calcWeight; polylineBase.isBase = true;
-                routeLayers.push(polylineBase);
-
-                var flowWeight = Math.max(1, calcWeight - 2);
-                var polylineFlow = L.polyline(r.coords, {
-                    color: '#ffffff', weight: flowWeight, opacity: 0, pane: 'routesPane', className: 'flow-line'
+                // Lớp 1: Đường nền mờ (The "Pipe")
+                var polylineBase = L.polyline(r.coords, {
+                    color: '#1e293b', 
+                    weight: calcWeight + 2, 
+                    opacity: 0.3, 
+                    pane: 'routesPane'
                 }).addTo(routeGroup);
                 
-                polylineFlow.cust_id = r.cust_id; polylineFlow.stat_id = r.stat_id; polylineFlow.isFlow = true;
+                polylineBase.cust_id = r.cust_id; 
+                polylineBase.stat_id = r.stat_id; 
+                polylineBase.baseWeight = calcWeight; 
+                polylineBase.isBase = true;
+                routeLayers.push(polylineBase);
+
+                // Lớp 2: Dòng chảy năng lượng (The "Flow")
+                // Chỉnh opacity thành 0.8 để nó hiện luôn trên video
+                var polylineFlow = L.polyline(r.coords, {
+                    color: '#38bdf8', 
+                    weight: Math.max(2, calcWeight - 1), 
+                    opacity: 0.8, 
+                    pane: 'routesPane', 
+                    className: 'flow-line' // Gán class animation
+                }).addTo(routeGroup);
+                
+                polylineFlow.cust_id = r.cust_id; 
+                polylineFlow.stat_id = r.stat_id; 
+                polylineFlow.isFlow = true;
                 routeLayers.push(polylineFlow);
             });
 
