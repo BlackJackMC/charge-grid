@@ -8,6 +8,7 @@ from models.cluster import ClusterRouting
 from models.customer import CustomerRouting
 from models.station import StationRouting
 from models.behavioral import BehavioralRouting
+from models.alternating import AlternatingRouting
 
 from utils import read_input, save_optimization_results, custom_intersection_crossover, smart_add_drop_mutation
 
@@ -37,11 +38,18 @@ class Experiment:
 
     def log_handler(self, ga_instance):
         best_sol, best_fit, _ = ga_instance.best_solution()
+        
+        pop_fitnesses = ga_instance.last_generation_fitness
+        avg_pop_fitness = sum(pop_fitnesses) / len(pop_fitnesses)
+        best_pop_fitness = max(pop_fitnesses)
+        
         metrics = self.model.get_details(best_sol)
         
         self.generation_history.append({
             "generation": ga_instance.generations_completed,
-            "best_average_fitness": float(best_fit),
+            "global_best_fitness": float(best_fit),
+            "population_best_fitness": float(best_pop_fitness),
+            "population_avg_fitness": float(avg_pop_fitness),
             "avg_E_profit": float(metrics['avg_E']),
             "avg_E_revenue": float(metrics['avg_rev']),
             "avg_E_cost": float(metrics['avg_cost']),
@@ -51,14 +59,14 @@ class Experiment:
             "x": best_sol.tolist()
         })
         
-        print(f"[{self.experiment_name}] Gen {ga_instance.generations_completed:02d} | Stations: {int(np.sum(best_sol)):03d} | Fit: {best_fit:,.2f} | "
+        print(f"[{self.experiment_name}] Gen {ga_instance.generations_completed:02d} | Stations: {int(np.sum(best_sol)):03d} | "
+              f"Pop Avg: {avg_pop_fitness:,.2f} | Pop Best: {best_pop_fitness:,.2f} | Global Best: {best_fit:,.2f} | "
               f"E: {metrics['avg_E']:,.2f} (Rev: {metrics['avg_rev']:,.2f}, Cost: {metrics['avg_cost']:,.2f}) | "
               f"O: {metrics['avg_O']:,.2f} (Unmet: {metrics['avg_unmet']:,.2f}, Dist: {metrics['avg_dist']:,.2f})")
 
     def run(self):
         print(f"--- Starting Experiment ({self.experiment_name}) ---")
         
-
         ga_instance = pygad.GA(
             num_generations=self.config['num_generations'],
             num_parents_mating=self.config['num_parents_mating'],
@@ -74,7 +82,7 @@ class Experiment:
             K_tournament=self.config['K_tournament'],
             crossover_type=self.config['crossover_type'],
             mutation_type=self.config['mutation_type'],
-#            mutation_probability=self.config['mutation_probability'],
+            mutation_probability=self.config['mutation_probability'],
             keep_elitism=self.config['keep_elitism']
         )
 
@@ -111,7 +119,6 @@ class Experiment:
             full_model_name
         )
         return best_x, best_fitness
-
 
 if __name__ == "__main__": 
     data_tuple = read_input(input_path)
@@ -238,4 +245,23 @@ if __name__ == "__main__":
         'keep_elitism': 5
     })
 
-    exp6.run()
+    exp7 = Experiment(data=data_tuple, experiment_name="Station-Customer Alternating Routing", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': AlternatingRouting,
+        'num_clusters': 40,
+        'num_generations': 200,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_100'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': smart_add_drop_mutation(data_tuple),
+        'mutation_probability': None,
+        'keep_elitism': 5
+    })
+
+    exp7.run()

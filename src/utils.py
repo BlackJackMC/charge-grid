@@ -85,30 +85,33 @@ def custom_intersection_crossover(parents, offspring_size, ga_instance):
 
 
 
+def smart_add_drop_mutation(data_tuple):
+    D = data_tuple[7]
 
-def smart_add_drop_mutation(offspring, ga_instance):
-    D = ga_instance.D 
-    for i in range(offspring.shape[0]):
-        chromosome = offspring[i]
-        if np.random.rand() < 0.5:
-            empty_spots = np.where(chromosome == 0)[0]
-            if len(empty_spots) > 0:
-                demand_at_empty = D[empty_spots]
-                sum_demand = np.sum(demand_at_empty)
-                
-                if sum_demand > 0:
-                    probabilities = demand_at_empty / sum_demand
-                else:
-                    probabilities = np.ones(len(empty_spots)) / len(empty_spots)
+    def _smart_add_drop_mutation(offspring, ga_instance):
+        for i in range(offspring.shape[0]):
+            chromosome = offspring[i]
+            if np.random.rand() < 0.5:
+                empty_spots = np.where(chromosome == 0)[0]
+                if len(empty_spots) > 0:
+                    demand_at_empty = D[empty_spots]
+                    sum_demand = np.sum(demand_at_empty)
+                    
+                    if sum_demand > 0:
+                        probabilities = demand_at_empty / sum_demand
+                    else:
+                        probabilities = np.ones(len(empty_spots)) / len(empty_spots)
 
-                chosen_spot = np.random.choice(empty_spots, p=probabilities)
-                chromosome[chosen_spot] = 1
-        else:
-            active_spots = np.where(chromosome == 1)[0]
-            if len(active_spots) > 0:
-                chosen_drop = np.random.choice(active_spots)
-                chromosome[chosen_drop] = 0
-                
-    return offspring
+                    chosen_spot = np.random.choice(empty_spots, p=probabilities)
+                    chromosome[chosen_spot] = 1
+            else:
+                active_spots = np.where(chromosome == 1)[0]
+                if len(active_spots) > 0:
+                    chosen_drop = np.random.choice(active_spots)
+                    chromosome[chosen_drop] = 0
+                    
+        return offspring
+
+    return _smart_add_drop_mutation
 
 ###################
