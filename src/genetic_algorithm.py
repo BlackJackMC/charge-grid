@@ -276,11 +276,13 @@ if __name__ == "__main__":
         'random_seed': 42,
         'stop_criteria': ['saturate_100'],
         'parent_selection_type': 'tournament',
-        'K_tournament': 3,
+        'K_tournament': 5,
         'crossover_type': 'uniform',
         'mutation_type': smart_add_drop_mutation(data_tuple),
         'mutation_probability': None,
         'keep_elitism': 5
     })
+
+
 
     exp8.run()
