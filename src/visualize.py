@@ -6,6 +6,7 @@ from branca.element import Element
 from pathlib import Path
 
 from utils import read_input
+from models.alternating import AlternatingRouting
 from models.customer import CustomerRouting
 
 input_folder = Path('..')
@@ -109,10 +110,13 @@ if __name__ == "__main__":
             x = sol['best_solution']['x']
             config = sol['metadata']['configuration']
             rng = random.Random(config.get('random_seed', 42))
-            model = CustomerRouting(N, B, C, P, R, L, Z, D, config)
+            model = AlternatingRouting(N, B, C, P, R, L, Z, D, config)
+            # model = CustomerRouting(N, B, C, P, R, L, Z, D, config)
             F_list = []
             for _ in range(config.get('num_shuffles', 0)):
                 order = list(range(N))
                 rng.shuffle(order)
                 F_list.append(model.route(x, order))
+            if len(F_list) == 0:
+                F_list = [model.route(x)]
             generate_flow_map(x, N, B, D, F_list)

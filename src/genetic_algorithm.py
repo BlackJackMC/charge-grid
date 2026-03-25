@@ -264,4 +264,23 @@ if __name__ == "__main__":
         'keep_elitism': 5
     })
 
-    exp7.run()
+    exp8 = Experiment(data=data_tuple, experiment_name="Station-Customer Alternating Routing - large generation", config= {
+        'alpha': 100.0,
+        'beta': 0.0005,
+        'lambda': 1.0,
+        'model_builder': AlternatingRouting,
+        'num_clusters': 40,
+        'num_generations': 750,
+        'sol_per_pop': 100,  
+        'num_parents_mating': 10,
+        'random_seed': 42,
+        'stop_criteria': ['saturate_100'],
+        'parent_selection_type': 'tournament',
+        'K_tournament': 3,
+        'crossover_type': 'uniform',
+        'mutation_type': smart_add_drop_mutation(data_tuple),
+        'mutation_probability': None,
+        'keep_elitism': 5
+    })
+
+    exp8.run()
