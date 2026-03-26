@@ -8,7 +8,7 @@ from models.station import StationRouting
 from models.behavioral import BehavioralRouting
 from models.alternating import AlternatingRouting
 
-from utils import read_input, custom_intersection_crossover, adaptive_mutation, stagnation_aware_adaptive_mutation
+from utils import read_input, custom_intersection_crossover, adaptive_mutation, stagnation_aware_adaptive_mutation, noise_injected_adaptive_mutation
 
 input_folder = Path('..')
 output_folder = Path('./output')
@@ -129,16 +129,16 @@ exp6 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'lambda': 1.0,
     'model_builder': ClusterRouting,
     'num_clusters': 40,
-    'num_generations': 500,
-    'sol_per_pop': 200,  
-    'num_parents_mating': 20,
+    'num_generations': 750,
+    'sol_per_pop': 100,  
+    'num_parents_mating': 10,
     'num_shuffles': 2,
     'random_seed': 42,
     'stop_criteria': ['saturate_50'],
     'parent_selection_type': 'tournament',
-    'K_tournament': 10,
-    'crossover_type': 'uniform',
-    'mutation_type': adaptive_mutation,
+    'K_tournament': 5,
+    'crossover_type': custom_intersection_crossover,
+    'mutation_type': noise_injected_adaptive_mutation,
     'keep_elitism': 5
 })
 
@@ -202,6 +202,24 @@ exp9 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
+exp10 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Stable Matching - large generation - stagnation aware adaptive mutation - custom crossover intersection", config= {
+    'alpha': 100.0,
+    'beta': 0.0005,
+    'lambda': 1.0,
+    'model_builder': AlternatingRouting,
+    'num_clusters': 40,
+    'num_generations': 750,
+    'sol_per_pop': 100,  
+    'num_parents_mating': 10,
+    'random_seed': 42,
+    'stop_criteria': ['saturate_100'],
+    'parent_selection_type': 'tournament',
+    'K_tournament': 5,
+    'crossover_type': custom_intersection_crossover(data_tuple),
+    'mutation_type': noise_injected_adaptive_mutation(data_tuple),
+    'mutation_probability': None,
+    'keep_elitism': 5
+})
 
 def main():
     for model in [CustomerRouting, StationRouting, ClusterRouting, BehavioralRouting, AlternatingRouting]:
