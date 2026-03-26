@@ -15,7 +15,8 @@ output_folder = Path('./output')
 input_path = input_folder / 'input_q1.txt'
 data_tuple = read_input(input_path)
 
-exp1 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Customer Routing - soft constraint", config= {
+exp1 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Customer Routing - soft constraint", config= {
     'alpha': 10.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -34,7 +35,8 @@ exp1 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp2 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Behavioral Routing - custom crossover", config={
+exp2 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Behavioral Routing - custom crossover", config={
     'alpha': 10.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -59,7 +61,8 @@ exp2 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 2
 })
 
-exp3 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Customer Routing", config= {
+exp3 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Customer Routing", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -78,7 +81,8 @@ exp3 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp4 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Station Routing", config= {
+exp4 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Station Routing", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -97,7 +101,8 @@ exp4 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp5 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Station Cluster Routing", config= {
+exp5 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Station Cluster Routing", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -117,7 +122,8 @@ exp5 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp6 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Station Cluster Routing - adaptive mutation", config= {
+exp6 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Station Cluster Routing - adaptive mutation", config= {
     'alpha': 10.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -136,7 +142,8 @@ exp6 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp7 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Stable Matching - adaptive mutation", config= {
+exp7 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Stable Matching - adaptive mutation", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -155,7 +162,8 @@ exp7 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp8 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Stable Matching - large generation - adaptive mutation", config= {
+exp8 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Stable Matching - large generation - adaptive mutation", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -174,7 +182,8 @@ exp8 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-exp9 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, experiment_name="Stable Matching - large generation - stagnation aware adaptive mutation", config= {
+exp9 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                  experiment_name="Stable Matching - large generation - stagnation aware adaptive mutation", config= {
     'alpha': 100.0,
     'beta': 0.0005,
     'lambda': 1.0,
@@ -193,10 +202,37 @@ exp9 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_f
     'keep_elitism': 5
 })
 
-def main():
-    exp8.run()
-    exp9.run()
 
+def main():
+    for model in [CustomerRouting, StationRouting, ClusterRouting, BehavioralRouting, AlternatingRouting]:
+        exp_temp = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                              experiment_name="All model - large generation - adaptive mutation", config= {
+            'alpha': 100.0,
+            'beta': 0.0005,
+            'lambda': 1.0,
+            'mu': 1.0,
+            'K': 10,
+            'w1': 0.95,
+            'w2': 0.05,
+            'gamma': 1.0,
+            'epsilon': 1.0,
+            'model_builder': model,
+            'num_clusters': 40,
+            'num_generations': 750,
+            'sol_per_pop': 100,
+            'num_parents_mating': 10,
+            'random_seed': 42,
+            'num_shuffles': 5,
+            'stop_criteria': ['saturate_100'],
+            'parent_selection_type': 'tournament',
+            'K_tournament': 5,
+            'crossover_type': 'uniform',
+            'mutation_type': adaptive_mutation(data_tuple),
+            'mutation_probability': None,
+            'keep_elitism': 5
+        })
+
+        exp_temp.run()
 
 
 

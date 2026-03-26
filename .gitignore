@@ -12,6 +12,3 @@ data/cache/
 data/logs
 *.egg-info/
 .vscode
-
-src/output/*
-!src/output/.gitkeep
