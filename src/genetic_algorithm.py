@@ -12,7 +12,7 @@ from utils import read_input, custom_intersection_crossover, adaptive_mutation, 
 
 input_folder = Path('..')
 output_folder = Path('./output')
-input_path = input_folder / 'input_q1.txt'
+input_path = input_folder / 'input_hcm.txt'
 data_tuple = read_input(input_path)
 
 exp1 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
@@ -222,6 +222,31 @@ exp10 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_
 })
 
 def main():
+    for crossover in ['uniform', custom_intersection_crossover(data_tuple)]:
+        for mutation in ['adaptive', 'random', stagnation_aware_adaptive_mutation(data_tuple), adaptive_mutation(data_tuple)]:
+            exp_temp = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
+                              experiment_name="All model - large generation - adaptive mutation", config= {
+            'alpha': 100.0,
+            'beta': 0.0005,
+            'lambda': 1.0,
+            'model_builder': AlternatingRouting,
+            'num_clusters': 40,
+            'num_generations': 750,
+            'sol_per_pop': 100,
+            'num_parents_mating': 10,
+            'stop_criteria': ['saturate_100'],
+            'parent_selection_type': 'tournament',
+            'random_seed': 42,
+            'K_tournament': 5,
+            'crossover_type': crossover,
+            'mutation_type': mutation,
+            'mutation_probability': None,
+            'keep_elitism': 5
+        })
+            
+        exp_temp.run()
+
+        """     
     for model in [CustomerRouting, BehavioralRouting, StationRouting, ClusterRouting, AlternatingRouting]:
         exp_temp = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
                               experiment_name="All model - large generation - adaptive mutation", config= {
@@ -248,11 +273,7 @@ def main():
             'mutation_type': noise_injected_adaptive_mutation(data_tuple),
             'mutation_probability': None,
             'keep_elitism': 5
-        })
-
-        exp_temp.run()
-
-
-
+        }) 
+"""
 if __name__ == "__main__": 
     main()
