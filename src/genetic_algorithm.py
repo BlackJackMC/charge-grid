@@ -222,7 +222,7 @@ exp10 = Experiment(data=data_tuple, input_path=input_path, output_folder=output_
 })
 
 def main():
-    for model in [CustomerRouting, StationRouting, ClusterRouting, BehavioralRouting, AlternatingRouting]:
+    for model in [CustomerRouting, BehavioralRouting, StationRouting, ClusterRouting, AlternatingRouting]:
         exp_temp = Experiment(data=data_tuple, input_path=input_path, output_folder=output_folder, 
                               experiment_name="All model - large generation - adaptive mutation", config= {
             'alpha': 100.0,
@@ -245,7 +245,7 @@ def main():
             'parent_selection_type': 'tournament',
             'K_tournament': 5,
             'crossover_type': 'uniform',
-            'mutation_type': adaptive_mutation(data_tuple),
+            'mutation_type': noise_injected_adaptive_mutation(data_tuple),
             'mutation_probability': None,
             'keep_elitism': 5
         })
