@@ -20,14 +20,16 @@ MODEL_MAP = {
     'BehavioralRouting': BehavioralRouting,
 }
 
-input_folder = Path('..')
-output_folder = Path('./output')
-cache_folder = Path('./cache')
+input_folder = Path('../..')
+output_folder = Path('../output')
+cache_folder = Path('../cache')
 input_path = input_folder / 'input_q1.txt'
 csv_metadata_path = input_folder / 'data_hcm.csv'
+asset_path = Path('./assets')
 
-CSS_PATH = Path('./style.css')
-JS_PATH = Path('./script.js')
+
+CSS_PATH = asset_path / 'style.css'
+JS_PATH = asset_path / 'script.js'
 
 def choose_solution_file():
     if not output_folder.exists(): 

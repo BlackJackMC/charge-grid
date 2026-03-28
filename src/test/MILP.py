@@ -4,21 +4,7 @@ import numpy as np
 from pathlib import Path
 from ortools.linear_solver import pywraplp
 
-def read_input(input_path):
-    input_path = Path(input_path)
-    if input_path.exists():
-        with open(input_path, 'r', encoding='utf-8') as f:
-            N, B, C, P = f.readline().strip().split()
-            N, B = int(N), int(B)
-            C, P = float(C), float(P)
-
-            L = np.array([[float(x) for x in f.readline().strip().split()] for _ in range(N)])
-            R = np.array([float(x) for x in f.readline().strip().split()])
-            Z = np.array([float(x) for x in f.readline().strip().split()])
-            D = np.array([int(x) for x in f.readline().strip().split()])
-
-        return N, B, C, P, L, R, Z, D
-    raise FileNotFoundError(f"Input file not found at {input_path}")
+from utils import read_input
 
 def solve_battery_stations_ortools(input_file, alpha=100.0, beta=1.0, lambda_weight=1.0, time_limit_ms=None):
     N, B, C, P, L, R, Z, D = read_input(input_file)
