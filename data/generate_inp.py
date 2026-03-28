@@ -5,11 +5,11 @@ import math
 import geopandas as gpd
 import random
 
-from charge_grid.utils import INPUT_DIR
+from charge_grid.utils import METADATA_DIR, INPUT_DIR
 
 
 print("Loading locations...")
-gdf = pd.read_csv("data_hcm.csv")
+gdf = pd.read_csv(METADATA_DIR / "data_hcm.csv")
 
 place = "Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
