@@ -2,51 +2,33 @@ import osmnx as ox
 import networkx as nx
 import pandas as pd
 import math
-import geopandas as gpd # IMPORTANT: Added GeoPandas for spatial operations
+import geopandas as gpd
 import random
 
-# ==============================
-# 1. Đọc CSV
-# ==============================
+from charge_grid.utils import INPUT_DIR
+
+
 print("Loading locations...")
 gdf = pd.read_csv("data_hcm.csv")
-
-# ==============================
-# 2. Load graph
-# ==============================
 
 place = "Ho Chi Minh City, Vietnam"
 print("Downloading graph...")
 G = ox.graph_from_place(place, network_type="walk")
 
-# ==============================
-# 3. Project CRS (QUAN TRỌNG)
-# ==============================
 G = ox.project_graph(G)
 
-# ==============================
-# 4. Lấy nodes GeoDataFrame
-# ==============================
 nodes, edges = ox.graph_to_gdfs(G)
 
-# ==============================
-# 5. Map lat/lon → CRS của graph (CORRECTED)
-# ==============================
 print("Projecting CSV coordinates to Graph CRS...")
 
-# Bước A: Chuyển Pandas DataFrame thành GeoDataFrame (chuẩn GPS EPSG:4326)
 gdf_geo = gpd.GeoDataFrame(
     gdf, 
     geometry=gpd.points_from_xy(gdf['lon'], gdf['lat']),
     crs="EPSG:4326"
 )
 
-# Bước B: Project sang CRS của graph
 gdf_proj = gdf_geo.to_crs(nodes.crs)
 
-# ==============================
-# 6. Dùng ox.nearest_nodes (NHANH + CHUẨN)
-# ==============================
 print("Mapping to nearest nodes...")
 
 gdf_proj["road_node"] = ox.distance.nearest_nodes(
@@ -55,15 +37,11 @@ gdf_proj["road_node"] = ox.distance.nearest_nodes(
     Y=gdf_proj.geometry.y
 )
 
-# ==============================
-# 7. Tính shortest path (distance chuẩn)
-# ==============================
 print("\nCalculating shortest paths (optimized)...")
 
 
-# danh sách road nodes
 road_nodes = gdf_proj["road_node"].tolist()
-ids = gdf_proj["id"].tolist() # Giả sử file CSV của bạn có cột 'id'
+ids = gdf_proj["id"].tolist()
 
 N = len(gdf)
 
@@ -72,7 +50,6 @@ L = [[0]*N for _ in range(N)]
 for i in range(N):
     source = road_nodes[i]
 
-    # chạy Dijkstra 1 lần
     lengths = nx.single_source_dijkstra_path_length(
         G,
         source,
@@ -88,7 +65,6 @@ for i in range(N):
             if target in lengths:
                 dist = lengths[target]
 
-                # fallback nếu dist = 0
                 if dist == 0:
                     dist = math.sqrt(
                         (gdf_proj.geometry.x[i] - gdf_proj.geometry.x[j])**2 +
@@ -98,9 +74,6 @@ for i in range(N):
                 L[i][j] = round(dist, 4)
             
 
-# ==============================
-# 8. EXPORT CSV RIÊNG
-# ==============================
 # print("\nExporting CSVs...")
 
 # # nodes mapped
@@ -114,9 +87,6 @@ for i in range(N):
 
 # print("CSV exported!")
 
-# ==============================
-# 9. Tạo input.txt
-# ==============================
 
 C = 325
 B = 220
@@ -155,16 +125,14 @@ district_D_range = {
 D = []
 
 for d in districts:
-    if random.random() < 0.6:  # 60% have demand
+    if random.random() < 0.6:
         low, high = district_D_range.get(d, (20, 60))
         D.append(random.randint(low, high))
     else:
         D.append(0)
 
-# Rental cost R
 R = [random.choice([30, 40]) for _ in range(N)]
 
-# Max travel distance Z
 Z = []
 
 for i in range(N):
@@ -184,10 +152,7 @@ for i in range(N):
 
     Z.append(round(min_dist * factor, 2))
 
-# ==============================
-# 10. EXPORT INPUT.TXT
-# ==============================
-with open("input_hcm.txt", "w") as f:
+with open(INPUT_DIR / "input_hcm.txt", "w") as f:
     f.write(f"{N} {B} {C} {P}\n")
 
     for i in range(N):

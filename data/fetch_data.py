@@ -3,9 +3,7 @@ import pandas as pd
 import networkx as nx
 import math
 
-# ==============================
-# 1. Take data from OSM
-# ==============================
+from charge_grid.utils import METADATA_DIR
 
 districts = [
     "District 1, Ho Chi Minh City, Vietnam",
@@ -52,7 +50,6 @@ for place in districts:
     gdf_temp["district"] = place.split(",")[0]
     gdfs.append(gdf_temp)
 
-# Merge all GeoDataFrames into one
 gdf = pd.concat(gdfs, ignore_index=True)
 gdf = gdf.reset_index(drop=True)
 
@@ -63,13 +60,11 @@ gdf["name"] = gdf["name"].fillna("Unknown")
 gdf["lat"] = gdf.geometry.centroid.y
 gdf["lon"] = gdf.geometry.centroid.x
 
-# Remove duplicate 
 gdf = gdf.drop_duplicates(subset=["lat", "lon"])
 
-# Numbering data
 gdf["id"] = range(1, len(gdf) + 1)
 
 data = gdf[["id", "name", "amenity", "lat", "lon", "district"]]
 
-data.to_csv("data_hcm.csv", index=False)
+data.to_csv(METADATA_DIR / "data_hcm.csv", index=False)
 print("Saved to data_hcm.csv")
