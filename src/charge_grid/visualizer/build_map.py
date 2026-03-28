@@ -21,13 +21,13 @@ MODEL_MAP = {
 }
 
 cache_folder = Path('../cache')
-input_path = INPUT_DIR / 'input_q1.txt'
+input_path = INPUT_DIR / 'input_hcm.txt'
 csv_metadata_path = METADATA_DIR / 'data_hcm.csv'
 asset_path = Path('./assets')
 
 
-CSS_PATH = asset_path / 'style.css'
-JS_PATH = asset_path / 'script.js'
+CSS_PATH = asset_path / 'map_style.css'
+JS_PATH = asset_path / 'map_script.js'
 
 def choose_solution_file():
     if not OUTPUT_DIR.exists(): 
