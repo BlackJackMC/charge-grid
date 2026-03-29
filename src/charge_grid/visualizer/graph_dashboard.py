@@ -12,15 +12,15 @@ CSS_PATH = asset_path / 'dashboard_style.css'
 JS_PATH = asset_path / 'dashboard_script.js'
 
 def choose_solution_files():
-    print(f" Đang tìm kiếm file tại: {output_folder.resolve()}")
+    print(f"🔍 Đang tìm kiếm file tại: {output_folder.resolve()}")
 
     if not output_folder.exists():
-        print(f" Không tìm thấy thư mục {output_folder.resolve()}")
+        print(f"❌ Không tìm thấy thư mục {output_folder.resolve()}")
         return []
 
     json_files = list(output_folder.glob('solution_*.json'))
     if not json_files:
-        print(f" Không có file 'solution_*.json' nào trong {output_folder.resolve()}")
+        print(f"❌ Không có file 'solution_*.json' nào trong {output_folder.resolve()}")
         return []
 
     print("\n--- DANH SÁCH KẾT QUẢ ĐÃ LƯU ---")
@@ -37,11 +37,11 @@ def choose_solution_files():
         selected_files = [json_files[i] for i in indices if 0 <= i < len(json_files)]
         
         if not selected_files:
-            print(" Không có file nào hợp lệ được chọn.")
+            print("❌ Không có file nào hợp lệ được chọn.")
         return selected_files
         
     except Exception as e:
-        print(f" Lỗi: {e}")
+        print(f"❌ Lỗi: {e}")
         return []
 
 def load_chart_data(selected_files):
@@ -54,7 +54,7 @@ def load_chart_data(selected_files):
                 
             history = data.get('generation_history', [])
             if not history:
-                print(f" Bỏ qua {file_path.name}: Không tìm thấy dữ liệu 'generation_history'.")
+                print(f"⚠️ Bỏ qua {file_path.name}: Không tìm thấy dữ liệu 'generation_history'.")
                 continue
             
             metadata = data.get('metadata', {})
@@ -66,6 +66,29 @@ def load_chart_data(selected_files):
                 
             cross_type = config.get('crossover_type', 'N/A')
             display_title = f"Mut: {mut_type} | Cross: {cross_type}"
+            
+            mut_prob = config.get('mutation_probability')
+            if isinstance(mut_prob, list):
+                mut_prob = f"[{', '.join(map(str, mut_prob))}]"
+            elif mut_prob is None:
+                mut_prob = "None (Auto)"
+
+            stop_crit = config.get('stop_criteria', [])
+            if isinstance(stop_crit, list):
+                stop_crit = ", ".join(stop_crit)
+                
+            extra_meta = {
+                "Alpha": config.get('alpha', 'N/A'),
+                "Beta": config.get('beta', 'N/A'),
+                "Lambda": config.get('lambda', 'N/A'),
+                "Generations": config.get('num_generations', 'N/A'),
+                "Pop Size": config.get('sol_per_pop', 'N/A'),
+                "Parents Mating": config.get('num_parents_mating', 'N/A'),
+                "K-Tournament": config.get('K_tournament', 'N/A'),
+                "Elitism": config.get('keep_elitism', 'N/A'),
+                "Mut. Prob": mut_prob,
+                "Stop Criteria": stop_crit
+            }
                 
             labels = []
             fitness_data = []
@@ -80,12 +103,13 @@ def load_chart_data(selected_files):
                 'title': display_title,
                 'labels': labels,
                 'fitness': fitness_data,
-                'profit': profit_data
+                'profit': profit_data,
+                'extra_meta': extra_meta  
             }
-            print(f" Đã tải dữ liệu từ {file_path.name}")
+            print(f"✅ Đã tải dữ liệu từ {file_path.name}")
             
         except Exception as e:
-            print(f" Lỗi khi đọc {file_path.name}: {e}")
+            print(f"❌ Lỗi khi đọc {file_path.name}: {e}")
 
     return all_data
 
@@ -97,14 +121,14 @@ def generate_dashboard_html(chart_data):
             css_code = f.read()
     except FileNotFoundError:
         css_code = "/* CSS File missing */"
-        print(f" Cảnh báo: Không tìm thấy {CSS_PATH}")
+        print(f"⚠️ Cảnh báo: Không tìm thấy {CSS_PATH}")
         
     try:
         with open(JS_PATH, 'r', encoding='utf-8') as f:
             js_code = f.read()
     except FileNotFoundError:
         js_code = "// JS File missing"
-        print(f" Cảnh báo: Không tìm thấy {JS_PATH}")
+        print(f"⚠️ Cảnh báo: Không tìm thấy {JS_PATH}")
 
     html_content = f"""
     <!DOCTYPE html>
@@ -129,6 +153,9 @@ def generate_dashboard_html(chart_data):
             <div class="modal-content">
                 <button class="close-btn" id="closeModal">&times;</button>
                 <h3 class="modal-title" id="modalTitle">Biểu đồ chi tiết</h3>
+                
+                <div id="modalMeta" class="metadata-grid"></div>
+                
                 <div class="canvas-container">
                     <canvas id="modalCanvas"></canvas>
                 </div>
@@ -136,10 +163,7 @@ def generate_dashboard_html(chart_data):
         </div>
 
         <script>
-            // Chuyển dữ liệu Python thành biến toàn cục của window
             window.allChartData = {json.dumps(chart_data)};
-            
-            // Chạy logic của Chart.js
             {js_code}
         </script>
     </body>
@@ -150,7 +174,7 @@ def generate_dashboard_html(chart_data):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
         
-    print(f"\n Dashboard updated! Open: {output_path.resolve()}")
+    print(f"\n🎉 Dashboard updated! Open: {output_path.resolve()}")
 
 if __name__ == "__main__":
     selected = choose_solution_files()
@@ -159,4 +183,4 @@ if __name__ == "__main__":
         if chart_data:
             generate_dashboard_html(chart_data)
         else:
-            print("Không có dữ liệu để vẽ biểu đồ.")
+            print("❌ Không có dữ liệu để vẽ biểu đồ.")

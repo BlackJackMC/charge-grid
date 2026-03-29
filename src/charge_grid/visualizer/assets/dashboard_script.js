@@ -47,7 +47,6 @@ Object.keys(allChartData).forEach((fileKey, index) => {
 
     const card = document.createElement('div');
     card.className = 'chart-card';
-    
     card.innerHTML = `
         <h3><i class="fas fa-chart-line"></i> ${dataObj.title}</h3>
         <i class="fas fa-expand expand-icon"></i>
@@ -56,7 +55,7 @@ Object.keys(allChartData).forEach((fileKey, index) => {
         </div>
     `;
     
-    card.addEventListener('click', () => openModal(dataObj.title, chartConfig));
+    card.addEventListener('click', () => openModal(dataObj.title, chartConfig, dataObj.extra_meta));
     grid.appendChild(card);
 
     const ctx = document.getElementById(`chart-${index}`).getContext('2d');
@@ -77,9 +76,7 @@ Object.keys(allChartData).forEach((fileKey, index) => {
                         maxRotation: 0,
                         font: { size: 9 }
                     },
-                    grid: {
-                        color: (context) => context.tick && context.tick.label !== '' ? 'rgba(0,0,0,0.1)' : 'transparent'
-                    }
+                    grid: { color: (context) => context.tick && context.tick.label !== '' ? 'rgba(0,0,0,0.1)' : 'transparent' }
                 },
                 y: { display: true, ticks: { font: { size: 10 } } }
             },
@@ -88,9 +85,22 @@ Object.keys(allChartData).forEach((fileKey, index) => {
     });
 });
 
-function openModal(displayTitle, chartConfig) {
+function openModal(displayTitle, chartConfig, extraMeta) {
     modalTitle.innerHTML = `<i class="fas fa-search-plus"></i> ${displayTitle}`;
     
+    const metaContainer = document.getElementById('modalMeta');
+    metaContainer.innerHTML = '';
+    if (extraMeta) {
+        Object.entries(extraMeta).forEach(([key, value]) => {
+            metaContainer.innerHTML += `
+                <div class="meta-item">
+                    <strong>${key}</strong>
+                    <span>${value}</span>
+                </div>
+            `;
+        });
+    }
+
     if (modalChartInstance) {
         modalChartInstance.destroy();
     } 
@@ -116,13 +126,8 @@ function openModal(displayTitle, chartConfig) {
             scales: {
                 x: { 
                     title: { display: true, text: 'Generation' },
-                    ticks: {
-                        callback: tickFilter25, 
-                        autoSkip: false,
-                    },
-                    grid: {
-                        color: (context) => context.tick && context.tick.label !== '' ? 'rgba(0,0,0,0.1)' : 'transparent'
-                    }
+                    ticks: { callback: tickFilter25, autoSkip: false },
+                    grid: { color: (context) => context.tick && context.tick.label !== '' ? 'rgba(0,0,0,0.1)' : 'transparent' }
                 },
                 y: { title: { display: true, text: 'Value' } }
             }

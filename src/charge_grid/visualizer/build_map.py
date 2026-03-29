@@ -21,9 +21,10 @@ MODEL_MAP = {
 }
 
 cache_folder = Path('../cache')
+current_dir = Path(__file__).parent
 input_path = INPUT_DIR / 'input_hcm.txt'
 csv_metadata_path = METADATA_DIR / 'data_hcm.csv'
-asset_path = Path('./assets')
+asset_path = current_dir / 'assets'
 
 
 CSS_PATH = asset_path / 'map_style.css'
