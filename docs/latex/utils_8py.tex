@@ -1,0 +1,43 @@
+\doxysection{src/charge\+\_\+grid/utils.py File Reference}
+\hypertarget{utils_8py}{}\label{utils_8py}\index{src/charge\_grid/utils.py@{src/charge\_grid/utils.py}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacecharge__grid}{charge\+\_\+grid}}
+\item 
+namespace \mbox{\hyperlink{namespacecharge__grid_1_1utils}{charge\+\_\+grid.\+utils}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_adf9a1868b8f8148a87c12e8d44ba59ff}{charge\+\_\+grid.\+utils.\+read\+\_\+input}} (input\+\_\+path)
+\begin{DoxyCompactList}\small\item\em I/O Functions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a6f5ae5018e2c025f74da999c34f6004b}{charge\+\_\+grid.\+utils.\+save\+\_\+optimization\+\_\+results}} (output\+\_\+folder, best\+\_\+x, best\+\_\+fitness, generation\+\_\+history, config, input\+\_\+filename, start\+\_\+time, end\+\_\+time, run\+\_\+time, model\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Exports the final optimization metrics, configuration, and history to a JSON file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_aa94950d88ededb3d7373afd4e7cd322a}{charge\+\_\+grid.\+utils.\+E}} (x, F, C, P, R)
+\begin{DoxyCompactList}\small\item\em Helper Functions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a0aa3c220465511b94f23952ef238c86b}{charge\+\_\+grid.\+utils.\+O}} (F, D, L, alpha, beta)
+\begin{DoxyCompactList}\small\item\em Computes the operational penalty metrics for unmet demand and travel distance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a91a7a6dc57d6163cb2aadae371d9eb87}{charge\+\_\+grid.\+utils.\+custom\+\_\+intersection\+\_\+crossover}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function that generates a spatially-\/aware custom crossover operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_af2112db7d81b1fcd5cfef113d085b552}{charge\+\_\+grid.\+utils.\+adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function that generates a demand-\/aware adaptive mutation operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a96747b155681fc7e574ed803fcaf3e13}{charge\+\_\+grid.\+utils.\+stagnation\+\_\+aware\+\_\+adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function generating an advanced, state-\/aware adaptive mutation operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a309f808cd7b448fc3f6c746ac9d680d5}{charge\+\_\+grid.\+utils.\+noise\+\_\+injected\+\_\+adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function generating a state-\/aware mutation operator with random noise injection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a644bbe84abdfc888b563f17243c867f3}{charge\+\_\+grid.\+utils.\+\_\+current\+\_\+file}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve()
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}{charge\+\_\+grid.\+utils.\+PROJECT\+\_\+\+ROOT}} = \+\_\+current\+\_\+file.\+parent.\+parent.\+parent
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{charge\+\_\+grid.\+utils.\+DATA\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}{PROJECT\+\_\+\+ROOT}} / "{}data"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_a918cee71594d393c475a8b0505b022b3}{charge\+\_\+grid.\+utils.\+INPUT\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}input"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_ac751be21ed4f9fd8476709398e8e2d51}{charge\+\_\+grid.\+utils.\+OUTPUT\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}output"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_a169a0212fd72921a26dfe93f6a36d844}{charge\+\_\+grid.\+utils.\+METADATA\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}metadata"{}
+\end{DoxyCompactItemize}

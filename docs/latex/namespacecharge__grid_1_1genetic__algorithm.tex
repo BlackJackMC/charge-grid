@@ -1,0 +1,333 @@
+\doxysection{charge\+\_\+grid.\+genetic\+\_\+algorithm Namespace Reference}
+\hypertarget{namespacecharge__grid_1_1genetic__algorithm}{}\label{namespacecharge__grid_1_1genetic__algorithm}\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_aebb169ecc6889ac58fc1c507e0c006bf}{main}} ()
+\begin{DoxyCompactList}\small\item\em The primary execution script for running the optimization experiments. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a48aca18ac9c45d97a84d3d4f3fc87b6e}{input\+\_\+path}} = INPUT\+\_\+\+DIR / \textquotesingle{}input\+\_\+hcm.\+txt\textquotesingle{}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a34c474a6b87ae0d47bdb53ce65e21eff}{data\+\_\+tuple}} = read\+\_\+input(\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a48aca18ac9c45d97a84d3d4f3fc87b6e}{input\+\_\+path}})
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a1043cec4cd0f86265c8edadca630bf25}{exp1}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_afede92b14c5303ea91d67c38ab770152}{exp3}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a02cd2ed021693358d5dd63208578d2a1}{exp4}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_addfa6289d83c8f77100489e4c16a24e9}{exp5}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_aa1766e30626f688abb32c61e9dc9efa1}{exp6}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a0f853c1516987c38472f33da837601e4}{exp7}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a007626a9645c43a0a26bf2963aa28fd8}{exp8}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a293b3b10116556f4144f137e4c4f150a}{exp9}}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a81996740113f30ca5c1a0fd13c191a81}{exp10}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_aebb169ecc6889ac58fc1c507e0c006bf}\label{namespacecharge__grid_1_1genetic__algorithm_aebb169ecc6889ac58fc1c507e0c006bf} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!main@{main}}
+\index{main@{main}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+The primary execution script for running the optimization experiments. 
+
+This function sets up and executes a series of genetic algorithm runs. It iterates over defined lists of crossover and mutation operators, dynamically building a configuration dictionary for each combination. It then initializes an Experiment object with this configuration and triggers the optimization process.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Utilizes the globally parsed {\ttfamily data\+\_\+tuple} loaded by {\ttfamily read\+\_\+input} (from {\ttfamily \doxylink{utils_8py}{utils.\+py}}).
+\item Injects custom genetic operators (e.\+g., {\ttfamily noise\+\_\+injected\+\_\+adaptive\+\_\+mutation} from {\ttfamily \doxylink{utils_8py}{utils.\+py}}) and routing models (e.\+g., {\ttfamily Alternating\+Routing} from {\ttfamily models}) directly into the config.
+\item Instantiates the {\ttfamily Experiment} class to prepare the Py\+GAD engine.
+\item Calls {\ttfamily exp\+\_\+temp.\+run()} to execute the evolutionary loop and trigger the data export. 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a34c474a6b87ae0d47bdb53ce65e21eff}\label{namespacecharge__grid_1_1genetic__algorithm_a34c474a6b87ae0d47bdb53ce65e21eff} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!data\_tuple@{data\_tuple}}
+\index{data\_tuple@{data\_tuple}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{data\_tuple}{data\_tuple}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+data\+\_\+tuple = read\+\_\+input(\mbox{\hyperlink{namespacecharge__grid_1_1genetic__algorithm_a48aca18ac9c45d97a84d3d4f3fc87b6e}{input\+\_\+path}})}
+
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a1043cec4cd0f86265c8edadca630bf25}\label{namespacecharge__grid_1_1genetic__algorithm_a1043cec4cd0f86265c8edadca630bf25} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp1@{exp1}}
+\index{exp1@{exp1}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp1}{exp1}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp1}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Customer\ Routing\ -\/\ soft\ constraint"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 10.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ CustomerRouting,\ }
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 200,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_shuffles'}:\ 3,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_50'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 3,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ \textcolor{stringliteral}{'adaptive'},}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ [0.35,\ 0.05],}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a81996740113f30ca5c1a0fd13c191a81}\label{namespacecharge__grid_1_1genetic__algorithm_a81996740113f30ca5c1a0fd13c191a81} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp10@{exp10}}
+\index{exp10@{exp10}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp10}{exp10}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp10}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,}
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Stable\ Matching\ -\/\ large\ generation\ -\/\ stagnation\ aware\ adaptive\ mutation\ -\/\ custom\ crossover\ intersection"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ AlternatingRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 750,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_100'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 5,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ custom\_intersection\_crossover(data\_tuple),}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ noise\_injected\_adaptive\_mutation(data\_tuple),}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ \textcolor{keywordtype}{None},}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_afede92b14c5303ea91d67c38ab770152}\label{namespacecharge__grid_1_1genetic__algorithm_afede92b14c5303ea91d67c38ab770152} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp3@{exp3}}
+\index{exp3@{exp3}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp3}{exp3}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp3}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Customer\ Routing"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ CustomerRouting,\ }
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 200,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_shuffles'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_50'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 3,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ \textcolor{stringliteral}{'adaptive'},}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ [0.35,\ 0.05],}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a02cd2ed021693358d5dd63208578d2a1}\label{namespacecharge__grid_1_1genetic__algorithm_a02cd2ed021693358d5dd63208578d2a1} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp4@{exp4}}
+\index{exp4@{exp4}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp4}{exp4}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp4}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Station\ Routing"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ StationRouting,\ }
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 200,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_shuffles'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_50'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 3,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ \textcolor{stringliteral}{'adaptive'},}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ [0.35,\ 0.05],}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_addfa6289d83c8f77100489e4c16a24e9}\label{namespacecharge__grid_1_1genetic__algorithm_addfa6289d83c8f77100489e4c16a24e9} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp5@{exp5}}
+\index{exp5@{exp5}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp5}{exp5}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp5}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Station\ Cluster\ Routing"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ ClusterRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 200,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'num\_shuffles'}:\ 10,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_50'}],}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 3,}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ \textcolor{stringliteral}{'adaptive'},}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ [0.35,\ 0.05],}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00020\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_aa1766e30626f688abb32c61e9dc9efa1}\label{namespacecharge__grid_1_1genetic__algorithm_aa1766e30626f688abb32c61e9dc9efa1} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp6@{exp6}}
+\index{exp6@{exp6}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp6}{exp6}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp6}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Station\ Cluster\ Routing\ -\/\ adaptive\ mutation"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 10.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ ClusterRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 750,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'num\_shuffles'}:\ 2,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_50'}],}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 5,}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ custom\_intersection\_crossover,}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ noise\_injected\_adaptive\_mutation,}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a0f853c1516987c38472f33da837601e4}\label{namespacecharge__grid_1_1genetic__algorithm_a0f853c1516987c38472f33da837601e4} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp7@{exp7}}
+\index{exp7@{exp7}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp7}{exp7}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp7}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Stable\ Matching\ -\/\ adaptive\ mutation"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ AlternatingRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 200,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_100'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 3,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ adaptive\_mutation(data\_tuple),}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ \textcolor{keywordtype}{None},}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a007626a9645c43a0a26bf2963aa28fd8}\label{namespacecharge__grid_1_1genetic__algorithm_a007626a9645c43a0a26bf2963aa28fd8} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp8@{exp8}}
+\index{exp8@{exp8}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp8}{exp8}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp8}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Stable\ Matching\ -\/\ large\ generation\ -\/\ adaptive\ mutation"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ AlternatingRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 750,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_100'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 5,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ adaptive\_mutation(data\_tuple),}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ \textcolor{keywordtype}{None},}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a293b3b10116556f4144f137e4c4f150a}\label{namespacecharge__grid_1_1genetic__algorithm_a293b3b10116556f4144f137e4c4f150a} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!exp9@{exp9}}
+\index{exp9@{exp9}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{exp9}{exp9}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+genetic\+\_\+algorithm.\+exp9}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ Experiment(data=data\_tuple,\ input\_path=input\_path,\ output\_folder=OUTPUT\_DIR,\ }
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ experiment\_name=\textcolor{stringliteral}{"{}Stable\ Matching\ -\/\ large\ generation\ -\/\ stagnation\ aware\ adaptive\ mutation"{}},\ config=\ \{}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{'alpha'}:\ 100.0,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{'beta'}:\ 0.0005,}
+\DoxyCodeLine{00005\ \ \ \ \ \textcolor{stringliteral}{'lambda'}:\ 1.0,}
+\DoxyCodeLine{00006\ \ \ \ \ \textcolor{stringliteral}{'model\_builder'}:\ AlternatingRouting,}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{stringliteral}{'num\_clusters'}:\ 40,}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{stringliteral}{'num\_generations'}:\ 750,}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{stringliteral}{'sol\_per\_pop'}:\ 100,\ \ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{stringliteral}{'num\_parents\_mating'}:\ 10,}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{stringliteral}{'random\_seed'}:\ 42,}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{stringliteral}{'stop\_criteria'}:\ [\textcolor{stringliteral}{'saturate\_100'}],}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{stringliteral}{'parent\_selection\_type'}:\ \textcolor{stringliteral}{'tournament'},}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{stringliteral}{'K\_tournament'}:\ 5,}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{stringliteral}{'crossover\_type'}:\ \textcolor{stringliteral}{'uniform'},}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{stringliteral}{'mutation\_type'}:\ stagnation\_aware\_adaptive\_mutation(data\_tuple),}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{stringliteral}{'mutation\_probability'}:\ \textcolor{keywordtype}{None},}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{stringliteral}{'keep\_elitism'}:\ 5}
+\DoxyCodeLine{00019\ \})}
+
+\end{DoxyCode}
+\Hypertarget{namespacecharge__grid_1_1genetic__algorithm_a48aca18ac9c45d97a84d3d4f3fc87b6e}\label{namespacecharge__grid_1_1genetic__algorithm_a48aca18ac9c45d97a84d3d4f3fc87b6e} 
+\index{charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}!input\_path@{input\_path}}
+\index{input\_path@{input\_path}!charge\_grid.genetic\_algorithm@{charge\_grid.genetic\_algorithm}}
+\doxysubsubsection{\texorpdfstring{input\_path}{input\_path}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+genetic\+\_\+algorithm.\+input\+\_\+path = INPUT\+\_\+\+DIR / \textquotesingle{}input\+\_\+hcm.\+txt\textquotesingle{}}
+

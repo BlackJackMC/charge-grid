@@ -5,7 +5,6 @@ from charge_grid.experiment import Experiment
 from charge_grid.models.cluster import ClusterRouting
 from charge_grid.models.customer import CustomerRouting
 from charge_grid.models.station import StationRouting
-from charge_grid.models.behavioral import BehavioralRouting
 from charge_grid.models.alternating import AlternatingRouting
 
 from charge_grid.utils import read_input, custom_intersection_crossover, adaptive_mutation, stagnation_aware_adaptive_mutation, noise_injected_adaptive_mutation, INPUT_DIR, OUTPUT_DIR
@@ -33,31 +32,6 @@ exp1 = Experiment(data=data_tuple, input_path=input_path, output_folder=OUTPUT_D
     'keep_elitism': 5
 })
 
-exp2 = Experiment(data=data_tuple, input_path=input_path, output_folder=OUTPUT_DIR, 
-                  experiment_name="Behavioral Routing - custom crossover", config={
-    'alpha': 10.0,
-    'beta': 0.0005,
-    'lambda': 1.0,
-    'mu': 1.0,           
-    'K': 10,             
-    'w1': 0.95,           
-    'w2': 0.05,           
-    'gamma': 1.0,        
-    'epsilon': 1.0,      
-    'model_builder': BehavioralRouting, 
-    'num_generations': 200,
-    'sol_per_pop': 100,  
-    'num_parents_mating': 10,
-    'num_shuffles': 3,
-    'random_seed': 42,
-    'stop_criteria': ['saturate_50'],
-    'parent_selection_type': 'tournament',
-    'K_tournament': 3,
-    'crossover_type': custom_intersection_crossover, 
-    'mutation_type': 'adaptive',
-    'mutation_probability': [0.3, 0.05],
-    'keep_elitism': 2
-})
 
 exp3 = Experiment(data=data_tuple, input_path=input_path, output_folder=OUTPUT_DIR, 
                   experiment_name="Customer Routing", config= {

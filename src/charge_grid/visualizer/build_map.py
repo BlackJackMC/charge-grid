@@ -10,14 +10,13 @@ from charge_grid.utils import read_input, E, O, INPUT_DIR, OUTPUT_DIR, METADATA_
 from charge_grid.models.cluster import ClusterRouting
 from charge_grid.models.customer import CustomerRouting
 from charge_grid.models.station import StationRouting
-from charge_grid.models.behavioral import BehavioralRouting
+
 
 
 MODEL_MAP = {
     'ClusterRouting': ClusterRouting,
     'CustomerRouting': CustomerRouting,
     'StationRouting': StationRouting,
-    'BehavioralRouting': BehavioralRouting,
 }
 
 cache_folder = Path('../cache')

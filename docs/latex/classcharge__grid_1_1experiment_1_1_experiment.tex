@@ -1,0 +1,284 @@
+\doxysection{charge\+\_\+grid.\+experiment.\+Experiment Class Reference}
+\hypertarget{classcharge__grid_1_1experiment_1_1_experiment}{}\label{classcharge__grid_1_1experiment_1_1_experiment}\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+
+
+A controller class for managing the genetic algorithm optimization process.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a98f0503b9984b900fa776347758201f1}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, data, \mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_aa198f1c02c0dfcf8cec7e2acb64376ba}{experiment\+\_\+name}}, \mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_acb90be7e9b61ba919e31f5102c3dd198}{input\+\_\+path}}, \mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a8a44f40a2fb3be3ecf1668e02ef7d261}{output\+\_\+folder}}, \mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_aefaf6091cb11903219e87e2304e12037}{config}})
+\begin{DoxyCompactList}\small\item\em Initializes the Experiment instance and prepares the routing model. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a7fb0097600e3a5de806058e5907c91d4}{fitness\+\_\+handler}} (self, ga\+\_\+instance, solution, solution\+\_\+idx)
+\begin{DoxyCompactList}\small\item\em The fitness function callback for the Py\+GAD instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_adc3449b6c9e303b5c43800cc20575f49}{log\+\_\+handler}} (self, ga\+\_\+instance)
+\begin{DoxyCompactList}\small\item\em A callback executed at the end of each generation to record metrics. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_ad8a56d3ec553782874a5858f57d549b7}{run}} (self)
+\begin{DoxyCompactList}\small\item\em Initializes and executes the genetic algorithm optimization process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a57f8c21fb3268c5d9c3285cbaeb509d9}{N}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_ad483bb735fd3898d5169513522d8f815}{B}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a97d6639c17c0569355c9f33679c21c1d}{C}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_aba44b4497fcd974b585beceb1c799b43}{P}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a887e72268f37dab6242b9ad094c3e68f}{L}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a15b4445dcd7a1fdd7748ec6a31af6f52}{R}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a314b9d9265c149a5880b697fdb33f147}{Z}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a06c0bcb2046e3d881db783355e25b3ee}{D}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_aa198f1c02c0dfcf8cec7e2acb64376ba}{experiment\+\_\+name}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_aefaf6091cb11903219e87e2304e12037}{config}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_acb90be7e9b61ba919e31f5102c3dd198}{input\+\_\+path}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a8a44f40a2fb3be3ecf1668e02ef7d261}{output\+\_\+folder}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_ad8031a8cfcde3fb3046f4bd6c7c8a2ec}{model}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_abaa0cd2ae8181e4fac64e481899c34c3}{generation\+\_\+history}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1experiment_1_1_experiment_a77d741eb195bb238325c7fd3fddcbcaf}{\+\_\+fitness\+\_\+handler\+\_\+helper}} (self, solution)
+\begin{DoxyCompactList}\small\item\em A cached helper function to store and retrieve fitness calculations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A controller class for managing the genetic algorithm optimization process. 
+
+This class acts as a dedicated wrapper around the Py\+GAD library. It decouples the core genetic algorithm mechanics from the specific domain logic (the routing models). It is responsible for setting up the GA engine, managing the state and history of the population across generations, evaluating chromosomes using the injected model, and handling the final data export.
+
+\begin{DoxyParagraph}{Class Connections\+:}
+
+\begin{DoxyItemize}
+\item Integrates with {\ttfamily pygad.\+GA} to drive the evolutionary loop.
+\item Dynamically builds and interacts with a specific domain model (e.\+g., {\ttfamily Alternating\+Routing}, {\ttfamily Customer\+Routing}) provided via the configuration to compute fitness scores.
+\item Relies on external I/O utilities (like {\ttfamily save\+\_\+optimization\+\_\+results} from {\ttfamily \doxylink{utils_8py}{utils.\+py}}) to persist the optimization outcomes to disk. 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a98f0503b9984b900fa776347758201f1}\label{classcharge__grid_1_1experiment_1_1_experiment_a98f0503b9984b900fa776347758201f1} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data,  }\item[{}]{experiment\+\_\+name,  }\item[{}]{input\+\_\+path,  }\item[{}]{output\+\_\+folder,  }\item[{}]{config }\end{DoxyParamCaption})}
+
+
+
+Initializes the Experiment instance and prepares the routing model. 
+
+Unpacks the network parameters from the provided data tuple and stores the experiment\textquotesingle{}s metadata and configuration. It dynamically instantiates the specific routing model defined in the configuration dictionary and initializes an empty list to track the generation history during execution.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Extracts the class reference from `config\mbox{[}\textquotesingle{}model\+\_\+builder'\mbox{]}{\ttfamily (e.\+g.,}Alternating\+Routing\`{}) and invokes its constructor, passing the unpacked network parameters to build the core evaluation engine.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em data} & A tuple containing the extracted network parameters (N, B, C, P, L, R, Z, D). \\
+\hline
+{\em experiment\+\_\+name} & A string representing the name of the current experiment. \\
+\hline
+{\em input\+\_\+path} & A Path object pointing to the input dataset file. \\
+\hline
+{\em output\+\_\+folder} & A Path object designating the directory for saving results. \\
+\hline
+{\em config} & A dictionary containing the genetic algorithm hyperparameters and the model builder class reference. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a77d741eb195bb238325c7fd3fddcbcaf}\label{classcharge__grid_1_1experiment_1_1_experiment_a77d741eb195bb238325c7fd3fddcbcaf} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!\_fitness\_handler\_helper@{\_fitness\_handler\_helper}}
+\index{\_fitness\_handler\_helper@{\_fitness\_handler\_helper}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{\_fitness\_handler\_helper()}{\_fitness\_handler\_helper()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+\_\+fitness\+\_\+handler\+\_\+helper (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{solution }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+A cached helper function to store and retrieve fitness calculations. 
+
+This method uses Python\textquotesingle{}s @cache to store the fitness scores of previously evaluated station layouts. If the provided tuple exists in the cache, it returns the stored score; otherwise, it calculates the fitness for the solution and caches the result for future lookups.
+
+
+\begin{DoxyParams}{Parameters}
+{\em solution} & A tuple of integers (1s and 0s) representing the station layout. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The fitness score as a float. 
+\end{DoxyReturn}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a7fb0097600e3a5de806058e5907c91d4}\label{classcharge__grid_1_1experiment_1_1_experiment_a7fb0097600e3a5de806058e5907c91d4} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!fitness\_handler@{fitness\_handler}}
+\index{fitness\_handler@{fitness\_handler}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{fitness\_handler()}{fitness\_handler()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+fitness\+\_\+handler (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{ga\+\_\+instance,  }\item[{}]{solution,  }\item[{}]{solution\+\_\+idx }\end{DoxyParamCaption})}
+
+
+
+The fitness function callback for the Py\+GAD instance. 
+
+Converts the mutable Num\+Py array provided by Py\+GAD into an immutable tuple before passing it to the cached helper function for evaluation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ga\+\_\+instance} & The current Py\+GAD.\+GA instance. \\
+\hline
+{\em solution} & A Num\+Py array representing the current chromosome (station layout). \\
+\hline
+{\em solution\+\_\+idx} & The index of the solution within the current population. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The computed fitness score as a float. 
+\end{DoxyReturn}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_adc3449b6c9e303b5c43800cc20575f49}\label{classcharge__grid_1_1experiment_1_1_experiment_adc3449b6c9e303b5c43800cc20575f49} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!log\_handler@{log\_handler}}
+\index{log\_handler@{log\_handler}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{log\_handler()}{log\_handler()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+log\+\_\+handler (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{ga\+\_\+instance }\end{DoxyParamCaption})}
+
+
+
+A callback executed at the end of each generation to record metrics. 
+
+Retrieves the best solution and population fitness statistics from the current generation. It calculates detailed routing metrics (revenue, cost, unmet demand, distance) for the best solution, appends these details to the generation history list, and prints a summary to the console.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ga\+\_\+instance} & The current Py\+GAD.\+GA instance containing population data. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_ad8a56d3ec553782874a5858f57d549b7}\label{classcharge__grid_1_1experiment_1_1_experiment_ad8a56d3ec553782874a5858f57d549b7} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!run@{run}}
+\index{run@{run}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+run (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Initializes and executes the genetic algorithm optimization process. 
+
+This method configures the Py\+GAD engine using the parameters stored in {\ttfamily self.\+config} and starts the evolutionary loop. It tracks the total execution time, retrieves the highest-\/scoring chromosome after the loop finishes, and saves results to a JSON file.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Uses {\ttfamily pygad.\+GA()} to instantiate the external genetic algorithm engine.
+\item Links {\ttfamily self.\+fitness\+\_\+handler} to Py\+GAD to score chromosomes during the run.
+\item Links {\ttfamily self.\+log\+\_\+handler} to Py\+GAD to record metrics at the end of each generation.
+\item Calls {\ttfamily ga\+\_\+instance.\+run()} to trigger the internal Py\+GAD optimization loop.
+\item Calls {\ttfamily save\+\_\+optimization\+\_\+results} (from {\ttfamily \doxylink{utils_8py}{utils.\+py}}) to persist the final solution, configuration, and generation history to disk.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+A tuple (best\+\_\+x, best\+\_\+fitness), where {\ttfamily best\+\_\+x} is a list of integers representing the optimal station layout, and {\ttfamily best\+\_\+fitness} is the corresponding float score. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_ad483bb735fd3898d5169513522d8f815}\label{classcharge__grid_1_1experiment_1_1_experiment_ad483bb735fd3898d5169513522d8f815} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!B@{B}}
+\index{B@{B}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{B}{B}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+B}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a97d6639c17c0569355c9f33679c21c1d}\label{classcharge__grid_1_1experiment_1_1_experiment_a97d6639c17c0569355c9f33679c21c1d} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!C@{C}}
+\index{C@{C}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+C}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_aefaf6091cb11903219e87e2304e12037}\label{classcharge__grid_1_1experiment_1_1_experiment_aefaf6091cb11903219e87e2304e12037} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!config@{config}}
+\index{config@{config}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{config}{config}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+config}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a06c0bcb2046e3d881db783355e25b3ee}\label{classcharge__grid_1_1experiment_1_1_experiment_a06c0bcb2046e3d881db783355e25b3ee} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!D@{D}}
+\index{D@{D}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{D}{D}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+D}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_aa198f1c02c0dfcf8cec7e2acb64376ba}\label{classcharge__grid_1_1experiment_1_1_experiment_aa198f1c02c0dfcf8cec7e2acb64376ba} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!experiment\_name@{experiment\_name}}
+\index{experiment\_name@{experiment\_name}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{experiment\_name}{experiment\_name}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+experiment\+\_\+name}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_abaa0cd2ae8181e4fac64e481899c34c3}\label{classcharge__grid_1_1experiment_1_1_experiment_abaa0cd2ae8181e4fac64e481899c34c3} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!generation\_history@{generation\_history}}
+\index{generation\_history@{generation\_history}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{generation\_history}{generation\_history}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+generation\+\_\+history}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_acb90be7e9b61ba919e31f5102c3dd198}\label{classcharge__grid_1_1experiment_1_1_experiment_acb90be7e9b61ba919e31f5102c3dd198} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!input\_path@{input\_path}}
+\index{input\_path@{input\_path}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{input\_path}{input\_path}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+input\+\_\+path}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a887e72268f37dab6242b9ad094c3e68f}\label{classcharge__grid_1_1experiment_1_1_experiment_a887e72268f37dab6242b9ad094c3e68f} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!L@{L}}
+\index{L@{L}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{L}{L}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+L}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_ad8031a8cfcde3fb3046f4bd6c7c8a2ec}\label{classcharge__grid_1_1experiment_1_1_experiment_ad8031a8cfcde3fb3046f4bd6c7c8a2ec} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!model@{model}}
+\index{model@{model}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{model}{model}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+model}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a57f8c21fb3268c5d9c3285cbaeb509d9}\label{classcharge__grid_1_1experiment_1_1_experiment_a57f8c21fb3268c5d9c3285cbaeb509d9} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!N@{N}}
+\index{N@{N}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+N}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a8a44f40a2fb3be3ecf1668e02ef7d261}\label{classcharge__grid_1_1experiment_1_1_experiment_a8a44f40a2fb3be3ecf1668e02ef7d261} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!output\_folder@{output\_folder}}
+\index{output\_folder@{output\_folder}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{output\_folder}{output\_folder}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+output\+\_\+folder}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_aba44b4497fcd974b585beceb1c799b43}\label{classcharge__grid_1_1experiment_1_1_experiment_aba44b4497fcd974b585beceb1c799b43} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!P@{P}}
+\index{P@{P}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+P}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a15b4445dcd7a1fdd7748ec6a31af6f52}\label{classcharge__grid_1_1experiment_1_1_experiment_a15b4445dcd7a1fdd7748ec6a31af6f52} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!R@{R}}
+\index{R@{R}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{R}{R}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+R}
+
+\Hypertarget{classcharge__grid_1_1experiment_1_1_experiment_a314b9d9265c149a5880b697fdb33f147}\label{classcharge__grid_1_1experiment_1_1_experiment_a314b9d9265c149a5880b697fdb33f147} 
+\index{charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}!Z@{Z}}
+\index{Z@{Z}!charge\_grid.experiment.Experiment@{charge\_grid.experiment.Experiment}}
+\doxysubsubsection{\texorpdfstring{Z}{Z}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+experiment.\+Experiment.\+Z}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/charge\+\_\+grid/\mbox{\hyperlink{experiment_8py}{experiment.\+py}}\end{DoxyCompactItemize}

@@ -94,5 +94,5 @@ if __name__ == "__main__":
         alpha=10.0, 
         beta=0.0005, 
         lambda_weight=1.0,
-        time_limit_ms=2000000 # 5 seconds
+        time_limit_ms=2000000 # 2000 seconds
     )

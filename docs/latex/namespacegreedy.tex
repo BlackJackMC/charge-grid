@@ -1,0 +1,174 @@
+\doxysection{greedy Namespace Reference}
+\hypertarget{namespacegreedy}{}\label{namespacegreedy}\index{greedy@{greedy}}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}} = int(\mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}{C}}
+\item 
+\mbox{\hyperlink{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}{P}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ad239c21ec7875f5b1f58bb625a72f1d7}{L}} = np.\+array(\mbox{[}list(map(float, f.\+readline().split())) for \+\_\+ in range(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}{R}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_acec65d0d4fb238c8cd8ee0c2040e5efe}{Z}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_ac086459778b80351304228981d30d33c}{D}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_a73763d13c412a4f6b341effd00dfb82d}{opened}} = np.\+zeros(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})
+\item 
+\mbox{\hyperlink{namespacegreedy_ad47fd023bc72ef230091c9f3f5240305}{assigned}} = -\/np.\+ones(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}} = D.\+copy()
+\item 
+int \mbox{\hyperlink{namespacegreedy_af2bddd6506dd4ef93c97bb53dbf5675c}{best\+\_\+i}} = -\/1
+\item 
+int \mbox{\hyperlink{namespacegreedy_a36cad255c62c9b721b8d2756c9be725f}{best\+\_\+profit}} = 0
+\item 
+list \mbox{\hyperlink{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}{feasible}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}{total\+\_\+demand}} = sum(\mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]} for j in \mbox{\hyperlink{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}{feasible}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a8be94d8b7dfcdbecd18195ea8b46db41}{profit}} = \mbox{\hyperlink{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}{total\+\_\+demand}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}{P}} -\/ (\mbox{\hyperlink{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}{C}} + \mbox{\hyperlink{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}{R}}\mbox{[}i\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}{capacity}} = \mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}}
+\item 
+\mbox{\hyperlink{namespacegreedy_a102d1877f845fb4859776d7f5465f2a2}{key}}
+\item 
+\mbox{\hyperlink{namespacegreedy_a58be5e253a8c0eaebcf5e5f4a1ffb70e}{take}} = min(\mbox{\hyperlink{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}{capacity}}, \mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_ac889f63cfa688ae9991a967ea857801e}{end}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacegreedy_ad47fd023bc72ef230091c9f3f5240305}\label{namespacegreedy_ad47fd023bc72ef230091c9f3f5240305} 
+\index{greedy@{greedy}!assigned@{assigned}}
+\index{assigned@{assigned}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{assigned}{assigned}}
+{\footnotesize\ttfamily greedy.\+assigned = -\/np.\+ones(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})}
+
+\Hypertarget{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}\label{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202} 
+\index{greedy@{greedy}!B@{B}}
+\index{B@{B}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{B}{B}}
+{\footnotesize\ttfamily greedy.\+B}
+
+\Hypertarget{namespacegreedy_af2bddd6506dd4ef93c97bb53dbf5675c}\label{namespacegreedy_af2bddd6506dd4ef93c97bb53dbf5675c} 
+\index{greedy@{greedy}!best\_i@{best\_i}}
+\index{best\_i@{best\_i}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{best\_i}{best\_i}}
+{\footnotesize\ttfamily greedy.\+best\+\_\+i = -\/1}
+
+\Hypertarget{namespacegreedy_a36cad255c62c9b721b8d2756c9be725f}\label{namespacegreedy_a36cad255c62c9b721b8d2756c9be725f} 
+\index{greedy@{greedy}!best\_profit@{best\_profit}}
+\index{best\_profit@{best\_profit}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{best\_profit}{best\_profit}}
+{\footnotesize\ttfamily greedy.\+best\+\_\+profit = 0}
+
+\Hypertarget{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}\label{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6} 
+\index{greedy@{greedy}!C@{C}}
+\index{C@{C}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily greedy.\+C}
+
+\Hypertarget{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}\label{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61} 
+\index{greedy@{greedy}!capacity@{capacity}}
+\index{capacity@{capacity}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{capacity}{capacity}}
+{\footnotesize\ttfamily greedy.\+capacity = \mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}}}
+
+\Hypertarget{namespacegreedy_ac086459778b80351304228981d30d33c}\label{namespacegreedy_ac086459778b80351304228981d30d33c} 
+\index{greedy@{greedy}!D@{D}}
+\index{D@{D}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{D}{D}}
+{\footnotesize\ttfamily greedy.\+D = np.\+array(list(map(float, f.\+readline().split())))}
+
+\Hypertarget{namespacegreedy_ac889f63cfa688ae9991a967ea857801e}\label{namespacegreedy_ac889f63cfa688ae9991a967ea857801e} 
+\index{greedy@{greedy}!end@{end}}
+\index{end@{end}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{end}{end}}
+{\footnotesize\ttfamily greedy.\+end}
+
+\Hypertarget{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}\label{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf} 
+\index{greedy@{greedy}!feasible@{feasible}}
+\index{feasible@{feasible}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{feasible}{feasible}}
+{\footnotesize\ttfamily list greedy.\+feasible}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ [j\ \textcolor{keywordflow}{for}\ j\ \textcolor{keywordflow}{in}\ range(N)}
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ remaining\_demand[j]\ >\ 0\ \textcolor{keywordflow}{and}\ L[i][j]\ <=\ Z[j]]}
+
+\end{DoxyCode}
+\Hypertarget{namespacegreedy_a102d1877f845fb4859776d7f5465f2a2}\label{namespacegreedy_a102d1877f845fb4859776d7f5465f2a2} 
+\index{greedy@{greedy}!key@{key}}
+\index{key@{key}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{key}{key}}
+{\footnotesize\ttfamily greedy.\+key}
+
+\Hypertarget{namespacegreedy_ad239c21ec7875f5b1f58bb625a72f1d7}\label{namespacegreedy_ad239c21ec7875f5b1f58bb625a72f1d7} 
+\index{greedy@{greedy}!L@{L}}
+\index{L@{L}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{L}{L}}
+{\footnotesize\ttfamily greedy.\+L = np.\+array(\mbox{[}list(map(float, f.\+readline().split())) for \+\_\+ in range(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})\mbox{]})}
+
+\Hypertarget{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}\label{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff} 
+\index{greedy@{greedy}!N@{N}}
+\index{N@{N}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily greedy.\+N = int(\mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}})}
+
+\Hypertarget{namespacegreedy_a73763d13c412a4f6b341effd00dfb82d}\label{namespacegreedy_a73763d13c412a4f6b341effd00dfb82d} 
+\index{greedy@{greedy}!opened@{opened}}
+\index{opened@{opened}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{opened}{opened}}
+{\footnotesize\ttfamily greedy.\+opened = np.\+zeros(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})}
+
+\Hypertarget{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}\label{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32} 
+\index{greedy@{greedy}!P@{P}}
+\index{P@{P}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{P}{P}}
+{\footnotesize\ttfamily greedy.\+P}
+
+\Hypertarget{namespacegreedy_a8be94d8b7dfcdbecd18195ea8b46db41}\label{namespacegreedy_a8be94d8b7dfcdbecd18195ea8b46db41} 
+\index{greedy@{greedy}!profit@{profit}}
+\index{profit@{profit}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{profit}{profit}}
+{\footnotesize\ttfamily greedy.\+profit = \mbox{\hyperlink{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}{total\+\_\+demand}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}{P}} -\/ (\mbox{\hyperlink{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}{C}} + \mbox{\hyperlink{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}{R}}\mbox{[}i\mbox{]})}
+
+\Hypertarget{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}\label{namespacegreedy_ab0f6a80e168aa96405606e83828f2415} 
+\index{greedy@{greedy}!R@{R}}
+\index{R@{R}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{R}{R}}
+{\footnotesize\ttfamily greedy.\+R = np.\+array(list(map(float, f.\+readline().split())))}
+
+\Hypertarget{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}\label{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929} 
+\index{greedy@{greedy}!remaining\_demand@{remaining\_demand}}
+\index{remaining\_demand@{remaining\_demand}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{remaining\_demand}{remaining\_demand}}
+{\footnotesize\ttfamily greedy.\+remaining\+\_\+demand = D.\+copy()}
+
+\Hypertarget{namespacegreedy_a58be5e253a8c0eaebcf5e5f4a1ffb70e}\label{namespacegreedy_a58be5e253a8c0eaebcf5e5f4a1ffb70e} 
+\index{greedy@{greedy}!take@{take}}
+\index{take@{take}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{take}{take}}
+{\footnotesize\ttfamily greedy.\+take = min(\mbox{\hyperlink{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}{capacity}}, \mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]})}
+
+\Hypertarget{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}\label{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf} 
+\index{greedy@{greedy}!total\_demand@{total\_demand}}
+\index{total\_demand@{total\_demand}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{total\_demand}{total\_demand}}
+{\footnotesize\ttfamily greedy.\+total\+\_\+demand = sum(\mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]} for j in \mbox{\hyperlink{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}{feasible}})}
+
+\Hypertarget{namespacegreedy_acec65d0d4fb238c8cd8ee0c2040e5efe}\label{namespacegreedy_acec65d0d4fb238c8cd8ee0c2040e5efe} 
+\index{greedy@{greedy}!Z@{Z}}
+\index{Z@{Z}!greedy@{greedy}}
+\doxysubsubsection{\texorpdfstring{Z}{Z}}
+{\footnotesize\ttfamily greedy.\+Z = np.\+array(list(map(float, f.\+readline().split())))}
+

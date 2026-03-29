@@ -1,0 +1,50 @@
+\doxysection{src/charge\+\_\+grid/test/greedy.py File Reference}
+\hypertarget{greedy_8py}{}\label{greedy_8py}\index{src/charge\_grid/test/greedy.py@{src/charge\_grid/test/greedy.py}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacegreedy}{greedy}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{greedy.\+N}} = int(\mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{greedy.\+B}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}{greedy.\+C}}
+\item 
+\mbox{\hyperlink{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}{greedy.\+P}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ad239c21ec7875f5b1f58bb625a72f1d7}{greedy.\+L}} = np.\+array(\mbox{[}list(map(float, f.\+readline().split())) for \+\_\+ in range(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}{greedy.\+R}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_acec65d0d4fb238c8cd8ee0c2040e5efe}{greedy.\+Z}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_ac086459778b80351304228981d30d33c}{greedy.\+D}} = np.\+array(list(map(float, f.\+readline().split())))
+\item 
+\mbox{\hyperlink{namespacegreedy_a73763d13c412a4f6b341effd00dfb82d}{greedy.\+opened}} = np.\+zeros(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})
+\item 
+\mbox{\hyperlink{namespacegreedy_ad47fd023bc72ef230091c9f3f5240305}{greedy.\+assigned}} = -\/np.\+ones(\mbox{\hyperlink{namespacegreedy_ae66ecdbfb83ba9d108a22fece15092ff}{N}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{greedy.\+remaining\+\_\+demand}} = D.\+copy()
+\item 
+int \mbox{\hyperlink{namespacegreedy_af2bddd6506dd4ef93c97bb53dbf5675c}{greedy.\+best\+\_\+i}} = -\/1
+\item 
+int \mbox{\hyperlink{namespacegreedy_a36cad255c62c9b721b8d2756c9be725f}{greedy.\+best\+\_\+profit}} = 0
+\item 
+list \mbox{\hyperlink{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}{greedy.\+feasible}}
+\item 
+\mbox{\hyperlink{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}{greedy.\+total\+\_\+demand}} = sum(\mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]} for j in \mbox{\hyperlink{namespacegreedy_a27e1ac5bca0fbdc9b98aa42aba18decf}{feasible}})
+\item 
+\mbox{\hyperlink{namespacegreedy_a8be94d8b7dfcdbecd18195ea8b46db41}{greedy.\+profit}} = \mbox{\hyperlink{namespacegreedy_ae329d878189cd4bb295a3d5e3014c9bf}{total\+\_\+demand}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{namespacegreedy_af0650dbbb66f60a8af9b61ea299fed32}{P}} -\/ (\mbox{\hyperlink{namespacegreedy_ae13514f1921f61dc7d8ee435944adee6}{C}} + \mbox{\hyperlink{namespacegreedy_ab0f6a80e168aa96405606e83828f2415}{R}}\mbox{[}i\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}{greedy.\+capacity}} = \mbox{\hyperlink{namespacegreedy_a0e48565bab28d6eb79b6c432a287d202}{B}}
+\item 
+\mbox{\hyperlink{namespacegreedy_a102d1877f845fb4859776d7f5465f2a2}{greedy.\+key}}
+\item 
+\mbox{\hyperlink{namespacegreedy_a58be5e253a8c0eaebcf5e5f4a1ffb70e}{greedy.\+take}} = min(\mbox{\hyperlink{namespacegreedy_af4ca667c300b18288416f0c3e1a55b61}{capacity}}, \mbox{\hyperlink{namespacegreedy_a10b88c88bec1298e18ee3b834fa3e929}{remaining\+\_\+demand}}\mbox{[}j\mbox{]})
+\item 
+\mbox{\hyperlink{namespacegreedy_ac889f63cfa688ae9991a967ea857801e}{greedy.\+end}}
+\end{DoxyCompactItemize}

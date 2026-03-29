@@ -1,0 +1,362 @@
+\doxysection{charge\+\_\+grid.\+utils Namespace Reference}
+\hypertarget{namespacecharge__grid_1_1utils}{}\label{namespacecharge__grid_1_1utils}\index{charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_adf9a1868b8f8148a87c12e8d44ba59ff}{read\+\_\+input}} (input\+\_\+path)
+\begin{DoxyCompactList}\small\item\em I/O Functions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a6f5ae5018e2c025f74da999c34f6004b}{save\+\_\+optimization\+\_\+results}} (output\+\_\+folder, best\+\_\+x, best\+\_\+fitness, generation\+\_\+history, config, input\+\_\+filename, start\+\_\+time, end\+\_\+time, run\+\_\+time, model\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Exports the final optimization metrics, configuration, and history to a JSON file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_aa94950d88ededb3d7373afd4e7cd322a}{E}} (x, F, C, P, R)
+\begin{DoxyCompactList}\small\item\em Helper Functions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a0aa3c220465511b94f23952ef238c86b}{O}} (F, D, L, alpha, beta)
+\begin{DoxyCompactList}\small\item\em Computes the operational penalty metrics for unmet demand and travel distance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a91a7a6dc57d6163cb2aadae371d9eb87}{custom\+\_\+intersection\+\_\+crossover}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function that generates a spatially-\/aware custom crossover operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_af2112db7d81b1fcd5cfef113d085b552}{adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function that generates a demand-\/aware adaptive mutation operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a96747b155681fc7e574ed803fcaf3e13}{stagnation\+\_\+aware\+\_\+adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function generating an advanced, state-\/aware adaptive mutation operator. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a309f808cd7b448fc3f6c746ac9d680d5}{noise\+\_\+injected\+\_\+adaptive\+\_\+mutation}} (data\+\_\+tuple)
+\begin{DoxyCompactList}\small\item\em A factory function generating a state-\/aware mutation operator with random noise injection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a644bbe84abdfc888b563f17243c867f3}{\+\_\+current\+\_\+file}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve()
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}{PROJECT\+\_\+\+ROOT}} = \+\_\+current\+\_\+file.\+parent.\+parent.\+parent
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}{PROJECT\+\_\+\+ROOT}} / "{}data"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_a918cee71594d393c475a8b0505b022b3}{INPUT\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}input"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_ac751be21ed4f9fd8476709398e8e2d51}{OUTPUT\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}output"{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1utils_a169a0212fd72921a26dfe93f6a36d844}{METADATA\+\_\+\+DIR}} = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}metadata"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacecharge__grid_1_1utils_af2112db7d81b1fcd5cfef113d085b552}\label{namespacecharge__grid_1_1utils_af2112db7d81b1fcd5cfef113d085b552} 
+\index{charge\_grid.utils@{charge\_grid.utils}!adaptive\_mutation@{adaptive\_mutation}}
+\index{adaptive\_mutation@{adaptive\_mutation}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{adaptive\_mutation()}{adaptive\_mutation()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+adaptive\+\_\+mutation (\begin{DoxyParamCaption}\item[{}]{data\+\_\+tuple }\end{DoxyParamCaption})}
+
+
+
+A factory function that generates a demand-\/aware adaptive mutation operator. 
+
+This function extracts the customer demand vector {\ttfamily D} from the provided data tuple to create a custom mutation closure for Py\+GAD.
+
+The generated mutation operator iterates through each chromosome in the offspring array. For each chromosome, it performs a coin toss (50\% probability)\+:
+\begin{DoxyItemize}
+\item Add a station\+: It identifies all empty nodes (0s). It then calculates a probability distribution based on the localized demand at those empty nodes. A new station is added (flipped to 1), heavily favoring locations with high unfulfilled demand.
+\item Remove a station\+: It identifies all currently active stations (1s) and drops one (flipped to 0) uniformly at random.
+\end{DoxyItemize}
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Extracts {\ttfamily D} (demand vector) from the globally loaded {\ttfamily data\+\_\+tuple}.
+\item Assigned to the {\ttfamily mutation\+\_\+type} key in the {\ttfamily Experiment} configuration dictionary.
+\item The returned inner function {\ttfamily \+\_\+adaptive\+\_\+mutation} is called automatically by the Py\+GAD engine to mutate offspring chromosomes before the next generation.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+tuple} & A tuple containing the extracted network parameters, specifically utilizing the initial demand vector at index 7 ({\ttfamily D}).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A callable function {\ttfamily \+\_\+adaptive\+\_\+mutation(offspring, ga\+\_\+instance)} that complies with Py\+GAD\textquotesingle{}s custom mutation signature and returns the modified offspring array. 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_a91a7a6dc57d6163cb2aadae371d9eb87}\label{namespacecharge__grid_1_1utils_a91a7a6dc57d6163cb2aadae371d9eb87} 
+\index{charge\_grid.utils@{charge\_grid.utils}!custom\_intersection\_crossover@{custom\_intersection\_crossover}}
+\index{custom\_intersection\_crossover@{custom\_intersection\_crossover}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{custom\_intersection\_crossover()}{custom\_intersection\_crossover()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+custom\+\_\+intersection\+\_\+crossover (\begin{DoxyParamCaption}\item[{}]{data\+\_\+tuple }\end{DoxyParamCaption})}
+
+
+
+A factory function that generates a spatially-\/aware custom crossover operator. 
+
+This function acts as a closure, extracting the distance matrix {\ttfamily L} from the provided data tuple to be used during the crossover phase. It returns a custom crossover function formatted for Py\+GAD.
+
+The generated crossover algorithm uses a dynamic clustering approach to preserve geographic structures. For each pair of parents, it randomly selects up to {\ttfamily K} (10) medoid nodes and groups all other nodes into clusters based on their proximity in the distance matrix {\ttfamily L}. Offspring then inherit entire geographical clusters of genes from either the first or second parent with a 50\% probability, preventing the fragmentation of highly optimized local station networks.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Extracts {\ttfamily L} (distance matrix) from the globally loaded {\ttfamily data\+\_\+tuple}.
+\item Assigned to the {\ttfamily crossover\+\_\+type} key in the {\ttfamily Experiment} configuration dictionary.
+\item The returned inner function {\ttfamily \+\_\+custom\+\_\+intersection\+\_\+crossover} is called automatically by the Py\+GAD engine during the evolution phase to breed new chromosomes.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+tuple} & A tuple containing the extracted network parameters, specifically utilizing the distance matrix at index 4 ({\ttfamily L}).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A callable function {\ttfamily \+\_\+custom\+\_\+intersection\+\_\+crossover(parents, offspring\+\_\+size, ga\+\_\+instance)} that complies with Py\+GAD\textquotesingle{}s custom crossover signature and returns a Num\+Py array of generated offspring. 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_aa94950d88ededb3d7373afd4e7cd322a}\label{namespacecharge__grid_1_1utils_aa94950d88ededb3d7373afd4e7cd322a} 
+\index{charge\_grid.utils@{charge\_grid.utils}!E@{E}}
+\index{E@{E}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{E()}{E()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+E (\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{F,  }\item[{}]{C,  }\item[{}]{P,  }\item[{}]{R }\end{DoxyParamCaption})}
+
+
+
+Helper Functions. 
+
+Computes the economic metrics (profit, revenue, and cost) for a given network layout.
+
+Calculates the total financial performance of the current EV station configuration. Revenue is derived from the total fulfilled demand (the flow matrix {\ttfamily F} routed to active stations {\ttfamily x}) multiplied by the unit profit {\ttfamily P}. Cost is computed as the sum of base costs {\ttfamily C} and recurring costs {\ttfamily R} for all actively deployed stations. The total profit is the difference between this revenue and cost.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Imported and utilized by routing models (e.\+g., {\ttfamily Alternating\+Routing.\+fitness} and {\ttfamily Alternating\+Routing.\+get\+\_\+details}) to evaluate the financial fitness of a chromosome.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & A Num\+Py array or list of integers (1s and 0s) indicating active station locations. \\
+\hline
+{\em F} & A 2D Num\+Py array representing the flow of demand from customers to stations. \\
+\hline
+{\em C} & A scalar or Num\+Py array representing the base cost of building the stations. \\
+\hline
+{\em P} & A float representing the revenue or profit gained per unit of demand served. \\
+\hline
+{\em R} & A scalar or Num\+Py array representing additional/recurring costs per station.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple of three floats\+: (total\+\_\+profit, total\+\_\+revenue, total\+\_\+cost). 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_a309f808cd7b448fc3f6c746ac9d680d5}\label{namespacecharge__grid_1_1utils_a309f808cd7b448fc3f6c746ac9d680d5} 
+\index{charge\_grid.utils@{charge\_grid.utils}!noise\_injected\_adaptive\_mutation@{noise\_injected\_adaptive\_mutation}}
+\index{noise\_injected\_adaptive\_mutation@{noise\_injected\_adaptive\_mutation}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{noise\_injected\_adaptive\_mutation()}{noise\_injected\_adaptive\_mutation()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+noise\+\_\+injected\+\_\+adaptive\+\_\+mutation (\begin{DoxyParamCaption}\item[{}]{data\+\_\+tuple }\end{DoxyParamCaption})}
+
+
+
+A factory function generating a state-\/aware mutation operator with random noise injection. 
+
+This function builds upon the {\ttfamily stagnation\+\_\+aware\+\_\+adaptive\+\_\+mutation} logic by introducing a baseline probability of completely random bit-\/flipping.
+
+For each chromosome in the offspring array\+:
+\begin{DoxyEnumerate}
+\item {\bfseries{Noise Injection\+:}} There is a 10\% chance to bypass all adaptive logic entirely and simply flip one random gene (station state). This guarantees a baseline level of genetic diversity to prevent premature convergence.
+\item {\bfseries{Stagnation Recovery\+:}} If Py\+GAD detects stagnation (\texorpdfstring{$>$}{>}50 generations without improvement), it intelligently drops 20\% of the active stations, heavily targeting geographically redundant clusters.
+\item {\bfseries{Dynamic Normal Operation\+:}} If neither of the above apply, it scales the probability of adding vs. dropping a station based on the current network utilization (Demand / Capacity). When adding, it favors high-\/demand nodes; when dropping, it targets redundant nodes.
+\end{DoxyEnumerate}
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Extracts {\ttfamily D} (demand), {\ttfamily L} (distances), and {\ttfamily B} (capacity) from the globally loaded {\ttfamily data\+\_\+tuple}.
+\item Assigned to the {\ttfamily mutation\+\_\+type} key in the {\ttfamily Experiment} configuration dictionary.
+\item Interacts directly with Py\+GAD\textquotesingle{}s internal state tracking ({\ttfamily ga\+\_\+instance.\+stagnation\+\_\+counter}).
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+tuple} & A tuple containing the extracted network parameters.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A callable function {\ttfamily \+\_\+noise\+\_\+injected\+\_\+adaptive\+\_\+mutation(offspring, ga\+\_\+instance)} that applies the hybrid noise/adaptive mutations and returns the modified offspring array. 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_a0aa3c220465511b94f23952ef238c86b}\label{namespacecharge__grid_1_1utils_a0aa3c220465511b94f23952ef238c86b} 
+\index{charge\_grid.utils@{charge\_grid.utils}!O@{O}}
+\index{O@{O}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{O()}{O()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+O (\begin{DoxyParamCaption}\item[{}]{F,  }\item[{}]{D,  }\item[{}]{L,  }\item[{}]{alpha,  }\item[{}]{beta }\end{DoxyParamCaption})}
+
+
+
+Computes the operational penalty metrics for unmet demand and travel distance. 
+
+Evaluates the operational inefficiency and customer dissatisfaction of the current routing assignment. It calculates the total unfulfilled demand by subtracting the total served flow from the initial demand vector {\ttfamily D}. It also calculates the total distance traveled by multiplying the flow matrix {\ttfamily F} by the distance matrix {\ttfamily L}. These raw values are scaled by their respective penalty weights ({\ttfamily alpha} and {\ttfamily beta}) to produce a final, combined penalty score.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Imported and utilized by routing models (e.\+g., {\ttfamily Alternating\+Routing.\+fitness} and {\ttfamily Alternating\+Routing.\+get\+\_\+details}) to apply negative pressure against inefficient layouts during the genetic algorithm\textquotesingle{}s evaluation phase.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em F} & A 2D Num\+Py array representing the flow of demand from customers to stations. \\
+\hline
+{\em D} & A 1D Num\+Py array representing the total initial demand of each customer node. \\
+\hline
+{\em L} & A 2D Num\+Py array representing the distance matrix between customers and stations. \\
+\hline
+{\em alpha} & A float acting as the penalty multiplier for each unit of unfulfilled demand. \\
+\hline
+{\em beta} & A float acting as the penalty multiplier for each unit of distance traveled.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple of three floats\+: (total\+\_\+combined\+\_\+penalty, unmet\+\_\+demand\+\_\+penalty, distance\+\_\+penalty). 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_adf9a1868b8f8148a87c12e8d44ba59ff}\label{namespacecharge__grid_1_1utils_adf9a1868b8f8148a87c12e8d44ba59ff} 
+\index{charge\_grid.utils@{charge\_grid.utils}!read\_input@{read\_input}}
+\index{read\_input@{read\_input}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{read\_input()}{read\_input()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+read\+\_\+input (\begin{DoxyParamCaption}\item[{}]{input\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+I/O Functions. 
+
+Reads and parses the EV network parameters from a specified text file.
+
+Opens the given file path and extracts scalar parameters (number of nodes, battery capacity, cost, profit) from the first line. It then parses the subsequent lines into Num\+Py arrays representing the distance matrix, cost vectors, distance tolerances, and nodal demands. Raises a File\+Not\+Found\+Error if the file does not exist.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Acts as the primary data source for the entire project.
+\item Called globally in {\ttfamily main.\+py} to generate the {\ttfamily data\+\_\+tuple}.
+\item The returned tuple is subsequently unpacked by {\ttfamily Experiment.\+\_\+\+\_\+init\+\_\+\+\_\+} and passed into routing models (like {\ttfamily Alternating\+Routing}) and the evaluation functions ({\ttfamily E} and {\ttfamily O}).
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em input\+\_\+path} & A pathlib.\+Path object pointing to the input dataset file.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em File\+Not\+Found\+Error} & Raised if the provided \`{}input\+\_\+path\`{} does not exist on disk.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+A tuple containing (N, B, C, P, L, R, Z, D), where N and B are integers, C and P are floats, and L, R, Z, D are structured Num\+Py arrays. 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1utils_a6f5ae5018e2c025f74da999c34f6004b}\label{namespacecharge__grid_1_1utils_a6f5ae5018e2c025f74da999c34f6004b} 
+\index{charge\_grid.utils@{charge\_grid.utils}!save\_optimization\_results@{save\_optimization\_results}}
+\index{save\_optimization\_results@{save\_optimization\_results}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{save\_optimization\_results()}{save\_optimization\_results()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+save\+\_\+optimization\+\_\+results (\begin{DoxyParamCaption}\item[{}]{output\+\_\+folder,  }\item[{}]{best\+\_\+x,  }\item[{}]{best\+\_\+fitness,  }\item[{}]{generation\+\_\+history,  }\item[{}]{config,  }\item[{}]{input\+\_\+filename,  }\item[{}]{start\+\_\+time,  }\item[{}]{end\+\_\+time,  }\item[{}]{run\+\_\+time,  }\item[{}]{model\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Exports the final optimization metrics, configuration, and history to a JSON file. 
+
+Sanitizes the configuration dictionary to ensure all values (such as custom crossover or mutation function objects) are cleanly JSON serializable. It constructs a comprehensive data structure containing experiment metadata, execution timing, the optimal station layout, and the step-\/by-\/step generation progression, then saves it with a uniquely timestamped filename in the specified output directory.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Invoked by {\ttfamily Experiment.\+run()} upon the completion of the Py\+GAD optimization loop.
+\item Consumes the {\ttfamily generation\+\_\+history} list that was populated iteratively by {\ttfamily Experiment.\+log\+\_\+handler}.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em output\+\_\+folder} & A pathlib.\+Path object specifying the directory to save the JSON file. \\
+\hline
+{\em best\+\_\+x} & A list of integers (1s and 0s) representing the optimal EV station placement. \\
+\hline
+{\em best\+\_\+fitness} & A float representing the fitness score of the optimal solution. \\
+\hline
+{\em generation\+\_\+history} & A list of dictionaries detailing the performance metrics of each generation. \\
+\hline
+{\em config} & The dictionary of genetic algorithm hyperparameters and model settings. \\
+\hline
+{\em input\+\_\+filename} & A string of the input file\textquotesingle{}s name, used to dynamically name the output file. \\
+\hline
+{\em start\+\_\+time} & A formatted string representing the execution start time. \\
+\hline
+{\em end\+\_\+time} & A formatted string representing the execution end time. \\
+\hline
+{\em run\+\_\+time} & A float representing the total computation time in seconds. \\
+\hline
+{\em model\+\_\+name} & A string denoting the specific routing model used (e.\+g., \textquotesingle{}Alternating\+\_\+\+Routing\+\_\+\+Stable Matching\textquotesingle{}). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacecharge__grid_1_1utils_a96747b155681fc7e574ed803fcaf3e13}\label{namespacecharge__grid_1_1utils_a96747b155681fc7e574ed803fcaf3e13} 
+\index{charge\_grid.utils@{charge\_grid.utils}!stagnation\_aware\_adaptive\_mutation@{stagnation\_aware\_adaptive\_mutation}}
+\index{stagnation\_aware\_adaptive\_mutation@{stagnation\_aware\_adaptive\_mutation}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{stagnation\_aware\_adaptive\_mutation()}{stagnation\_aware\_adaptive\_mutation()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+stagnation\+\_\+aware\+\_\+adaptive\+\_\+mutation (\begin{DoxyParamCaption}\item[{}]{data\+\_\+tuple }\end{DoxyParamCaption})}
+
+
+
+A factory function generating an advanced, state-\/aware adaptive mutation operator. 
+
+This function extracts demand ({\ttfamily D}), distances ({\ttfamily L}), and station capacity ({\ttfamily B}) from the data tuple to construct a highly dynamic Py\+GAD mutation operator. The operator adjusts its behavior based on the current state of the genetic algorithm and the specific characteristics of each chromosome\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Stagnation Recovery\+:}} If Py\+GAD detects no fitness improvement for over 50 generations, the operator forces a major structural shift to escape local optima. It identifies active stations that are geographically too close to one another (redundant) and simultaneously drops 20\% of them.
+\item {\bfseries{Dynamic Normal Operation\+:}} If not stagnant, the operator calculates the network\textquotesingle{}s current utilization (Total Demand / Total Network Capacity).
+\begin{DoxyItemize}
+\item High utilization increases the probability of adding a new station (favoring high-\/demand nodes).
+\item Low utilization increases the probability of dropping a station (specifically targeting redundant stations clustered too closely together).
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Extracts {\ttfamily D}, {\ttfamily L}, and {\ttfamily B} from the globally loaded {\ttfamily data\+\_\+tuple}.
+\item Assigned to the {\ttfamily mutation\+\_\+type} key in the {\ttfamily Experiment} configuration dictionary.
+\item Interacts directly with Py\+GAD\textquotesingle{}s internal state tracking ({\ttfamily ga\+\_\+instance.\+stagnation\+\_\+counter}) to detect local optima.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+tuple} & A tuple containing the extracted network parameters.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A callable function {\ttfamily \+\_\+stagnation\+\_\+aware\+\_\+adaptive\+\_\+mutation(offspring, ga\+\_\+instance)} that applies state-\/dependent mutations and returns the modified offspring array. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacecharge__grid_1_1utils_a644bbe84abdfc888b563f17243c867f3}\label{namespacecharge__grid_1_1utils_a644bbe84abdfc888b563f17243c867f3} 
+\index{charge\_grid.utils@{charge\_grid.utils}!\_current\_file@{\_current\_file}}
+\index{\_current\_file@{\_current\_file}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{\_current\_file}{\_current\_file}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+\_\+current\+\_\+file = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve()\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}\label{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a} 
+\index{charge\_grid.utils@{charge\_grid.utils}!DATA\_DIR@{DATA\_DIR}}
+\index{DATA\_DIR@{DATA\_DIR}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{DATA\_DIR}{DATA\_DIR}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+utils.\+DATA\+\_\+\+DIR = \mbox{\hyperlink{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}{PROJECT\+\_\+\+ROOT}} / "{}data"{}}
+
+\Hypertarget{namespacecharge__grid_1_1utils_a918cee71594d393c475a8b0505b022b3}\label{namespacecharge__grid_1_1utils_a918cee71594d393c475a8b0505b022b3} 
+\index{charge\_grid.utils@{charge\_grid.utils}!INPUT\_DIR@{INPUT\_DIR}}
+\index{INPUT\_DIR@{INPUT\_DIR}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{INPUT\_DIR}{INPUT\_DIR}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+utils.\+INPUT\+\_\+\+DIR = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}input"{}}
+
+\Hypertarget{namespacecharge__grid_1_1utils_a169a0212fd72921a26dfe93f6a36d844}\label{namespacecharge__grid_1_1utils_a169a0212fd72921a26dfe93f6a36d844} 
+\index{charge\_grid.utils@{charge\_grid.utils}!METADATA\_DIR@{METADATA\_DIR}}
+\index{METADATA\_DIR@{METADATA\_DIR}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{METADATA\_DIR}{METADATA\_DIR}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+utils.\+METADATA\+\_\+\+DIR = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}metadata"{}}
+
+\Hypertarget{namespacecharge__grid_1_1utils_ac751be21ed4f9fd8476709398e8e2d51}\label{namespacecharge__grid_1_1utils_ac751be21ed4f9fd8476709398e8e2d51} 
+\index{charge\_grid.utils@{charge\_grid.utils}!OUTPUT\_DIR@{OUTPUT\_DIR}}
+\index{OUTPUT\_DIR@{OUTPUT\_DIR}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{OUTPUT\_DIR}{OUTPUT\_DIR}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+utils.\+OUTPUT\+\_\+\+DIR = \mbox{\hyperlink{namespacecharge__grid_1_1utils_adb7d40796cf9aaf57d4367012c411a5a}{DATA\+\_\+\+DIR}} / "{}output"{}}
+
+\Hypertarget{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617}\label{namespacecharge__grid_1_1utils_a29f7fbfeac6c934773b6645df884f617} 
+\index{charge\_grid.utils@{charge\_grid.utils}!PROJECT\_ROOT@{PROJECT\_ROOT}}
+\index{PROJECT\_ROOT@{PROJECT\_ROOT}!charge\_grid.utils@{charge\_grid.utils}}
+\doxysubsubsection{\texorpdfstring{PROJECT\_ROOT}{PROJECT\_ROOT}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+utils.\+PROJECT\+\_\+\+ROOT = \+\_\+current\+\_\+file.\+parent.\+parent.\+parent}
+

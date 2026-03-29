@@ -1,0 +1,234 @@
+\doxysection{charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing Class Reference}
+\hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing}{}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing}\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+
+
+A routing model that simulates demand allocation using an alternating proposal algorithm.  
+
+
+Inheritance diagram for charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a3f9eab6c05405e4443463f05bdbc5e44}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_abc58034468977642686fd027c11c5dfd}{N}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_ad409aec22534c4d06c5347923f2fb4c4}{B}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a4e864849510e9a9d310cc78b418c529a}{C}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_aea270e7219e95963bb93e4adf79f4e99}{P}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a84c66d58992e45066aabbd049c3f4204}{R}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a6405fa517888b4b6f45f2def708d914f}{L}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a87735eff42d9c133c1f5e66ff74248b5}{Z}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a146f459bd19170427494521ab3f5e922}{D}}, \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a2fb15b6fb0a6915aeed82addae9cbcf3}{config}})
+\begin{DoxyCompactList}\small\item\em Initializes the model and pre-\/computes static customer preferences. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_add07ae4236879b9f29c934e36a27d714}{route}} (self, x, eval\+\_\+order=None)
+\begin{DoxyCompactList}\small\item\em Determines the flow of demand from customers to active stations. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a9d304564b9259d8e01bea8ca0d3cda00}{fitness}} (self, x)
+\begin{DoxyCompactList}\small\item\em Calculates the overall optimization score for the current layout. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a77f667d21eceff7606339643a72a6a5a}{get\+\_\+details}} (self, x)
+\begin{DoxyCompactList}\small\item\em Extracts detailed performance metrics for the current layout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_ad4f7b1c0866cc772d06c212b2d01fce3}{name}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a0666b7da0ad1767f1edb069f5c6f8616}{customer\+\_\+pref}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_abc58034468977642686fd027c11c5dfd}{N}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model}{charge\+\_\+grid.\+models.\+base.\+Base\+Model}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a180c0e2f5d7ab3632e820c4429b22f67}{name}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_aca2fc6c04a19722d0b243992570bf3e9}{N}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_ad409aec22534c4d06c5347923f2fb4c4}{B}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a4e864849510e9a9d310cc78b418c529a}{C}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_aea270e7219e95963bb93e4adf79f4e99}{P}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a84c66d58992e45066aabbd049c3f4204}{R}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a6405fa517888b4b6f45f2def708d914f}{L}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a87735eff42d9c133c1f5e66ff74248b5}{Z}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a146f459bd19170427494521ab3f5e922}{D}}
+\item 
+\mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a2fb15b6fb0a6915aeed82addae9cbcf3}{config}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A routing model that simulates demand allocation using an alternating proposal algorithm. 
+
+This model assigns customer demand to EV stations using a priority-\/based, multi-\/round matching process (similar to Gale-\/\+Shapley/stable matching). Customers always attempt to visit their nearest available station. If multiple customers converge on the same station, the station prioritizes fulfilling the closest customers first using a priority queue (min-\/heap) until its battery capacity is depleted.
+
+\begin{DoxyParagraph}{Class Connections\+:}
+
+\begin{DoxyItemize}
+\item Inherits core properties and matrix definitions from {\ttfamily Base\+Model}.
+\item Instantiated dynamically in {\ttfamily Experiment.\+\_\+\+\_\+init\+\_\+\+\_\+} when \textquotesingle{}Alternating\+Routing\textquotesingle{} is specified in the configuration dictionary. 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a3f9eab6c05405e4443463f05bdbc5e44}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a3f9eab6c05405e4443463f05bdbc5e44} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{N,  }\item[{}]{B,  }\item[{}]{C,  }\item[{}]{P,  }\item[{}]{R,  }\item[{}]{L,  }\item[{}]{Z,  }\item[{}]{D,  }\item[{}]{config }\end{DoxyParamCaption})}
+
+
+
+Initializes the model and pre-\/computes static customer preferences. 
+
+Calls the parent {\ttfamily Base\+Model} constructor to load the network data. To optimize the routing simulation, it pre-\/computes a strict preference list for every customer node. It sorts all available stations by distance and filters out any stations that exceed the customer\textquotesingle{}s maximum walking tolerance ({\ttfamily Z}).
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item The {\ttfamily self.\+customer\+\_\+pref} list generated here is consumed heavily by the {\ttfamily route} method to avoid resorting distances during every GA evaluation.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em N,B,C,P,R,L,Z,D} & Core network parameters passed down to the Base\+Model. \\
+\hline
+{\em config} & The experiment configuration dictionary. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_ac60b12e9148f7be215ad0cb9c43a6943}{charge\+\_\+grid.\+models.\+base.\+Base\+Model}}.
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a9d304564b9259d8e01bea8ca0d3cda00}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a9d304564b9259d8e01bea8ca0d3cda00} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!fitness@{fitness}}
+\index{fitness@{fitness}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{fitness()}{fitness()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+fitness (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x }\end{DoxyParamCaption})}
+
+
+
+Calculates the overall optimization score for the current layout. 
+
+Executes the routing simulation to determine the demand flow, then evaluates the layout based on a weighted difference between economic profit and operational dissatisfaction. The formula applied is\+: (lambda \texorpdfstring{$\ast$}{*} total\+\_\+E) -\/ (mu \texorpdfstring{$\ast$}{*} total\+\_\+O).
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Calls {\ttfamily self.\+route(x)} to generate the flow matrix {\ttfamily F}.
+\item Calls the global {\ttfamily E} and {\ttfamily O} functions from {\ttfamily \doxylink{utils_8py}{utils.\+py}} to compute raw metrics.
+\item Called continuously by the Py\+GAD evaluation loop via {\ttfamily Experiment.\+\_\+fitness\+\_\+handler\+\_\+helper}.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & A sequence of integers (1s and 0s) representing active station locations.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A single float representing the finalized fitness score. 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_ad168b23004e44d5c622aa0c50d499a1d}{charge\+\_\+grid.\+models.\+base.\+Base\+Model}}.
+
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a77f667d21eceff7606339643a72a6a5a}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a77f667d21eceff7606339643a72a6a5a} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!get\_details@{get\_details}}
+\index{get\_details@{get\_details}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{get\_details()}{get\_details()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+get\+\_\+details (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x }\end{DoxyParamCaption})}
+
+
+
+Extracts detailed performance metrics for the current layout. 
+
+Runs the routing algorithm and breaks down the resulting economic and operational scores into their granular components (revenue, costs, unmet demand penalties, and distance penalties).
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Calls {\ttfamily self.\+route(x)} to generate the flow matrix {\ttfamily F}.
+\item Calls the global {\ttfamily E} and {\ttfamily O} functions from {\ttfamily \doxylink{utils_8py}{utils.\+py}}.
+\item Invoked by {\ttfamily Experiment.\+log\+\_\+handler} to record generation history and by the interactive map script to display UI statistics.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & A sequence of integers (1s and 0s) representing active station locations.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A dictionary containing keys for \textquotesingle{}avg\+\_\+E\textquotesingle{}, \textquotesingle{}avg\+\_\+rev\textquotesingle{}, \textquotesingle{}avg\+\_\+cost\textquotesingle{}, \textquotesingle{}avg\+\_\+O\textquotesingle{}, \textquotesingle{}avg\+\_\+unmet\textquotesingle{}, and \textquotesingle{}avg\+\_\+dist\textquotesingle{}. 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a68e8aad4977a07e576d4923debad3922}{charge\+\_\+grid.\+models.\+base.\+Base\+Model}}.
+
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_add07ae4236879b9f29c934e36a27d714}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_add07ae4236879b9f29c934e36a27d714} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!route@{route}}
+\index{route@{route}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{route()}{route()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+route (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{x,  }\item[{}]{eval\+\_\+order = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Determines the flow of demand from customers to active stations. 
+
+Executes the multi-\/round stable matching algorithm\+:
+\begin{DoxyEnumerate}
+\item {\bfseries{Proposal\+:}} Active customers propose to the nearest active station with remaining battery capacity, iterating through their pre-\/computed preference list.
+\item {\bfseries{Queuing\+:}} Stations collect all incoming proposals for the round into a min-\/heap, sorted by distance.
+\item {\bfseries{Fulfillment\+:}} Stations pop customers from the heap (closest first) and allocate battery capacity until depleted or the demand is met.
+\item {\bfseries{Iteration\+:}} Customers with remaining unfulfilled demand are pushed to the next round to propose to their next preferred station.
+\end{DoxyEnumerate}
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Relies on the {\ttfamily self.\+customer\+\_\+pref} lists built in {\ttfamily \+\_\+\+\_\+init\+\_\+\+\_\+}.
+\item Called internally by {\ttfamily self.\+fitness()} and {\ttfamily self.\+get\+\_\+details()}.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & A sequence of integers (1s and 0s) representing active station locations. \\
+\hline
+{\em eval\+\_\+order} & Optional parameter (unused in this specific model, maintained for structural compatibility with {\ttfamily Base\+Model} polymorphism).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+F A 2D Num\+Py array representing the finalized flow of demand from customers (rows) to stations (columns). 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classcharge__grid_1_1models_1_1base_1_1_base_model_a8632df7732af65f4e2c79688b31fb3c1}{charge\+\_\+grid.\+models.\+base.\+Base\+Model}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a0666b7da0ad1767f1edb069f5c6f8616}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_a0666b7da0ad1767f1edb069f5c6f8616} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!customer\_pref@{customer\_pref}}
+\index{customer\_pref@{customer\_pref}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{customer\_pref}{customer\_pref}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+customer\+\_\+pref}
+
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_abc58034468977642686fd027c11c5dfd}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_abc58034468977642686fd027c11c5dfd} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!N@{N}}
+\index{N@{N}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{N}{N}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+N}
+
+\Hypertarget{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_ad4f7b1c0866cc772d06c212b2d01fce3}\label{classcharge__grid_1_1models_1_1alternating_1_1_alternating_routing_ad4f7b1c0866cc772d06c212b2d01fce3} 
+\index{charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}!name@{name}}
+\index{name@{name}!charge\_grid.models.alternating.AlternatingRouting@{charge\_grid.models.alternating.AlternatingRouting}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+models.\+alternating.\+Alternating\+Routing.\+name}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/charge\+\_\+grid/models/\mbox{\hyperlink{alternating_8py}{alternating.\+py}}\end{DoxyCompactItemize}

@@ -1,0 +1,101 @@
+\doxysection{MILP Namespace Reference}
+\hypertarget{namespace_m_i_l_p}{}\label{namespace_m_i_l_p}\index{MILP@{MILP}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_ad24583a718e63f431f189227cc2fc681}{solve\+\_\+battery\+\_\+stations\+\_\+ortools}} (\mbox{\hyperlink{namespace_m_i_l_p_a4384f125d7b22bbc38961bd12b0c4121}{input\+\_\+file}}, \mbox{\hyperlink{namespace_m_i_l_p_abc59d05db3686f30424642f1b1c10598}{alpha}}=100.\+0, \mbox{\hyperlink{namespace_m_i_l_p_ad6ab4a2b0e87d0318b8f0f71d9e0da3c}{beta}}=1.\+0, \mbox{\hyperlink{namespace_m_i_l_p_a2f285b446e7bbf35ef1db0166a1ffc6b}{lambda\+\_\+weight}}=1.\+0, \mbox{\hyperlink{namespace_m_i_l_p_a11d6c67524df77ae6216b3851a3a8479}{time\+\_\+limit\+\_\+ms}}=None)
+\begin{DoxyCompactList}\small\item\em Solves the optimal EV station placement problem using a Mixed-\/\+Integer Linear Programming (\doxylink{namespace_m_i_l_p}{MILP}) solver. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_a4384f125d7b22bbc38961bd12b0c4121}{input\+\_\+file}}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_abc59d05db3686f30424642f1b1c10598}{alpha}}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_ad6ab4a2b0e87d0318b8f0f71d9e0da3c}{beta}}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_a2f285b446e7bbf35ef1db0166a1ffc6b}{lambda\+\_\+weight}}
+\item 
+\mbox{\hyperlink{namespace_m_i_l_p_a11d6c67524df77ae6216b3851a3a8479}{time\+\_\+limit\+\_\+ms}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_m_i_l_p_ad24583a718e63f431f189227cc2fc681}\label{namespace_m_i_l_p_ad24583a718e63f431f189227cc2fc681} 
+\index{MILP@{MILP}!solve\_battery\_stations\_ortools@{solve\_battery\_stations\_ortools}}
+\index{solve\_battery\_stations\_ortools@{solve\_battery\_stations\_ortools}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{solve\_battery\_stations\_ortools()}{solve\_battery\_stations\_ortools()}}
+{\footnotesize\ttfamily MILP.\+solve\+\_\+battery\+\_\+stations\+\_\+ortools (\begin{DoxyParamCaption}\item[{}]{input\+\_\+file,  }\item[{}]{alpha = {\ttfamily 100.0},  }\item[{}]{beta = {\ttfamily 1.0},  }\item[{}]{lambda\+\_\+weight = {\ttfamily 1.0},  }\item[{}]{time\+\_\+limit\+\_\+ms = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Solves the optimal EV station placement problem using a Mixed-\/\+Integer Linear Programming (\doxylink{namespace_m_i_l_p}{MILP}) solver. 
+
+This function provides an exact mathematical baseline for the routing optimization using Google OR-\/\+Tools (SCIP solver). It defines binary decision variables for station placement (\$x\+\_\+j\$) and integer variables for demand flow (\$\+F\+\_\+\{i,j\}\$).
+
+The solver maximizes the objective function\+: \$\$\textbackslash{}text\{Maximize \} \textbackslash{}lambda(E) -\/ O\$\$ Where \$\+E\$ is total profit (revenue -\/ costs) and \$\+O\$ is the combined operational penalty (unmet demand + distance traveled).
+
+It enforces the following strict mathematical constraints\+:
+\begin{DoxyItemize}
+\item {\bfseries{Demand Limit\+:}} \$\textbackslash{}sum\+\_\+j F\+\_\+\{i,j\} \textbackslash{}le D\+\_\+i\$
+\item {\bfseries{Distance Tolerance\+:}} \$\+F\+\_\+\{i,j\} = 0 \textbackslash{}text\{ if \} L\+\_\+\{i,j\} \texorpdfstring{$>$}{>} Z\+\_\+i\$
+\item {\bfseries{Station Activation\+:}} \$\+F\+\_\+\{i,j\} \textbackslash{}le D\+\_\+i \textbackslash{}cdot x\+\_\+j\$
+\item {\bfseries{Station Capacity\+:}} \$\textbackslash{}sum\+\_\+i F\+\_\+\{i,j\} \textbackslash{}le B \textbackslash{}cdot x\+\_\+j\$
+\end{DoxyItemize}
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Relies on {\ttfamily read\+\_\+input} (from {\ttfamily \doxylink{namespacecharge__grid_1_1utils}{charge\+\_\+grid.\+utils}}) to parse the network matrices.
+\item Serves as a deterministic, exact-\/solution counterpart to the heuristic Genetic Algorithm models used elsewhere in the project.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em input\+\_\+file} & A string or Path pointing to the network dataset text file. \\
+\hline
+{\em alpha} & A float representing the penalty multiplier for unmet customer demand. \\
+\hline
+{\em beta} & A float representing the penalty multiplier for customer travel distance. \\
+\hline
+{\em lambda\+\_\+weight} & A float used to scale the economic profit component of the objective. \\
+\hline
+{\em time\+\_\+limit\+\_\+ms} & An optional integer defining the maximum milliseconds the solver is permitted to run before forcing termination.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple {\ttfamily (best\+\_\+x, val\+\_\+fitness)}, where {\ttfamily best\+\_\+x} is a list of integers (1s and 0s) representing the optimal layout, and {\ttfamily val\+\_\+fitness} is the maximum objective value found. Returns {\ttfamily (None, None)} if the solver cannot find a feasible solution. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespace_m_i_l_p_abc59d05db3686f30424642f1b1c10598}\label{namespace_m_i_l_p_abc59d05db3686f30424642f1b1c10598} 
+\index{MILP@{MILP}!alpha@{alpha}}
+\index{alpha@{alpha}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{alpha}{alpha}}
+{\footnotesize\ttfamily MILP.\+alpha}
+
+\Hypertarget{namespace_m_i_l_p_ad6ab4a2b0e87d0318b8f0f71d9e0da3c}\label{namespace_m_i_l_p_ad6ab4a2b0e87d0318b8f0f71d9e0da3c} 
+\index{MILP@{MILP}!beta@{beta}}
+\index{beta@{beta}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{beta}{beta}}
+{\footnotesize\ttfamily MILP.\+beta}
+
+\Hypertarget{namespace_m_i_l_p_a4384f125d7b22bbc38961bd12b0c4121}\label{namespace_m_i_l_p_a4384f125d7b22bbc38961bd12b0c4121} 
+\index{MILP@{MILP}!input\_file@{input\_file}}
+\index{input\_file@{input\_file}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{input\_file}{input\_file}}
+{\footnotesize\ttfamily MILP.\+input\+\_\+file}
+
+\Hypertarget{namespace_m_i_l_p_a2f285b446e7bbf35ef1db0166a1ffc6b}\label{namespace_m_i_l_p_a2f285b446e7bbf35ef1db0166a1ffc6b} 
+\index{MILP@{MILP}!lambda\_weight@{lambda\_weight}}
+\index{lambda\_weight@{lambda\_weight}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{lambda\_weight}{lambda\_weight}}
+{\footnotesize\ttfamily MILP.\+lambda\+\_\+weight}
+
+\Hypertarget{namespace_m_i_l_p_a11d6c67524df77ae6216b3851a3a8479}\label{namespace_m_i_l_p_a11d6c67524df77ae6216b3851a3a8479} 
+\index{MILP@{MILP}!time\_limit\_ms@{time\_limit\_ms}}
+\index{time\_limit\_ms@{time\_limit\_ms}!MILP@{MILP}}
+\doxysubsubsection{\texorpdfstring{time\_limit\_ms}{time\_limit\_ms}}
+{\footnotesize\ttfamily MILP.\+time\+\_\+limit\+\_\+ms}
+

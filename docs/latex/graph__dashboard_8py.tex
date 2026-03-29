@@ -1,0 +1,39 @@
+\doxysection{src/charge\+\_\+grid/visualizer/graph\+\_\+dashboard.py File Reference}
+\hypertarget{graph__dashboard_8py}{}\label{graph__dashboard_8py}\index{src/charge\_grid/visualizer/graph\_dashboard.py@{src/charge\_grid/visualizer/graph\_dashboard.py}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacecharge__grid}{charge\+\_\+grid}}
+\item 
+namespace \mbox{\hyperlink{namespacecharge__grid_1_1visualizer}{charge\+\_\+grid.\+visualizer}}
+\item 
+namespace \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+choose\+\_\+solution\+\_\+files}} ()
+\begin{DoxyCompactList}\small\item\em Prompts the user via CLI to select multiple saved optimization results for comparison. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+load\+\_\+chart\+\_\+data}} (selected\+\_\+files)
+\begin{DoxyCompactList}\small\item\em Parses the selected JSON files to extract generation history and configuration metadata. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a517b675558b13a0d428f992e0c1e8ee1}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+generate\+\_\+dashboard\+\_\+html}} (\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4}{chart\+\_\+data}})
+\begin{DoxyCompactList}\small\item\em Orchestrates the creation and export of the interactive HTML dashboard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a84d53fbff1d16b22c74b2c2efeb2e026}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+output\+\_\+folder}} = OUTPUT\+\_\+\+DIR
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ac0f92bd4791b9ca33df1d826c7178d9e}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+cache\+\_\+folder}} = Path(\textquotesingle{}../cache\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+current\+\_\+dir}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).parent
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+asset\+\_\+path}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}{current\+\_\+dir}} / \textquotesingle{}assets\textquotesingle{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a7455834ad626158f927c59ae0e01680b}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+CSS\+\_\+\+PATH}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+style.\+css\textquotesingle{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a6bf23d54461fc0b98f76fbaefe628fbf}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+JS\+\_\+\+PATH}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+script.\+js\textquotesingle{}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+selected}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}{choose\+\_\+solution\+\_\+files}}()
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4}{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+chart\+\_\+data}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}{load\+\_\+chart\+\_\+data}}(\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}{selected}})
+\end{DoxyCompactItemize}

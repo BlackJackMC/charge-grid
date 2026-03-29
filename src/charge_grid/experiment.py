@@ -5,6 +5,7 @@ from functools import cache
 
 from charge_grid.utils import save_optimization_results
 
+
 class Experiment:
     def __init__(self, data, experiment_name, input_path, output_folder, config):
         self.N, self.B, self.C, self.P, self.L, self.R, self.Z, self.D = data

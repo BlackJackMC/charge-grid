@@ -1,0 +1,157 @@
+\doxysection{charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard Namespace Reference}
+\hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard}{}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard}\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}{choose\+\_\+solution\+\_\+files}} ()
+\begin{DoxyCompactList}\small\item\em Prompts the user via CLI to select multiple saved optimization results for comparison. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}{load\+\_\+chart\+\_\+data}} (selected\+\_\+files)
+\begin{DoxyCompactList}\small\item\em Parses the selected JSON files to extract generation history and configuration metadata. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a517b675558b13a0d428f992e0c1e8ee1}{generate\+\_\+dashboard\+\_\+html}} (\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4}{chart\+\_\+data}})
+\begin{DoxyCompactList}\small\item\em Orchestrates the creation and export of the interactive HTML dashboard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a84d53fbff1d16b22c74b2c2efeb2e026}{output\+\_\+folder}} = OUTPUT\+\_\+\+DIR
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ac0f92bd4791b9ca33df1d826c7178d9e}{cache\+\_\+folder}} = Path(\textquotesingle{}../cache\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}{current\+\_\+dir}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).parent
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}{current\+\_\+dir}} / \textquotesingle{}assets\textquotesingle{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a7455834ad626158f927c59ae0e01680b}{CSS\+\_\+\+PATH}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+style.\+css\textquotesingle{}
+\item 
+str \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a6bf23d54461fc0b98f76fbaefe628fbf}{JS\+\_\+\+PATH}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+script.\+js\textquotesingle{}
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}{selected}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}{choose\+\_\+solution\+\_\+files}}()
+\item 
+\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4}{chart\+\_\+data}} = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}{load\+\_\+chart\+\_\+data}}(\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}{selected}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!choose\_solution\_files@{choose\_solution\_files}}
+\index{choose\_solution\_files@{choose\_solution\_files}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{choose\_solution\_files()}{choose\_solution\_files()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+choose\+\_\+solution\+\_\+files (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Prompts the user via CLI to select multiple saved optimization results for comparison. 
+
+Scans the predefined output directory for JSON files matching the \textquotesingle{}solution\+\_\+\texorpdfstring{$\ast$}{*}.json\textquotesingle{} pattern. It displays an indexed list and accepts a string of numbers (comma or space-\/separated) or the keyword \textquotesingle{}all\textquotesingle{} to select multiple files simultaneously. Uses regex to parse the user input.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Called by the main execution block.
+\item The returned list of file paths is passed directly into {\ttfamily load\+\_\+chart\+\_\+data}.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+\begin{DoxyReturn}{Returns}
+A list of {\ttfamily pathlib.\+Path} objects representing the selected JSON files. Returns an empty list if no files are found or the input is invalid. 
+\end{DoxyReturn}
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a517b675558b13a0d428f992e0c1e8ee1}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a517b675558b13a0d428f992e0c1e8ee1} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!generate\_dashboard\_html@{generate\_dashboard\_html}}
+\index{generate\_dashboard\_html@{generate\_dashboard\_html}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{generate\_dashboard\_html()}{generate\_dashboard\_html()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+generate\+\_\+dashboard\+\_\+html (\begin{DoxyParamCaption}\item[{}]{chart\+\_\+data }\end{DoxyParamCaption})}
+
+
+
+Orchestrates the creation and export of the interactive HTML dashboard. 
+
+Reads the external CSS ({\ttfamily dashboard\+\_\+style.\+css}) and Java\+Script ({\ttfamily dashboard\+\_\+script.\+js}) asset files. It constructs a standalone HTML template that includes the Chart.\+js library, injects the parsed {\ttfamily chart\+\_\+data} directly into a script tag as a JSON string, and saves the final {\ttfamily dashboard.\+html} file into the cache directory.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Consumes the data dictionary created by {\ttfamily load\+\_\+chart\+\_\+data}.
+\item Called by the main execution block to finalize the export.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em chart\+\_\+data} & A structured dictionary containing the historical metrics and metadata for all selected experiments. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!load\_chart\_data@{load\_chart\_data}}
+\index{load\_chart\_data@{load\_chart\_data}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{load\_chart\_data()}{load\_chart\_data()}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+load\+\_\+chart\+\_\+data (\begin{DoxyParamCaption}\item[{}]{selected\+\_\+files }\end{DoxyParamCaption})}
+
+
+
+Parses the selected JSON files to extract generation history and configuration metadata. 
+
+Iterates through the provided file paths to extract the {\ttfamily generation\+\_\+history} (for plotting fitness and profit trends over time) and the {\ttfamily metadata.\+configuration} (for displaying the GA hyperparameters like mutation type, crossover, alpha, beta, etc.). It formats this data into a structured dictionary optimized for injection into Chart.\+js.
+
+\begin{DoxyParagraph}{Function Connections\+:}
+
+\begin{DoxyItemize}
+\item Receives the file list generated by {\ttfamily choose\+\_\+solution\+\_\+files}.
+\item Called by the main execution block to prepare the payload for {\ttfamily generate\+\_\+dashboard\+\_\+html}.
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+\begin{DoxyParams}{Parameters}
+{\em selected\+\_\+files} & A list of {\ttfamily pathlib.\+Path} objects pointing to the chosen JSON solutions.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A dictionary where the keys are filenames and the values are dictionaries containing \textquotesingle{}title\textquotesingle{}, \textquotesingle{}labels\textquotesingle{}, \textquotesingle{}fitness\textquotesingle{}, \textquotesingle{}profit\textquotesingle{}, and \textquotesingle{}extra\+\_\+meta\textquotesingle{}. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!asset\_path@{asset\_path}}
+\index{asset\_path@{asset\_path}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{asset\_path}{asset\_path}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+asset\+\_\+path = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}{current\+\_\+dir}} / \textquotesingle{}assets\textquotesingle{}}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ac0f92bd4791b9ca33df1d826c7178d9e}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ac0f92bd4791b9ca33df1d826c7178d9e} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!cache\_folder@{cache\_folder}}
+\index{cache\_folder@{cache\_folder}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{cache\_folder}{cache\_folder}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+cache\+\_\+folder = Path(\textquotesingle{}../cache\textquotesingle{})}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_acf8d2f409f2c0b80020e66b0a73d99e4} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!chart\_data@{chart\_data}}
+\index{chart\_data@{chart\_data}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{chart\_data}{chart\_data}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+chart\+\_\+data = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_ad5bb684d7df8750c2413cd06c45e605e}{load\+\_\+chart\+\_\+data}}(\mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}{selected}})}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a7455834ad626158f927c59ae0e01680b}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a7455834ad626158f927c59ae0e01680b} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!CSS\_PATH@{CSS\_PATH}}
+\index{CSS\_PATH@{CSS\_PATH}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{CSS\_PATH}{CSS\_PATH}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+CSS\+\_\+\+PATH = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+style.\+css\textquotesingle{}}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a766b2ccdd32ccd719e910e5db61aa6eb} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!current\_dir@{current\_dir}}
+\index{current\_dir@{current\_dir}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{current\_dir}{current\_dir}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+current\+\_\+dir = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).parent}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a6bf23d54461fc0b98f76fbaefe628fbf}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a6bf23d54461fc0b98f76fbaefe628fbf} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!JS\_PATH@{JS\_PATH}}
+\index{JS\_PATH@{JS\_PATH}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{JS\_PATH}{JS\_PATH}}
+{\footnotesize\ttfamily str charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+JS\+\_\+\+PATH = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a5e050b7bb92fbefb7c85c73dedfdca1c}{asset\+\_\+path}} / \textquotesingle{}dashboard\+\_\+script.\+js\textquotesingle{}}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a84d53fbff1d16b22c74b2c2efeb2e026}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a84d53fbff1d16b22c74b2c2efeb2e026} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!output\_folder@{output\_folder}}
+\index{output\_folder@{output\_folder}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{output\_folder}{output\_folder}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+output\+\_\+folder = OUTPUT\+\_\+\+DIR}
+
+\Hypertarget{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762}\label{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a898019b27e060ca26737bf7ad3ded762} 
+\index{charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}!selected@{selected}}
+\index{selected@{selected}!charge\_grid.visualizer.graph\_dashboard@{charge\_grid.visualizer.graph\_dashboard}}
+\doxysubsubsection{\texorpdfstring{selected}{selected}}
+{\footnotesize\ttfamily charge\+\_\+grid.\+visualizer.\+graph\+\_\+dashboard.\+selected = \mbox{\hyperlink{namespacecharge__grid_1_1visualizer_1_1graph__dashboard_a394e734896ec2c7049ad729f716ec6fd}{choose\+\_\+solution\+\_\+files}}()}
+
