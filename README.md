@@ -1,6 +1,11 @@
 # charge-grid
 Electric Vehicle Battery Swapping Stations Placement Optimization
 
+### Team 
+* Phan Anh Kiệt - 25127204: LackerField 
+* Đặng Nguyễn Yến Phương - 25127230: dnyp222-crypto
+* Phan Quốc Bảo - 25127282: BlackJackMC
+
 ## Directory
 ```
 
